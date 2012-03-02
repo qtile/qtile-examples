@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Java apps are broken and need a WM on their hardcoded list. For maximum
+# irony, you should impersonate LG3D, a window manager written by Sun in Java.
+# Available from http://tools.suckless.org/wmname
+wmname LG3D
+
+exec qtile

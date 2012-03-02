@@ -1,0 +1,7 @@
+Features include:
+ caps lock-based
+ special layouts for gimp and pidgin
+ jailing of certain apps to dynamically created groups
+ alternate urgent hint notification
+ alternate default floating rules
+

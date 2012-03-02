@@ -1,0 +1,11 @@
+This is a repository for examples of how to use qtile, it is structured as
+follows:
+
+config/ -- demonstration of basic configuration
+scripts/ -- basic scripting with qsh
+user-configs/ -- configurations from various users (typically more customized
+  and advanced)
+user-scripts/ -- scripts written by various users
+
+To contribute please for the repo on github and make a pull request.
+
