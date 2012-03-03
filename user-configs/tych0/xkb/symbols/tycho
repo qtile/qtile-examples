@@ -1,1 +1,7 @@
-/home/tycho/life/config/dotfiles/qtile/xkb/symbols/tycho
+partial modifier_keys
+xkb_symbols "caps_mod3" {
+  replace key <CAPS> {
+    [ VoidSymbol, VoidSymbol ]
+  };
+  modifier_map Mod3 { <CAPS> };
+};
