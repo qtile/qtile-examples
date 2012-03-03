@@ -5,3 +5,41 @@ Features include:
  alternate urgent hint notification
  alternate default floating rules
 
+This keyboard layout uses caps lock instead of the windows (or some other key)
+as your main control key. This approach has several advantages:
+  * mod3 is (typically, in most distros) an unbound modifier key, so you can do
+    this without changing any other behavior (unlike coopting some other mod
+    keys)
+  * you no longer accidentally activate caps lock
+  * caps lock is unused by everything (even windows VMs), so you don't have any
+    key conflicts with apps
+  * it is (arguably) easier to hit than the windows key
+  * you can finally make use of that stupid key
+
+Of course, it also has several disadvantages:
+  * configuration is keyboard interface dependent and can be nontrivial
+  * some OS upgrades bork your Lock => mod3 binding, rendering your WM unusable
+
+You can work around the second problem by binding some "panic sequence" of keys
+(for me, logout) to something that doesn't depend on mod3 being mapped
+correctly. Then, before you do an upgrade that looks like it might break
+something, be at a good stopping point and ready to "panic" :-)
+
+The first problem is also workable as long as you know what you're doing. If
+you're lucky, xmodmap will work for you, and you can just add the line:
+  xmodmap ~/.qtile/xmodmaprc
+to your ~/.xsession (the xmodmaprc is included in this directory).
+
+However, if you're not so lucky, you may have to resort to compiling your own
+keyboard layout (I have to do this). I'm not sure exactly when each situation
+applies, but I think for sure you'll have to do this if you're using a PS/2
+keyboard (I've also had to do it for various USB keyboards). To do this, you'll
+want to add:
+  QTILE=/home/tycho/.qtile
+  xkbcomp -I$QTILE/xkb $QTILE/xkb/keymap/tycho $DISPLAY
+to your ~/.xsession. You'll also need to copy the entire contents (including
+the directory structure) of the ./xkb directory to $QTILE.
+
+That's all there is to it!
+
+\t
