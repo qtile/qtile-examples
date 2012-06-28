@@ -7,6 +7,7 @@
 from libqtile.manager import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
+from she_widget import She
 
 follow_mouse_focus = False
 
@@ -165,7 +166,7 @@ keys = [
     # Application Launcher
     Key(
         [mod], "space",
-        lazy.spawn("dmenu_run -fn 'Terminal:size=13' -nb '#000000' -nf '#fefefe'")
+        lazy.spawn("dmenu_run -fn 'Terminus:size=8' -nb '#000000' -nf '#fefefe'")
     ),
     # Qtile application launcher
     Key(
@@ -257,6 +258,7 @@ screens = [
                                 foreground = "7070ff",
                                 charge_char = u'↑',
                                 discharge_char = u'↓',),
+                She(foreground='705030',),
                 widget.Clock(foreground = "a0a0a0",
                              fmt = "%H:%M %d/%m/%Y",),
             ],
