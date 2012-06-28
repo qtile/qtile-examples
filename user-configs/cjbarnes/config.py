@@ -166,7 +166,7 @@ keys = [
     # Application Launcher
     Key(
         [mod], "space",
-        lazy.spawn("dmenu_run -fn 'Terminal:size=13' -nb '#000000' -nf '#fefefe'")
+        lazy.spawn("dmenu_run -fn 'Terminus:size=8' -nb '#000000' -nf '#fefefe'")
     ),
     # Qtile application launcher
     Key(
