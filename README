@@ -7,5 +7,5 @@ user-configs/ -- configurations from various users (typically more customized
   and advanced)
 user-scripts/ -- scripts written by various users
 
-To contribute please for the repo on github and make a pull request.
+To contribute please fork the repo on github and make a pull request.
 
