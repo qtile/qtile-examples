@@ -124,7 +124,11 @@ class Metrics(base._TextBox):
         cpu_total = new_cpu_total - self.cpu_total
         self.cpu_usage = new_cpu_usage
         self.cpu_total = new_cpu_total
-        return 'Cpu: %d%%' % (float(cpu_usage) / float(cpu_total) * 100.)
+        if cpu_total != 0:
+            cpu_percents = "%d%%" % (float(cpu_usage) / float(cpu_total) * 100.)
+        else:
+            cpu_percents = "nan"
+        return 'Cpu: %s' % cpu_percents
 
     def get_mem_usage(self):
         info = {}
@@ -135,7 +139,11 @@ class Metrics(base._TextBox):
         mem -= info['MemFree']
         mem -= info['Buffers']
         mem -= info['Cached']
-        return 'Mem: %d%%' % (float(mem) / float(info['MemTotal']) * 100)
+        if int(info['MemTotal']) != 0:
+            mem_percents = '%d%%' % (float(mem) / float(info['MemTotal']) * 100)
+        else:
+            mem_percents = 'nan'
+        return 'Mem: %s' % mem_percents
 
     def get_net_usage(self):
         interfaces = []
