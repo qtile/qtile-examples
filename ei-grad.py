@@ -216,7 +216,7 @@ def get_bar():
                      fontsize=12, foreground="#9090A0"),
         Metrics(font=font, fontsize=12, foreground="#A0A090"),
         widget.Systray(icon_size=15),
-        widget.Clock(font=font, foreground=foreground),
+        widget.Clock(fmt="%c", font=font, foreground=foreground),
     ], 15)
 
 
