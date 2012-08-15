@@ -3,7 +3,7 @@
 
 import os
 
-from libqtile import layout, widget, bar, manager
+from libqtile import layout, widget, bar, manager, hook
 from libqtile.widget import base
 from libqtile.manager import Key, Screen, Group, Drag # , Click
 from libqtile.command import lazy
@@ -207,7 +207,32 @@ def get_bar():
         widget.Clock(font=font, foreground=foreground),
     ], 15)
 
+
 screens = [
     Screen(top=get_bar()),
     Screen()
 ]
+
+
+float_windows = set([
+    "feh",
+    "x11-ssh-askpass"
+])
+
+
+def should_be_floating(w):
+    wm_class = w.get_wm_class()
+    if isinstance(wm_class, tuple):
+        for cls in wm_class:
+            if cls.lower() in float_windows:
+                return True
+    else:
+        if wm_class.lower() in float_windows:
+            return True
+    return w.get_wm_type() == 'dialog' or bool(w.get_wm_transient_for())
+
+
+@hook.subscribe.client_new
+def dialogs(window):
+    if should_be_floating(window.window):
+        window.floating = True
