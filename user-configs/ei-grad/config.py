@@ -179,7 +179,7 @@ class Metrics(base._TextBox):
         if net:
             stat.append(net)
         self.text = " | ".join(stat)
-        self.draw()
+        self.bar.draw()
         return True
 
 
