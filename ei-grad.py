@@ -76,9 +76,10 @@ for i, (name, kwargs) in enumerate(group_names, 1):
 
 layouts = [
     layout.Stack(stacks=2, border_normal="#222222"),
-    layout.MonadTall(border_normal="#222222"),
+    #layout.MonadTall(border_normal="#222222"),
     layout.Tile(),
-    layout.Max()
+    layout.Max(),
+    layout.TreeTab()
 ]
 
 font = 'DejaVu Sans Mono'
