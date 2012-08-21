@@ -234,6 +234,8 @@ float_windows = set([
 
 def should_be_floating(w):
     wm_class = w.get_wm_class()
+    if wm_class is None:
+        return True
     if isinstance(wm_class, tuple):
         for cls in wm_class:
             if cls.lower() in float_windows:
