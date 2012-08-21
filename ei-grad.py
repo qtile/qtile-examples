@@ -38,7 +38,7 @@ keys = [
     Key([mod], "e", lazy.to_screen(1)),
 
     Key([mod], "Return", lazy.spawn("urxvt")),
-    Key([mod], "p", lazy.spawn("dmenu_run")),
+    Key([mod], "p", lazy.spawn("dmenu_run -fn 'DejaVu Sans Mono:pixelsize=11'")),
 
     Key([mod, "shift"], "c", lazy.window.kill()),
 
