@@ -1,24 +1,37 @@
 from libqtile.manager import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
+from libqtile.widget.base import _Widget
+from libqtile.dgroups import DGroups, Match, simple_key_binder
 
 import platform
+import sys
 
 # TODO:
-#  1. better multi screen switching
-#  2. better hotkeys for dgroups
-#  3. perhaps make it so you don't have to pass font_options everywhere?
+#  2. multi screen switching
+#  3. better hotkeys for dgroups?
 
-# Number of screens on machines I use regularly.
+# Number of screens on machines I use regularly. I wish there was a good way to
+# query this from qtile...
 hostname = platform.node()
 num_screens = {
     'tanders-ubuntu': 2,
     'smitten': 2,
     'smalls': 1,
+    'xephyr': 1,
 }
 
+# Global mod key. I have mod3 bound to caps lock, it's great.
+mod = "mod3"
+
+# If we're running in debug mode, it's for development. Make sure the
+# hotkeys don't clash, only start one window, etc.
+if '-d' in sys.argv:
+    hostname = 'xephyr'
+    mod = "mod4"
+
 # global font options
-font_options = dict(
+widget_defaults = dict(
     font = 'Consolas',
     fontsize = 18,
     padding = 3,
@@ -27,64 +40,79 @@ font_options = dict(
 if num_screens[hostname] == 2:
     screens = [
         Screen(top = bar.Bar([
-                widget.GroupBox(urgent_alert_method='text', **font_options),
-                widget.Prompt(**font_options),
-                widget.WindowName(**font_options),
-                widget.Mpris(**font_options),
-                widget.Volume(**font_options),
+                widget.GroupBox(urgent_alert_method='text', **widget_defaults),
+                widget.Prompt(**widget_defaults),
+                widget.WindowName(**widget_defaults),
+                widget.Mpris(**widget_defaults),
+                widget.Volume(**widget_defaults),
             ], 30,),
         ),
         Screen(top = bar.Bar([
-                widget.GroupBox(urgent_alert_method='text', **font_options),
-                widget.WindowName(**font_options),
-                widget.Systray(),
-                widget.Clock('%Y-%m-%d %a %I:%M %p', **font_options),
+                widget.GroupBox(urgent_alert_method='text', **widget_defaults),
+                widget.WindowName(**widget_defaults),
+                widget.Systray(**widget_defaults),
+                widget.Clock('%Y-%m-%d %a %I:%M %p', **widget_defaults),
             ], 30,),
         ),
     ]
 else:
     # 1 screen
     screens = [Screen(top = bar.Bar([
-            widget.GroupBox(urgent_alert_method='text', **font_options),
-            widget.Prompt(**font_options),
-            widget.WindowName(**font_options),
-            widget.Volume(**font_options),
+            widget.GroupBox(urgent_alert_method='text', **widget_defaults),
+            widget.Prompt(**widget_defaults),
+            widget.WindowName(**widget_defaults),
+            widget.Volume(**widget_defaults),
             # 1 screen means this is a laptop, so let's render the battery
             widget.Battery(energy_now_file='charge_now',
                 energy_full_file='charge_full',
                 power_now_file='current_now',
-                **font_options),
-            widget.Systray(),
-            widget.Clock('%Y-%m-%d %a %I:%M %p', **font_options),
+                **widget_defaults
+            ),
+            widget.Systray(**widget_defaults),
+            widget.Clock('%Y-%m-%d %a %I:%M %p', **widget_defaults),
         ],30,),),
     ]
+
+
+def app_or_group(group, app):
+    """ Go to specified group if it exists. Otherwise, run the specified app.
+    When used in conjunction with dgroups to auto-assign apps to specific
+    groups, this can be used as a way to go to an app if it is already
+    running. """
+    def f(qtile):
+        try:
+            qtile.groupMap[group].cmd_toscreen()
+        except KeyError:
+            qtile.cmd_spawn(app)
+    return f
 
 keys = [
     # Log out; note that this doesn't use mod3: that's intentional in case mod3
     # gets hosed (which happens if you unplug and replug your usb keyboard
     # sometimes, or on ubuntu upgrades). This way you can still log back out
     # and in gracefully.
-    Key(["shift", "mod1"], "q",     lazy.shutdown()),
+    Key(["shift", "mod1"], "q",  lazy.shutdown()),
 
-    Key(["mod3"], "k",              lazy.layout.down()),
-    Key(["mod3"], "j",              lazy.layout.up()),
-    Key(["mod3"], "h",              lazy.layout.previous()),
-    Key(["mod3"], "l",              lazy.layout.previous()),
-    Key(["mod3", "shift"], "space", lazy.layout.rotate()),
-    Key(["mod3", "shift"], "Return",lazy.layout.toggle_split()),
-    Key(["mod1"], "Tab",            lazy.nextlayout()),
-    Key(["mod3", "mod1"], "h",      lazy.to_screen(0)),
-    Key(["mod3", "mod1"], "l",      lazy.to_screen(1)),
-    Key(["mod3"], "x",              lazy.window.kill()),
+    Key([mod], "k",              lazy.layout.down()),
+    Key([mod], "j",              lazy.layout.up()),
+    Key([mod], "h",              lazy.layout.previous()),
+    Key([mod], "l",              lazy.layout.previous()),
+    Key([mod, "shift"], "space", lazy.layout.rotate()),
+    Key([mod, "shift"], "Return",lazy.layout.toggle_split()),
+    Key(["mod1"], "Tab",         lazy.nextlayout()),
+    Key([mod, "mod1"], "h",      lazy.to_screen(0)),
+    Key([mod, "mod1"], "l",      lazy.to_screen(1)),
+    Key([mod], "x",              lazy.window.kill()),
 
     # interact with prompts
-    Key(["mod3"], "r",              lazy.spawncmd()),
-    Key(["mod3"], "g",              lazy.switchgroup()),
+    Key([mod], "r",              lazy.spawncmd()),
+    Key([mod], "g",              lazy.switchgroup()),
 
     # start specific apps
-    Key(["mod3"], "n",              lazy.spawn("firefox")),
-    Key(["mod3"], "m",              lazy.spawn("clementine")),
-    Key(["mod3"], "Return",         lazy.spawn("xterm")),
+    Key([mod], "n",              lazy.function(app_or_group("www", "firefox"))),
+    Key([mod], "m",              lazy.function(app_or_group("music", "clementine"))),
+    Key([mod], "c",              lazy.function(app_or_group("io", "pidgin"))),
+    Key([mod], "Return",         lazy.spawn("xterm")),
 
     # Change the volume if our keyboard has keys
     Key(
@@ -99,35 +127,47 @@ keys = [
         [], "XF86AudioMute",
         lazy.spawn("amixer -c 0 -q set Master toggle")
     ),
+    Key(
+        [], "XF86AudioPlay",
+        lazy.spawn("clementine --play-pause")
+    ),
+    Key(
+        [], "XF86AudioNext",
+        lazy.spawn("clementine --next")
+    ),
+    Key(
+        [], "XF86AudioPrev",
+        lazy.spawn("clementine --prev")
+    ),
 
     # also allow changing volume the old fashioned way
-    Key(["mod3"], "equal", lazy.spawn("amixer -c 0 -q set Master 2dB+")),
-    Key(["mod3"], "minus", lazy.spawn("amixer -c 0 -q set Master 2dB-")),
+    Key([mod], "equal", lazy.spawn("amixer -c 0 -q set Master 2dB+")),
+    Key([mod], "minus", lazy.spawn("amixer -c 0 -q set Master 2dB-")),
 
     # allow play pause as well
-    Key(["mod3"], "p",     lazy.spawn("vif.py play_pause")),
+    Key([mod], "p",     lazy.spawn("vif.py play_pause")),
 ]
 
 # Drag floating layouts.
 mouse = [
-    Drag(["mod3"], "Button1", lazy.window.set_position_floating(),
+    Drag([mod], "Button1", lazy.window.set_position_floating(),
         start=lazy.window.get_position()),
-    Drag(["mod3"], "Button3", lazy.window.set_size_floating(),
+    Drag([mod], "Button3", lazy.window.set_size_floating(),
         start=lazy.window.get_size()),
-    Click(["mod3"], "Button2", lazy.window.bring_to_front())
+    Click([mod], "Button2", lazy.window.bring_to_front())
 ]
 
 # Next, we specify group names, and use the group name list to generate an appropriate
 # set of bindings for group switching.
-static_groups = ['a', 's', 'd', 'f']
+static_groups = ['a', 's', 'd', 'f', 'u', 'i', 'o', 'p']
 groups = []
 for i in static_groups:
     groups.append(Group(i))
     keys.append(
-        Key(["mod3"], i, lazy.group[i].toscreen())
+        Key([mod], i, lazy.group[i].toscreen())
     )
     keys.append(
-        Key(["mod3", "mod1"], i, lazy.window.togroup(i))
+        Key([mod, "mod1"], i, lazy.window.togroup(i))
     )
 
 border_args = dict(
@@ -159,7 +199,6 @@ floating_layout = layout.Floating(auto_float_types=[
 ])
 
 def main(qtile):
-    from dgroups import DGroups, Match, simple_key_binder
 
     dynamic_groups = {
         'music': {'exclusive': False, 'spawn': 'clementine'},
