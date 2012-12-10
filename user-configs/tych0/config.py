@@ -2,7 +2,7 @@ from libqtile.manager import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 from libqtile.widget.base import _Widget
-from libqtile.dgroups import DGroups, Match, simple_key_binder
+from libqtile.dgroups import DGroup, Match, simple_key_binder
 
 import platform
 import sys
@@ -159,16 +159,30 @@ mouse = [
 
 # Next, we specify group names, and use the group name list to generate an appropriate
 # set of bindings for group switching.
-static_groups = ['a', 's', 'd', 'f', 'u', 'i', 'o', 'p']
 groups = []
-for i in static_groups:
-    groups.append(Group(i))
+
+# throwaway groups for random stuff
+for i in ['a', 's', 'd', 'f', 'u', 'i', 'o', 'p']:
+    groups.append(DGroup(i))
     keys.append(
         Key([mod], i, lazy.group[i].toscreen())
     )
     keys.append(
         Key([mod, "mod1"], i, lazy.window.togroup(i))
     )
+
+# groups with special jobs. I usually navigate to these via my app_or_group
+# function.
+groups.extend([
+    DGroup('music', spawn='clementine', layout='max', persist=False,
+           matches=[Match(wm_class=['Clementine', 'Viridian'])]),
+    DGroup('www', spawn='firefox-bin', layout='max',
+           matches=[Match(wm_class=['Firefox', 'google-chrome', 'Google-chrome'])]),
+    DGroup('io', spawn='pidgin', layout='pidgin', persist=False,
+           matches=[Match(wm_class=['Pidgin'], role=['Buddy List'])]),
+    DGroup('java', persist=False,
+           matches=[Match(wm_class=['sun-awt-X11-XFramePeer', 'GroupWise'])]),
+])
 
 border_args = dict(
     border_width=1,
@@ -197,32 +211,5 @@ floating_layout = layout.Floating(auto_float_types=[
   "splash",
   "dialog",
 ])
-
-def main(qtile):
-
-    dynamic_groups = {
-        'music': {'exclusive': False, 'spawn': 'clementine'},
-        'www': {'exclusive': False, 'layout': 'max'},
-        'io': {'exclusive': False, 'layout': 'pidgin'},
-        'java': {'exclusive': False, 'layout': 'stack'},
-    }
-
-    # persist any already set up groups
-    global static_groups
-    for group in static_groups:
-        dynamic_groups[group] = {'persist': True}
-
-    apps = [
-        {'match': Match(wm_class=['Firefox', 'google-chrome', 'Google-chrome']),
-         'group': 'www'},
-        {'match': Match(wm_class=['Pidgin'], role=['Buddy List']),
-         'group': 'io'},
-        {'match': Match(wm_class=['Clementine', 'Viridian']),
-         'group': 'music'},
-        {'match': Match(wm_class=['sun-awt-X11-XFramePeer', 'GroupWise']),
-         'group': 'java'},
-    ]
-
-    dgroups = DGroups(qtile, dynamic_groups, apps, simple_key_binder('mod3'))
 
 # vim: tabstop=4 shiftwidth=4 expandtab
