@@ -1,8 +1,7 @@
-from libqtile.manager import Key, Screen, Group, Drag, Click
+from libqtile.config import Key, Screen, Group, Drag, Click, Match
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
-from libqtile.widget.base import _Widget
-from libqtile.dgroups import DGroup, Match, simple_key_binder
+from libqtile.dgroups import simple_key_binder
 
 import platform
 import sys
@@ -163,7 +162,7 @@ groups = []
 
 # throwaway groups for random stuff
 for i in ['a', 's', 'd', 'f', 'u', 'i', 'o', 'p']:
-    groups.append(DGroup(i))
+    groups.append(Group(i))
     keys.append(
         Key([mod], i, lazy.group[i].toscreen())
     )
@@ -174,14 +173,14 @@ for i in ['a', 's', 'd', 'f', 'u', 'i', 'o', 'p']:
 # groups with special jobs. I usually navigate to these via my app_or_group
 # function.
 groups.extend([
-    DGroup('music', spawn='clementine', layout='max', persist=False,
-           matches=[Match(wm_class=['Clementine', 'Viridian'])]),
-    DGroup('www', spawn='firefox-bin', layout='max',
-           matches=[Match(wm_class=['Firefox', 'google-chrome', 'Google-chrome'])]),
-    DGroup('io', spawn='pidgin', layout='pidgin', persist=False,
-           matches=[Match(wm_class=['Pidgin'], role=['Buddy List'])]),
-    DGroup('java', persist=False,
-           matches=[Match(wm_class=['sun-awt-X11-XFramePeer', 'GroupWise'])]),
+    Group('music', spawn='clementine', layout='max', persist=False,
+          matches=[Match(wm_class=['Clementine', 'Viridian'])]),
+    Group('www', spawn='firefox-bin', layout='max',
+          matches=[Match(wm_class=['Firefox', 'google-chrome', 'Google-chrome'])]),
+    Group('io', layout='pidgin', persist=False,
+          matches=[Match(wm_class=['Pidgin'], role=['Buddy List'])]),
+    Group('java', persist=False,
+          matches=[Match(wm_class=['sun-awt-X11-XFramePeer', 'GroupWise'])]),
 ])
 
 border_args = dict(
