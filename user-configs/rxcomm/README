@@ -1,0 +1,10 @@
+These are originallly based on tych0's config example.
+
+Some new things:
+
+1) A dynamic mail group based on starting mutt.
+2) Cpu, upload, and download graphs.
+3) a group to monitor the behavior of a transparent socks proxy I run sometimes.
+   This one is started from a separate python script run after the window manager
+   has started (see proxy.py in this directory).
+4) Terminals are urxvt with Anonymous Pro font.
