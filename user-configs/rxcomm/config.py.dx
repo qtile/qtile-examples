@@ -1,3 +1,4 @@
+# coding: utf-8
 from libqtile.config import Key, Screen, Group, Drag, Click, Match
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
@@ -26,7 +27,7 @@ mod = "mod3"
 
 # If we're running in debug mode, it's for development. Make sure the
 # hotkeys don't clash, only start one window, etc.
-if '-d' in sys.argv:
+if '-l' in sys.argv:
     hostname = 'xephyr'
     mod = "mod4"
 
@@ -40,44 +41,48 @@ widget_defaults = dict(
 if num_screens[hostname] == 2:
     screens = [
         Screen(top = bar.Bar([
-                widget.GroupBox(urgent_alert_method='text', **widget_defaults),
-                widget.Prompt(**widget_defaults),
-                widget.WindowName(**widget_defaults),
-                widget.Mpris(**widget_defaults),
+                widget.GroupBox(urgent_alert_method='text'),
+                widget.Prompt(),
+                widget.WindowName(foreground='00FFFF'),
+                #widget.Mpris(),
                 #widget.Spacer(),
                 widget.Notify(foreground="FF0000", fontsize=18, font="Anonymous Pro"),
-                widget.TextBox(text="C", **widget_defaults),
-                widget.CPUGraph(samples=600, width=300, **widget_defaults),
-                widget.TextBox(text="D", **widget_defaults),
-                widget.NetGraph(samples=600, width=300, interface="eth0", **widget_defaults),
-                widget.TextBox(text="U", **widget_defaults),
-                widget.NetGraph(samples=600, width=300, interface="eth0", bandwidth_type="up", **widget_defaults),
-                #widget.Volume(**widget_defaults),
+                widget.GoogleCalendar(update_interval=600, foreground='FFFF33', format=' {next_event} '),
+                widget.TextBox(text="C"),
+                widget.CPUGraph(samples=600, width=300),
+                widget.TextBox(text="D"),
+                widget.NetGraph(samples=600, width=300, interface="eth0"),
+                widget.TextBox(text="U"),
+                widget.NetGraph(samples=600, width=300, interface="eth0", bandwidth_type="up"),
+                #widget.Volume(),
             ], 30,),
         ),
         Screen(top = bar.Bar([
-                widget.GroupBox(urgent_alert_method='text', **widget_defaults),
-                widget.WindowName(**widget_defaults),
-                widget.Systray(**widget_defaults),
-                widget.Clock('%Y-%m-%d %a %I:%M %p', **widget_defaults),
+                widget.GroupBox(urgent_alert_method='text'),
+                widget.WindowName(foreground='00FFFF'),
+                widget.YahooWeather(woeid='12780524', foreground='FBCEB1', metric=False, format='Rise:{astronomy_sunrise} Set:{astronomy_sunset}  '),
+                widget.YahooWeather(woeid='12780524', foreground='FFFF33', metric=False, format='{condition_text} {condition_temp}°{units_temperature} Chill={wind_chill}°{units_temperature} Hum={atmosphere_humidity}% Press={atmosphere_rising}{atmosphere_pressure}{units_pressure} Vis={atmosphere_visibility}{units_distance} Wind={wind_speed}{units_speed}@{wind_direction}°'),
+                widget.Systray(),
+                widget.Clock('%Y-%m-%d %a %H:%M %p', foreground='00FF7F'),
             ], 30,),
         ),
     ]
 else:
     # 1 screen
     screens = [Screen(top = bar.Bar([
-            widget.GroupBox(urgent_alert_method='text', **widget_defaults),
-            widget.Prompt(**widget_defaults),
-            widget.WindowName(**widget_defaults),
-            widget.Volume(**widget_defaults),
+            widget.GroupBox(urgent_alert_method='text'),
+            widget.Prompt(),
+            #widget.WindowName(),
+            widget.Spacer(),
+            widget.GoogleCalendar(update_interval=15, client_secrets='/home/k0rx/qtile/libqtile/widget/client_secrets.json'),
+            #widget.Volume(),
             # 1 screen means this is a laptop, so let's render the battery
-            widget.Battery(energy_now_file='charge_now',
-                energy_full_file='charge_full',
-                power_now_file='current_now',
-                **widget_defaults
-            ),
-            widget.Systray(**widget_defaults),
-            widget.Clock('%Y-%m-%d %a %I:%M %p', **widget_defaults),
+            #widget.Battery(energy_now_file='charge_now',
+            #    energy_full_file='charge_full',
+            #    power_now_file='current_now'
+            #),
+            widget.Systray(),
+            #widget.Clock('%Y-%m-%d %a %I:%M %p'),
         ],30,),),
     ]
 
