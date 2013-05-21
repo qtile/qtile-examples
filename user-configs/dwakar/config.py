@@ -4,17 +4,9 @@
 #
 # python config.py
 
-from libqtile.manager import Key, Screen, Group, Drag, Click
+from libqtile.config import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
-
-# modified clock widget
-from clock import Clock
-# a  widget to check the internet connection
-# requires Network Manager 
-from testnet import NetworkStatus
-
-
 
 # The screens variable contains information about what bars are drawn where on
 # each screen. If you have multiple screens, you'll need to construct multiple
@@ -23,21 +15,23 @@ from testnet import NetworkStatus
 # Below is a screen with a top bar that contains several basic qtile widgets.
 screens = [Screen(top = bar.Bar([
         # This is a list of our virtual desktops.
-        widget.GroupBox(urgent_alert_method='text', fontsize=11, this_screen_border='43809c'),
-        widget.sep.Sep(), #add separator bars where deemed necessary
+        widget.GroupBox(urgent_alert_method='text', fontsize=11, this_current_screen_border='7b5830'),
+        widget.sep.Sep(foreground='7b5830'), #add separator bars where deemed necessary
 
         # A prompt for spawning processes or switching groups. This will be
         # invisible most of the time.
         widget.Prompt(fontsize=10),
 
         # Current window name.
-        widget.WindowName(fontsize=10),
-        widget.sep.Sep(),
-        NetworkStatus(theme_path='~/.config/qtile/icons/'),
-        widget.Volume(theme_path=''),
+        widget.windowtabs.WindowTabs(),
+        widget.CurrentLayout(foreground='7b5830'),
+        widget.sep.Sep(foreground='7b5830'),
+        #NetworkStatus(theme_path='/home/deewakar/.config/qtile/icons/'),
+        widget.Volume(theme_path='/usr/share/icons/AwOkenWhite/clear/24x24/status/'),
+        widget.sep.Sep(foreground='7b5830'),
         widget.Systray(),
         #display 12-hour clock
-        Clock('%m-%d %a %I:%M %p', fontsize=11, foreground='3dd0ff'),
+        widget.Clock('%B %d %a %I:%M %p', fontsize=11, foreground='9c6b34'),
     ], 22, opacity=0.1)) # our bar is 22px high
 ]
 
@@ -58,7 +52,7 @@ keys = [
     Key(["mod1","shift"], "Tab", lazy.layout.down()),
     Key(["mod1"], "Tab", lazy.layout.up()),
     
-    Key([mod], "h", lazy.layout.previous()),
+    Key([mod], "h", lazy.layout.previous().when('tile'),lazy.layout.up().when('xmonad-tall')),
     Key([mod], "l", lazy.layout.previous()),
 
     # swap tile positions,(works only on tiles)
@@ -81,16 +75,18 @@ keys = [
     Key([mod], "g", lazy.switchgroup()),
 
     # start specific apps
-        
+    Key([mod], "e", lazy.spawn("python ~/.config/qtile/checkmail.py")),
+    
     Key([mod], "Return", lazy.spawn("xterm")),
-    Key([mod], "1", lazy.spawn("nautilus")),
+    Key([mod], "1", lazy.spawn("uzbl-tabbed")),
     Key([mod], "2", lazy.spawn("firefox")),
     Key(["control", "mod1"],"t", lazy.spawn("gnome-terminal")),
     Key([mod], "3", lazy.spawn("vlc")),
     Key([mod], "4", lazy.spawn("evince")),
     Key([mod], "5", lazy.spawn("idle-python2.7")),
     Key([mod], "6", lazy.spawn("emacs")),
-    
+    Key([mod], "7", lazy.spawn("wine /mnt/windows/Program Files/utorrent/utorrent.exe")),
+    Key([mod], "8", lazy.spawn("radiotray")),
     
 
     # Change the volume if your keyboard has special volume keys.
@@ -122,9 +118,9 @@ keys = [
     Key([mod, "shift"], "i", lazy.layout.increase_ratio()),
     Key([mod, "shift"], "d", lazy.layout.decrease_ratio()),
 
-    # take screenshot (requires xdotool)
+    # take screenshot
     # you have to click the window or drag and draw the region to snap
-    Key([mod, "shift"], "x", lazy.spawn("~/.config/qtile/xshot.sh")),
+    Key([mod, "shift"], "x", lazy.spawn("/home/deewakar/xshot.sh")),
 ]
 
 
@@ -157,18 +153,19 @@ for i in ["a", "s", "d", "f", "u", "i", "o", "p"]:
 # they didn't appeal to me much.
 layouts = [
     layout.Max(),
-    layout.Stack(stacks=2, border_width=1),
+    #layout.Stack(stacks=2, border_width=1),
+    layout.xmonad.MonadTall(ratio=0.50),
 
     # splits screen into equal parts
-    # ideal for four splitted windows 
+    # ideal for four splitted windows in each corner
     layout.Tile(ratio=0.50, masterWindows=2),
     # a layout just for gimp
     layout.Slice('left', 192, name='gimp', role='gimp-toolbox',
          fallback=layout.Slice('right', 256, role='gimp-dock',
          fallback=layout.Stack(stacks=1, border_width=1))),
     #other useful layouts
-    layout.TreeTab(),
-    layout.xmonad.MonadTall(ratio=0.50),
+    #layout.TreeTab(),
+    #layout.zoomy.Zoomy(),
 ]
 
 # Automatically float these types. This overrides the default behavior (which
@@ -197,5 +194,21 @@ def idle_dialogues(window):
       (window.window.get_name() == 'IDLE Preferences')):
         window.floating = True
 
+import subprocess,re
 
+def is_running(process):
+    s = subprocess.Popen(["ps", "axw"], stdout=subprocess.PIPE)
+    for x in s.stdout:
+        if re.search(process, x):
+            return True
+        return False
+
+def execute_once(process):
+    if not is_running(process):
+        return subprocess.Popen(process.split())
+
+@hook.subscribe.startup
+def startup():
+    execute_once('guake')
+    execute_once('firefox')
 
