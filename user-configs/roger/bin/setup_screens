@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Configure xrander with the number of screens
+SCREENS_COUNT=$(xrandr -q | grep " connected" | wc -l)
+
+# nassty hack
+# fix acceleration with 2 screens
+if [ $SCREENS_COUNT = 1 ]; then
+    synclient AccelFactor=0.129366;
+else
+    synclient AccelFactor=0.03;
+fi
+
+source "~/.screenlayout/${SCREENS_COUNT}screens.sh"
