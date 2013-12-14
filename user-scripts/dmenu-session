@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# a simple dmenu session script 
+# from https://bbs.archlinux.org/viewtopic.php?id=95984
+#
+###
+
+DMENU='dmenu -i -b -p >>> -nb #000 -nf #fff -sb #00BF32 -sf #fff'
+choice=$(echo -e "lock\nlogout\nshutdown\nreboot\nsuspend\nhibernate" | $DMENU)
+
+case "$choice" in
+  lock) gnome-screensaver-command --lock ;;
+  logout) gksu kill $(pgrep X) & ;;
+  shutdown) gksu "shutdown -h now" & ;;
+  reboot) gksu "shutdown -r now" & ;;
+  suspend) gksu pm-suspend && gnome-screensaver-command --lock ;;
+  hibernate) gksu pm-hibernate && gnome-screensaver-command --lock ;;
+esac
