@@ -5,8 +5,12 @@ import os
 
 from libqtile import layout, widget, bar, manager, hook
 from libqtile.widget import base
-from libqtile.manager import Key, Screen, Group, Drag # , Click
+from libqtile.manager import Screen, Drag # , Click
 from libqtile.command import lazy
+try:
+    from libqtile.manager import Key, Group
+except ImportError:
+    from libqtile.config import Key, Group
 
 
 mod = 'mod4'
@@ -92,13 +96,13 @@ def humanize_bytes(value):
 
 class Metrics(base._TextBox):
 
-    defaults = manager.Defaults(
+    defaults = [
         ("font", "Arial", "Metrics font"),
         ("fontsize", None, "Metrics pixel size. Calculated if None."),
         ("padding", None, "Metrics padding. Calculated if None."),
         ("background", "000000", "Background colour"),
         ("foreground", "ffffff", "Foreground colour")
-    )
+    ]
 
     def __init__(self, **kwargs):
         base._TextBox.__init__(self, **kwargs)
