@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-from libqtile.manager import Key, Click, Drag, Screen, Group
+
+try:
+    from libqtile.manager import Key, Group
+except ImportError:
+    from libqtile.config import Key, Group
+from libqtile.manager import Click, Drag, Screen
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 

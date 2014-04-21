@@ -1,6 +1,11 @@
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
-from libqtile.manager import Key, Click, Drag, Screen, Group
+try:
+    from libqtile.manager import Key, Group
+except ImportError:
+    from libqtile.config import Key, Group
+
+from libqtile.manager import Click, Drag, Screen
 
 sup = "mod4"
 alt = "mod1"
@@ -13,16 +18,16 @@ keys = [
     # move to next layout in the stack
     Key([alt], "space", lazy.nextlayout()),
     # switch master windows
-    Key([alt, "shift"], "space", lazy.layout.rotate()), 
+    Key([alt, "shift"], "space", lazy.layout.rotate()),
 
 # MOVEMENT KEYS
     # windows style alt-tab/alt-shift-tab
     Key([alt], "Tab", lazy.layout.next()),
     Key([alt, "shift"], "Tab", lazy.layout.previous()),
-    
+
     # kill current window
-    Key([alt, "shift"], "c", lazy.window.kill()), 
-    
+    Key([alt, "shift"], "c", lazy.window.kill()),
+
     # dec ratio of current window
     Key([alt], "q", lazy.layout.decrease_ratio()),
 
@@ -34,7 +39,7 @@ keys = [
 
     # cycle to next group
     Key([sup], "Right", lazy.group.nextgroup()),
-    
+
 # APPLICATION LAUNCHERS
     Key([alt, "shift"], "Return", lazy.spawn("urxvt")),
     Key([alt, "shift"], "d", lazy.spawn("designer")),
@@ -47,7 +52,7 @@ keys = [
     Key([alt, "shift"], "t", lazy.spawn("thunderbird")),
     Key([alt, "shift"], "v", lazy.spawn("vlc")),
     Key([alt, "shift"], "z", lazy.spawn("sudo pcmanfm")),
-    
+
 # AUDIO
     Key([alt], "F11", lazy.spawn("amixer --quiet set Master 1-")),
     Key([alt], "F12", lazy.spawn("amixer --quiet set Master 1+")),
@@ -57,10 +62,10 @@ keys = [
     Key([alt], "F7",  lazy.spawn("amixer --quiet set Master unmute")),
     Key([alt], "F8",  lazy.spawn("ncmpcpp play")),
     Key([alt], "F9",  lazy.spawn("ncmpcpp next")),
-    
+
 # PRINT SCREEN
     Key([alt], "F10", lazy.spawn("import -window root ~/screenshot.png")),
-    
+
 # CHANGE WALLPAPER
     Key([alt], "F1", lazy.spawn("wallpaperchanger -timeout 1 -folder /storage/Users/Skynet/Pictures/Wallpaper/")),
 
@@ -106,10 +111,10 @@ for index, grp in enumerate(groups):
      # on what window is active in that group.
 
      keys.extend([
-               
+
              # switch to group
          Key([alt], str(index+1), lazy.group[grp.name].toscreen()),
-         
+
              # send to group
          Key([alt, "shift"], str(index+1), lazy.window.togroup(grp.name)),
 
@@ -171,10 +176,10 @@ def grouper(window, windows={'firefox-aurora': 'home',
      Here:
 
      {window_name: [group_name1, group_name2]}
-     
+
      Window name can be found via window.window.get_wm_class()
      """
-      
+
 
      windowtype = window.window.get_wm_class()[0]
 
@@ -185,7 +190,7 @@ def grouper(window, windows={'firefox-aurora': 'home',
           # the window title the same name, this
           # means that we need to treat these apps
           # differently
-          
+
           if windowtype != 'urxvt':
                window.togroup(windows[windowtype])
                windows.pop(windowtype)
@@ -200,11 +205,11 @@ def grouper(window, windows={'firefox-aurora': 'home',
                except IndexError:
                     pass
 
-           
-@hook.subscribe.startup          
+
+@hook.subscribe.startup
 def runner():
      import subprocess
-     
+
      """
      Run after qtile is started
      """
@@ -216,6 +221,6 @@ def runner():
      # we open them separately and in a defined order so that the
      # client_new hook has time to group them by the window title
      # as the window title for them is the same when they open
-     
+
      subprocess.Popen(['urxvt', '-e', 'ncmpcpp-opener'])
      subprocess.Popen(['urxvt', '-e', 'weechat-curses'])

@@ -4,7 +4,11 @@
 # not be appropriate on regular keyboards.
 # some of the widgets and layouts are not from the core Qtile distribution.
 
-from libqtile.manager import Key, Screen, Group, Drag, Click
+try:
+    from libqtile.manager import Key, Group
+except ImportError:
+    from libqtile.config import Key, Group
+from libqtile.manager import Screen, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 from she_widget import She

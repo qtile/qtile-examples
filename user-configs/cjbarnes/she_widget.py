@@ -6,10 +6,10 @@ __all__ = [
     ]
 
 class She(base._TextBox):
-    ''' Widget to display the Super Hybrid Engine status. 
+    ''' Widget to display the Super Hybrid Engine status.
     can display either the mode or CPU speed on eeepc computers.'''
 
-    defaults = manager.Defaults(
+    defaults = (
         ('font', 'Arial', 'Text Font'),
         ('fontsize', None, 'Calculated if None.'),
         ('padding', None, 'Padding Left and Right. Calculated in None.'),
@@ -22,7 +22,7 @@ class She(base._TextBox):
     def __init__(self, width=bar.CALCULATED, **config):
         base._TextBox.__init__(self, 'CPU', **config)
         self.modes = {
-            '0x300': {'name': 'Performance', 'speed': '1.6GHz'}, 
+            '0x300': {'name': 'Performance', 'speed': '1.6GHz'},
             '0x301': {'name': 'Normal', 'speed': '1.2GHz'},
             '0x302': {'name': 'PoswerSave', 'speed': '800MHz'}
             }
