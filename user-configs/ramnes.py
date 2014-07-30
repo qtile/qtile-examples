@@ -62,7 +62,7 @@ def init_mouse():
 
 
 def init_colors():
-    return [["7cfcff", "#00afff"], # cyan gradiant
+    return [["#7cfcff", "#00afff"], # cyan gradiant
             ["#323335", "#525355"], # grey gradiant
             ["#040404", "#111113"]] # darker grey gradiant
 
@@ -76,12 +76,12 @@ def init_groups():
 
 
 def init_floating_layout():
-    return layout.Floating(border_focus=colors[0])
+    return layout.Floating(border_focus="#7cfcff")
 
 
 def init_layouts():
     return [layout.Max(),
-            layout.Tile(ratio=0.5, border_focus=colors[1]),
+            layout.Tile(ratio=0.5, border_focus="#00afff"),
             floating_layout]
 
 
