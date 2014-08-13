@@ -1,6 +1,0 @@
-config.py: Example basic qtile configuration file, should work with most
-    distros and the Windows key.
-
-xsession: Example xsession file. To run anything besides qtile when your X
-    session starts, you'll need to define one of these in ~/.xsession, and chmod +x
-    it.
