@@ -9,13 +9,13 @@ from datetime import datetime
 from libqtile.config import Key, Click, Drag, Screen, Group, Match, Rule
 from libqtile.command import lazy
 from libqtile import layout, bar, widget  # , hook
-# from subprocess import call
+from subprocess import call
 
 from libqtile.dgroups import simple_key_binder
 from libqtile import hook
 
 # reconfigure screens
-# call("setup_screens")
+call("setup_screens")
 
 
 # Utils
@@ -62,6 +62,7 @@ class SwapGroup(object):
 
 
 # fireipc jango helper
+# https://github.com/Roger/FireIPC/
 def fipc_jango(command):
     sock = socket.socket()
     sock.connect(("localhost", 61155))
@@ -295,20 +296,9 @@ layouts = [
     layout.MonadTall(**layout_theme),
     layout.Stack(stacks=2, **layout_theme),
     layout.Tile(shift_windows=True, **layout_theme),
-
-    # a layout just for gimp(stolen from tych0's config)
-    # layout.Slice('left', 192, name='gimp', role='gimp-toolbox',
-    #      fallback=layout.Slice('right', 256, role='gimp-dock',
-    #      fallback=layout.Stack(stacks=1, **layout_theme))),
 ]
 
-# Automatically float these types. This overrides the default behavior (which
-# is to also float utility types), but the default behavior breaks our fancy
-# gimp slice layout specified later on.
-floating_layout = layout.Floating(auto_float_types=["notification", "toolbar",
-                                                    "splash", "dialog",
-                                                    "utility"],
-                                  **layout_theme)
+floating_layout = layout.Floating(**layout_theme)
 
 #   Screens Config
 # ------------------
@@ -394,7 +384,7 @@ top_bar = bar.Bar([
                     background=theme["bg_dark"],
                     ),
 
-    widget.Countdown(datetime(2014, 07, 20, 21, 0),
+    widget.Countdown(date=datetime(2014, 8, 22, 21, 0),
                      background=theme["bg_dark"],
                      final=False,
                      format="\xef\x84\x9b {D}d {H}h {M}m"),
@@ -461,16 +451,16 @@ def detect_screens(qtile):
             groups.append(Group('h%sx' % (i+5), persist=False))
     setup_monitors()
 
-    # import pyudev
+    import pyudev
 
-    # context = pyudev.Context()
-    # monitor = pyudev.Monitor.from_netlink(context)
-    # monitor.filter_by('drm')
-    # monitor.enable_receiving()
+    context = pyudev.Context()
+    monitor = pyudev.Monitor.from_netlink(context)
+    monitor.filter_by('drm')
+    monitor.enable_receiving()
 
-    # # observe if the monitors change and reset monitors config
-    # observer = pyudev.MonitorObserver(monitor, setup_monitors)
-    # observer.start()
+    # observe if the monitors change and reset monitors config
+    observer = pyudev.MonitorObserver(monitor, setup_monitors)
+    observer.start()
 
 
 # import subprocess
@@ -487,25 +477,3 @@ def new_client(client):
 
 def main(qtile):
     detect_screens(qtile)
-    from osd import VolumeWindow
-
-    volwin = VolumeWindow(qtile)
-
-    volup = Key(
-        [mod, "shift"], "a", lazy.function(lambda q: volwin.volup())
-    )
-    qtile.mapKey(volup)
-
-    voldown = Key(
-        [mod, "shift"], "b",
-        lazy.function(lambda q: volwin.voldown())
-    )
-    qtile.mapKey(voldown)
-
-    # from scratch import ScratchPad
-    # k, a, bey = Key([mod], "F12", lazy.function(ScratchPad('leafpad',
-    #         Match(wm_class=['Leafpad']), qtile, 'center').toggle)
-    #   )
-    # qtile.mapKey(key)
-    # import subprocess
-    # subprocess.Popen(["xmodmap", "/home/roger/.Xmodmap"])
