@@ -15,6 +15,14 @@ from libqtile.config import Key, Group
 mod = 'mod1'
 
 
+def move_window_to_screen(screen):
+    def cmd(qtile):
+        w = qtile.currentWindow
+        qtile.toScreen(screen)
+        if w is not None:
+            w.togroup(qtile.screens[screen].group.name)
+    return cmd
+
 
 keys = [
     Key([mod], "k", lazy.layout.down()),
@@ -36,7 +44,9 @@ keys = [
     Key([mod], "m", lazy.layout.maximize()),
 
     Key([mod], "w", lazy.to_screen(0)),
+    Key([mod, "shift"], "w", lazy.function(move_window_to_screen(0))),
     Key([mod], "e", lazy.to_screen(1)),
+    Key([mod, "shift"], "e", lazy.function(move_window_to_screen(1))),
 
     #Key([mod], "Return", lazy.spawn("urxvt")),
     Key([mod], "Return", lazy.spawn("gnome-terminal")),
