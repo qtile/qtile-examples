@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import subprocess
+from threading import Thread
 import os
 
 from libqtile import layout, widget, bar, manager, hook
@@ -251,3 +253,21 @@ def should_be_floating(w):
 def dialogs(window):
     if should_be_floating(window.window):
         window.floating = True
+
+
+def is_running(process):
+    return subprocess.call(["pgrep", "-f", " ".join(process)]) == 0
+
+
+def execute_once(process):
+    if not is_running(process):
+        Thread(target=lambda: subprocess.check_call(process)).start()
+
+
+# start the applications at Qtile startup
+@hook.subscribe.startup
+def startup():
+    subprocess.Popen(["sleep", "3"])
+    subprocess.Popen(["pkill", "-f", "ibus"])
+    execute_once(["unity-settings-daemon"])
+    execute_once(["nm-applet"])
