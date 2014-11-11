@@ -5,17 +5,16 @@ import subprocess
 from threading import Thread
 import os
 
-from libqtile import layout, widget, bar, manager, hook
+from libqtile import layout, widget, bar, hook
 from libqtile.widget import base
 from libqtile.manager import Screen, Drag # , Click
 from libqtile.command import lazy
-try:
-    from libqtile.manager import Key, Group
-except ImportError:
-    from libqtile.config import Key, Group
+from libqtile.config import Key, Group
 
 
-mod = 'mod4'
+mod = 'mod1'
+
+
 
 keys = [
     Key([mod], "k", lazy.layout.down()),
@@ -39,7 +38,8 @@ keys = [
     Key([mod], "w", lazy.to_screen(0)),
     Key([mod], "e", lazy.to_screen(1)),
 
-    Key([mod], "Return", lazy.spawn("urxvt")),
+    #Key([mod], "Return", lazy.spawn("urxvt")),
+    Key([mod], "Return", lazy.spawn("gnome-terminal")),
     Key([mod], "p", lazy.spawn("dmenu_run -fn 'DejaVu Sans Mono:pixelsize=11'")),
 
     Key([mod, "shift"], "c", lazy.window.kill()),
@@ -78,23 +78,28 @@ for i, (name, kwargs) in enumerate(group_names, 1):
 
 layouts = [
     layout.Stack(stacks=2, border_normal="#222222"),
-    #layout.MonadTall(border_normal="#222222"),
     layout.Tile(),
     layout.Max(),
-    layout.TreeTab()
+    layout.TreeTab(),
 ]
 
-font = 'DejaVu Sans Mono'
+font = 'Ubuntu Mono'
 foreground = '#BBBBBB'
 alert = "#FFFF00"
+fontsize = 14
 
+font_params = {
+    'font': font,
+    'fontsize': fontsize,
+    'foreground': foreground,
+}
 
 def humanize_bytes(value):
     suff = ["B", "K", "M", "G", "T"]
     while value > 1024. and len(suff) > 1:
         value /= 1024.
         suff.pop(0)
-    return "% 3s%s" % ('%.3s' % value, suff[0])
+    return "%03d%s" % (value, suff[0])
 
 
 class Metrics(base._TextBox):
@@ -131,7 +136,7 @@ class Metrics(base._TextBox):
             cpu_percents = "%d%%" % (float(cpu_usage) / float(cpu_total) * 100.)
         else:
             cpu_percents = "nan"
-        return 'Cpu: %s' % cpu_percents
+        return 'cpu:%s' % cpu_percents
 
     def get_mem_usage(self):
         info = {}
@@ -146,12 +151,14 @@ class Metrics(base._TextBox):
             mem_percents = '%d%%' % (float(mem) / float(info['MemTotal']) * 100)
         else:
             mem_percents = 'nan'
-        return 'Mem: %s' % mem_percents
+        return 'mem:%s' % mem_percents
 
     def get_net_usage(self):
         interfaces = []
         basedir = '/sys/class/net'
         for iface in os.listdir(basedir):
+            if iface in ('lo', ):
+                continue
             j = os.path.join
             ifacedir = j(basedir, iface)
             statdir = j(ifacedir, 'statistics')
@@ -171,17 +178,17 @@ class Metrics(base._TextBox):
                         self.idle_ifaces[iface] = 0
                         rx = humanize_bytes(rx)
                         tx = humanize_bytes(tx)
-                        interfaces.append('%s: %s / %s' % (iface, rx, tx))
+                        interfaces.append('%s:%s/%s' % (iface, rx, tx))
             except:
                 pass
             if idle:
                 interfaces.append(
-                    '%s: %-11s' % (iface, ("%ds idle" % self.idle_ifaces[iface]))
+                    '%s:%-9s' % (iface, ("idle:%02d" % self.idle_ifaces[iface]))
                 )
                 self.idle_ifaces[iface] += 1
                 if self.idle_ifaces[iface] > 30:
                     del self.idle_ifaces[iface]
-        return " | ".join(interfaces)
+        return " ".join(interfaces)
 
     def _update(self):
         self.update()
@@ -193,33 +200,24 @@ class Metrics(base._TextBox):
         net = self.get_net_usage()
         if net:
             stat.append(net)
-        self.text = " | ".join(stat)
+        self.text = " ".join(stat)
         self.bar.draw()
         return True
 
 
-#widget.CPUGraph(width=60, samples=60, margin_x=0, margin_y=0,
-#                border_width=0, line_width=2, background="#222233",
-#                type="line"),
-#widget.MemoryGraph(width=60, samples=60, margin_x=0, margin_y=0,
-#                   border_width=0, line_width=2, graph_color="#ebeb18",
-#                   background="#282822", type="line"),
-
-
 def get_bar():
     return bar.Bar([
-        widget.GroupBox(font=font, fontsize=12, active=foreground,
+        widget.GroupBox(font=font, fontsize=fontsize, active=foreground,
                         urgent_border=alert, padding=1, borderwidth=3,
                         margin_x=3, margin_y=-2),
         widget.Sep(),
-        widget.CurrentLayout(font=font, foreground=foreground),
+        widget.CurrentLayout(**font_params),
         widget.Sep(),
-        widget.WindowName(font=font, foreground=foreground),
-        widget.Mpris(name='deadbeef', objname='org.mpris.deadbeef', font=font,
-                     fontsize=12, foreground="#9090A0"),
-        Metrics(font=font, fontsize=12, foreground="#A0A090"),
+        widget.WindowName(**font_params),
+        Metrics(**font_params),
         widget.Systray(icon_size=15),
-        widget.Clock(fmt="%c", font=font, foreground=foreground),
+        widget.Sep(foreground="#000"),
+        widget.Clock(fmt="%c", **font_params),
     ], 15)
 
 
