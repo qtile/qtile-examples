@@ -20,6 +20,7 @@ mod = 'mod1'
 def move_window_to_screen(screen):
     def cmd(qtile):
         w = qtile.currentWindow
+        # XXX: strange behaviour - w.focus() doesn't work if toScreen is called after togroup...
         qtile.toScreen(screen)
         if w is not None:
             w.togroup(qtile.screens[screen].group.name)
