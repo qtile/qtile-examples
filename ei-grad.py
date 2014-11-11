@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import subprocess
-from threading import Thread
-import os
 from glob import glob
 from random import choice
+from threading import Thread
+from time import sleep
+import os
+import subprocess
 
 from libqtile import layout, widget, bar, hook
 from libqtile.widget import base
-from libqtile.manager import Screen, Drag # , Click
+from libqtile.manager import Screen, Drag, Click
 from libqtile.command import lazy
 from libqtile.config import Key, Group
 
@@ -30,7 +31,7 @@ def move_window_to_screen(screen):
 font = 'Ubuntu Mono'
 foreground = '#BBBBBB'
 alert = "#FFFF00"
-fontsize = 14
+fontsize = 16
 
 font_params = {
     'font': font,
@@ -52,19 +53,12 @@ keys = [
 
     Key([mod], "t", lazy.window.toggle_floating()),
 
-    # for MonadTall layout
-    Key([mod], "l", lazy.layout.grow()),
-    Key([mod], "h", lazy.layout.shrink()),
-    Key([mod], "n", lazy.layout.normalize()),
-    Key([mod], "m", lazy.layout.maximize()),
-
     Key([mod], "w", lazy.to_screen(0)),
     Key([mod, "shift"], "w", lazy.function(move_window_to_screen(0))),
     Key([mod], "e", lazy.to_screen(1)),
     Key([mod, "shift"], "e", lazy.function(move_window_to_screen(1))),
 
-    #Key([mod], "Return", lazy.spawn("urxvt")),
-    Key([mod], "Return", lazy.spawn("gnome-terminal")),
+    Key([mod], "Return", lazy.spawn("urxvt")),
     Key([mod], "p", lazy.spawn("dmenu_run -fn '%s:pixelsize=%d'" % (font, fontsize))),
 
     Key([mod, "shift"], "c", lazy.window.kill()),
@@ -75,12 +69,11 @@ keys = [
 
 
 mouse = [
-    # XXX: Drag+Click on same button are not working!
-    #Click([mod], "Button1", lazy.window.bring_to_front()),
+    Click([mod], "Button1", lazy.window.bring_to_front()),
     Drag([mod], "Button1", lazy.window.set_position_floating(),
-        start=lazy.window.get_position()),
+         start=lazy.window.get_position()),
     Drag([mod], "Button3", lazy.window.set_size_floating(),
-        start=lazy.window.get_size()),
+         start=lazy.window.get_size()),
 ]
 
 group_names = [
@@ -107,6 +100,7 @@ layouts = [
     layout.Max(),
     layout.TreeTab(),
 ]
+
 
 def humanize_bytes(value):
     suff = ["B", "K", "M", "G", "T"]
@@ -222,8 +216,8 @@ class Metrics(base._TextBox):
 def get_bar():
     return bar.Bar([
         widget.GroupBox(font=font, fontsize=fontsize, active=foreground,
-                        urgent_border=alert, padding=1, borderwidth=3,
-                        margin_x=3, margin_y=-2),
+                        urgent_border=alert, padding=0, borderwidth=3,
+                        margin_x=3, margin_y=0),
         widget.Sep(),
         widget.CurrentLayout(**font_params),
         widget.Sep(),
@@ -232,7 +226,7 @@ def get_bar():
         widget.Systray(icon_size=15),
         widget.Sep(foreground="#000"),
         widget.Clock(fmt="%c", **font_params),
-    ], 15)
+    ], 20)
 
 
 screens = [
@@ -279,9 +273,18 @@ def execute_once(process):
 # start the applications at Qtile startup
 @hook.subscribe.startup
 def startup():
+
     def blocking():
+        sleep(1)
         subprocess.call(["pkill", "-f", "ibus"])
-        subprocess.call(["feh", "-f", choice(glob('/usr/share/backgrounds/*.jpg'))])
         execute_once(["unity-settings-daemon"])
         execute_once(["nm-applet"])
+
     Thread(target=blocking).start()
+
+    def wallpaper():
+        while True:
+            subprocess.call(["feh", "--bg-fill", choice(glob('/usr/share/backgrounds/*.jpg'))])
+            sleep(300)
+
+    Thread(target=wallpaper).start()
