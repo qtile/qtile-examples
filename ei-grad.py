@@ -4,6 +4,8 @@
 import subprocess
 from threading import Thread
 import os
+from glob import glob
+from random import choice
 
 from libqtile import layout, widget, bar, hook
 from libqtile.widget import base
@@ -275,7 +277,9 @@ def execute_once(process):
 # start the applications at Qtile startup
 @hook.subscribe.startup
 def startup():
-    subprocess.Popen(["sleep", "3"])
-    subprocess.Popen(["pkill", "-f", "ibus"])
-    execute_once(["unity-settings-daemon"])
-    execute_once(["nm-applet"])
+    def blocking():
+        subprocess.call(["pkill", "-f", "ibus"])
+        subprocess.call(["feh", "-f", choice(glob('/usr/share/backgrounds/*.jpg'))])
+        execute_once(["unity-settings-daemon"])
+        execute_once(["nm-applet"])
+    Thread(target=blocking).start()
