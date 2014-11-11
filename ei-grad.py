@@ -26,6 +26,18 @@ def move_window_to_screen(screen):
     return cmd
 
 
+font = 'Ubuntu Mono'
+foreground = '#BBBBBB'
+alert = "#FFFF00"
+fontsize = 14
+
+font_params = {
+    'font': font,
+    'fontsize': fontsize,
+    'foreground': foreground,
+}
+
+
 keys = [
     Key([mod], "k", lazy.layout.down()),
     Key([mod], "j", lazy.layout.up()),
@@ -52,7 +64,7 @@ keys = [
 
     #Key([mod], "Return", lazy.spawn("urxvt")),
     Key([mod], "Return", lazy.spawn("gnome-terminal")),
-    Key([mod], "p", lazy.spawn("dmenu_run -fn 'DejaVu Sans Mono:pixelsize=11'")),
+    Key([mod], "p", lazy.spawn("dmenu_run -fn '%s:pixelsize=%d'" % (font, fontsize))),
 
     Key([mod, "shift"], "c", lazy.window.kill()),
 
@@ -94,17 +106,6 @@ layouts = [
     layout.Max(),
     layout.TreeTab(),
 ]
-
-font = 'Ubuntu Mono'
-foreground = '#BBBBBB'
-alert = "#FFFF00"
-fontsize = 14
-
-font_params = {
-    'font': font,
-    'fontsize': fontsize,
-    'foreground': foreground,
-}
 
 def humanize_bytes(value):
     suff = ["B", "K", "M", "G", "T"]
