@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# a simple dmenu session script 
+# inspired from https://bbs.archlinux.org/viewtopic.php?id=95984
+# by zordsdavini, 2015
+#
+###
+
+DMENU='dmenu -i -b -p >>> -nb #000 -nf #fff -sb #00BF32 -sf #fff'
+choice=$(echo -e "lock\nnolock\nlogout\nshutdown\nreboot\nsuspend\nhibernate" | $DMENU)
+
+case "$choice" in
+  lock) xautolock -enable ; xautolock -locknow ;;
+  nolock) xautolock -disable ;;
+  logout) sudo kill $(pgrep X) & ;;
+  shutdown) sudo shutdown -h now & ;;
+  reboot) sudo reboot ;;
+  suspend) sudo pm-suspend && xautolock -locknow ;;
+  hibernate) sudo pm-hibernate && xautolock -locknow ;;
+esac
