@@ -26,6 +26,9 @@ rxcomm/
 tych0/
     qtile development, multiple screens
 
+zordsdavini/
+    various dmenu apps, screenshots, multiscreen, gmailwidget
+
 aeronotix.py
     dynamic groups
 

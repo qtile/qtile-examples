@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+# a simple dmenu mocp script 
+# by zordsdavini, 2015
+#
+###
+
+DMENU='dmenu -i -b -p ">>>" -nb #000 -nf #fff -sb #00BF32 -sf #fff'
+choice=$(echo -e "play/pause\nnext\nprevious\nexit\nopen\nshuffle\nrepeat\n" | $DMENU)
+
+# check mocp is running
+rez=$(mocp -i | wc -l)
+if [ $rez -lt 1 ] ; then
+  mocp -S 
+fi
+
+# make action
+if [ "$choice" == 'play/pause' ]; then
+  if [ $rez -lt 2 ] ; then
+      echo P
+    mocp -p 
+  else 
+      echo G
+    mocp -G 
+  fi
+fi
+
+case "$choice" in
+  next) mocp -f ;;
+  previous) mocp -r ;;
+  exit) mocp -x ;;
+  open) urxvt -e bash -c "mocp" ;;
+  shuffle) mocp -t shuffle ;;
+  repeat) mocp -t repeat ;;
+esac
