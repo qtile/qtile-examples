@@ -9,6 +9,23 @@ from subprocess import call
 # reconfigure screens
 call("setup_screens")
 
+# monadtall extention to follow maximized window if we have only two
+@lazy.function
+def z_maximize(qtile):
+    l = qtile.currentLayout
+    g = qtile.currentGroup
+    l.cmd_maximize()
+    if len(g.windows) == 2:
+        fw = qtile.currentWindow
+        ow = None
+        # get other window
+        for w in g.windows:
+            if w != fw:
+                ow = w
+
+        if ow and fw.info()['width'] < ow.info()['width']:
+            l.cmd_next()
+
 
 ##-> Commands to spawn
 class Commands(object):
@@ -87,7 +104,7 @@ keys = [
 
     ## Window Controls
     Key([mod], "n", lazy.layout.reset()), # normalize is useless
-    Key([mod], "o", lazy.layout.maximize()),
+    Key([mod], "o", z_maximize),
     Key([mod, "shift"], "space", lazy.layout.flip()),
     # Switch window focus to other pane(s) of stack
     Key( [mod], "space", lazy.layout.next()),
