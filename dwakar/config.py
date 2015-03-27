@@ -67,8 +67,8 @@ keys = [
     Key([mod], "x", lazy.window.kill()),
 
     # move to the adjacent screen
-    Key([mod], "Left", lazy.group.prevgroup()),
-    Key([mod], "Right", lazy.group.nextgroup()),
+    Key([mod], "Left", lazy.screen.prevgroup()),
+    Key([mod], "Right", lazy.screen.nextgroup()),
     
     # interact with prompts
     Key([mod], "r", lazy.spawncmd()),
