@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from libqtile.config import Key, Screen, Group, Drag, Click, Match
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
@@ -8,7 +9,6 @@ import sys
 
 # TODO:
 #  2. multi screen switching
-#  3. better hotkeys for dgroups?
 
 # Number of screens on machines I use regularly. I wish there was a good way to
 # query this from qtile...
@@ -16,9 +16,14 @@ hostname = platform.node()
 num_screens = {
     'tanders-ubuntu': 2,
     'smitten': 2,
-    'smalls': 1,
+    'hopstrocity': 1,
     'xephyr': 1,
 }
+
+sound_card = {
+    'hopstrocity': 1,
+    'smitten': 0,
+}.get(hostname, 0)
 
 # Global mod key. I have mod3 bound to caps lock, it's great.
 mod = "mod3"
@@ -36,21 +41,33 @@ widget_defaults = dict(
     padding = 3,
 )
 
+inoffensive_green = '339966'
+
 if num_screens[hostname] == 2:
     screens = [
         Screen(top = bar.Bar([
-                widget.GroupBox(urgent_alert_method='text', **widget_defaults),
+                widget.GroupBox(
+                    urgent_alert_method='text',
+                    this_current_screen_border=inoffensive_green,
+                    **widget_defaults
+                ),
                 widget.Prompt(**widget_defaults),
-                widget.WindowName(**widget_defaults),
+                widget.Spacer(),
                 widget.Mpris(**widget_defaults),
                 widget.Volume(**widget_defaults),
             ], 30,),
         ),
         Screen(top = bar.Bar([
-                widget.GroupBox(urgent_alert_method='text', **widget_defaults),
-                widget.WindowName(**widget_defaults),
+                widget.GroupBox(
+                    urgent_alert_method='text',
+                    this_current_screen_border=inoffensive_green,
+                    **widget_defaults
+                ),
+                widget.Clipboard(timeout=None, width=bar.STRETCH, max_width=None),
+                widget.BitcoinTicker(format="BTC: {avg}", **widget_defaults),
                 widget.Systray(**widget_defaults),
-                widget.Clock('%Y-%m-%d %a %I:%M %p', **widget_defaults),
+                widget.Clock(format='%H:%M UTC', timezone='UTC', **widget_defaults),
+                widget.Clock(format='%Y-%m-%d %a %I:%M %p', **widget_defaults),
             ], 30,),
         ),
     ]
@@ -59,8 +76,10 @@ else:
     screens = [Screen(top = bar.Bar([
             widget.GroupBox(urgent_alert_method='text', **widget_defaults),
             widget.Prompt(**widget_defaults),
-            widget.WindowName(**widget_defaults),
-            widget.Volume(**widget_defaults),
+            widget.Clipboard(timeout=None, width=bar.STRETCH, max_width=None),
+            widget.BitcoinTicker(format="BTC: {avg}", **widget_defaults),
+            widget.Mpris(**widget_defaults),
+            widget.Volume(cardid=sound_card, **widget_defaults),
             # 1 screen means this is a laptop, so let's render the battery
             widget.Battery(energy_now_file='charge_now',
                 energy_full_file='charge_full',
@@ -68,7 +87,7 @@ else:
                 **widget_defaults
             ),
             widget.Systray(**widget_defaults),
-            widget.Clock('%Y-%m-%d %a %I:%M %p', **widget_defaults),
+            widget.Clock(format='%Y-%m-%d %a %I:%M %p', **widget_defaults),
         ],30,),),
     ]
 
@@ -92,39 +111,45 @@ keys = [
     # and in gracefully.
     Key(["shift", "mod1"], "q",  lazy.shutdown()),
 
+    # I don't ever use floating, but sometimes it is handy to toggle to
+    # floating for debugging, so I use the "out of band" mnemonic for this as
+    # well.
+    Key(["shift", "mod1"], "f",  lazy.window.toggle_floating()),
+
     Key([mod], "k",              lazy.layout.down()),
     Key([mod], "j",              lazy.layout.up()),
     Key([mod], "h",              lazy.layout.previous()),
-    Key([mod], "l",              lazy.layout.previous()),
+    Key([mod], "l",              lazy.layout.next()),
     Key([mod, "shift"], "space", lazy.layout.rotate()),
     Key([mod, "shift"], "Return",lazy.layout.toggle_split()),
-    Key(["mod1"], "Tab",         lazy.nextlayout()),
+    Key(["mod1"], "Tab",         lazy.next_layout()),
     Key([mod, "mod1"], "h",      lazy.to_screen(0)),
     Key([mod, "mod1"], "l",      lazy.to_screen(1)),
     Key([mod], "x",              lazy.window.kill()),
+    Key([mod, "shift"], "l",          lazy.layout.swap_left()),
 
     # interact with prompts
     Key([mod], "r",              lazy.spawncmd()),
-    Key([mod], "g",              lazy.switchgroup()),
+    Key([mod], "g",              lazy.togroup()),
 
     # start specific apps
-    Key([mod], "n",              lazy.function(app_or_group("www", "firefox"))),
+    Key([mod], "n",              lazy.function(app_or_group("www", "google-chrome"))),
     Key([mod], "m",              lazy.function(app_or_group("music", "clementine"))),
     Key([mod], "c",              lazy.function(app_or_group("io", "pidgin"))),
-    Key([mod], "Return",         lazy.spawn("xterm")),
+    Key([mod], "Return",         lazy.spawn("urxvt")),
 
     # Change the volume if our keyboard has keys
     Key(
         [], "XF86AudioRaiseVolume",
-        lazy.spawn("amixer -c 0 -q set Master 2dB+")
+        lazy.spawn("amixer -c %d -q set Master 2dB+" % sound_card)
     ),
     Key(
         [], "XF86AudioLowerVolume",
-        lazy.spawn("amixer -c 0 -q set Master 2dB-")
+        lazy.spawn("amixer -c %d -q set Master 2dB-" % sound_card)
     ),
     Key(
         [], "XF86AudioMute",
-        lazy.spawn("amixer -c 0 -q set Master toggle")
+        lazy.spawn("amixer -D pulse set Master toggle")
     ),
     Key(
         [], "XF86AudioPlay",
@@ -139,22 +164,29 @@ keys = [
         lazy.spawn("clementine --prev")
     ),
 
-    # also allow changing volume the old fashioned way
-    Key([mod], "equal", lazy.spawn("amixer -c 0 -q set Master 2dB+")),
-    Key([mod], "minus", lazy.spawn("amixer -c 0 -q set Master 2dB-")),
+    # also allow changing volume, tracks the old fashioned way
+    Key([mod], "equal", lazy.spawn("amixer -c %d -q set Master 2dB+" % sound_card)),
+    Key([mod], "minus", lazy.spawn("amixer -c %d -q set Master 2dB-" % sound_card)),
+    Key([mod], "bracketleft", lazy.spawn("clementine --prev")),
+    Key([mod], "bracketright", lazy.spawn("clementine --next")),
 
-    # allow play pause as well
-    Key([mod], "p",     lazy.spawn("vif.py play_pause")),
+    # poor man's middle click
+    Key([mod], "v",     lazy.spawn("xdotool click 2")),
+
+    # backlight controls
+    Key([], "XF86KbdBrightnessUp", lazy.spawn("maclight keyboard up")),
+    Key([], "XF86KbdBrightnessDown", lazy.spawn("maclight keyboard down")),
+    Key([], "XF86MonBrightnessUp", lazy.spawn("maclight screen up")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("maclight screen down")),
 ]
 
-# Drag floating layouts.
-mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(),
-        start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(),
-        start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front())
-]
+host_specific_mouse = {
+    'hopstrocity': [
+        Click([mod], "Button1", lazy.spawn("xdotool click 3")),
+    ],
+}
+
+mouse = host_specific_mouse.get(hostname, [])
 
 # Next, we specify group names, and use the group name list to generate an appropriate
 # set of bindings for group switching.
@@ -175,11 +207,11 @@ for i in ['a', 's', 'd', 'f', 'u', 'i', 'o', 'p']:
 groups.extend([
     Group('music', spawn='clementine', layout='max', persist=False,
           matches=[Match(wm_class=['Clementine', 'Viridian'])]),
-    Group('www', spawn='firefox-bin', layout='max',
+    Group('www', spawn='google-chrome', layout='max', persist=False,
           matches=[Match(wm_class=['Firefox', 'google-chrome', 'Google-chrome'])]),
-    Group('io', layout='pidgin', persist=False,
+    Group('io', layout='pidgin', persist=False, init=False,
           matches=[Match(wm_class=['Pidgin'], role=['Buddy List'])]),
-    Group('java', persist=False,
+    Group('java', persist=False, init=False,
           matches=[Match(wm_class=['sun-awt-X11-XFramePeer', 'GroupWise'])]),
 ])
 
@@ -199,16 +231,11 @@ layouts = [
     # a layout for pidgin
     layout.Slice('right', 256, name='pidgin', role='buddy_list',
          fallback=layout.Stack(stacks=1, **border_args)),
+
+    layout.MonadTall(ratio=0.65, **border_args),
 ]
 
-# Automatically float these types. This overrides the default behavior (which
-# is to also float utility types), but the default behavior breaks our fancy
-# gimp slice layout specified later on.
-floating_layout = layout.Floating(auto_float_types=[
-  "notification",
-  "toolbar",
-  "splash",
-  "dialog",
-])
+no_utility = layout.floating.DEFAULT_FLOAT_WM_TYPES - {'utility'}
+floating_layout = layout.Floating(auto_float_types=no_utility)
 
 # vim: tabstop=4 shiftwidth=4 expandtab
