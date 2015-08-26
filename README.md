@@ -26,6 +26,7 @@ ei-grad.py      | custom widgets
 ramnes.py       | debug layouts
 tailhook.py     | unicode-based window sorting
 tin.py          | custom window shortcuts
+emdete          | simple, beautiful, useful: lots of keyboard shortcuts
 
 ## Contributing
 
