@@ -10,7 +10,7 @@ reverse the operation (tab activates the next, shift-tab the previous window).
 the groups are numberic from 0 to 9. you can skip through these by the
 left/right key. the keys XF86Back and XF86Forward are bound (without mod) as
 well to make this even easier. esc can be used to switch between last and
-current group.
+current group, tab to switch between windows.
 
 dependencies
 ------------
