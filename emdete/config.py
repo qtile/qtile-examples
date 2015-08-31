@@ -66,12 +66,12 @@ keys = [
 	#Key([], 'XF86AudioMicMute', lazy.spawn('amixer -D pulse set Master toggle')),
 	Key([], 'XF86AudioRaiseVolume', lazy.spawn('amixer -c 0 -q set Master 2dB+')),
 	Key([], 'XF86AudioLowerVolume', lazy.spawn('amixer -c 0 -q set Master 2dB-')),
-	Key([], 'XF86Back', lazy.screen.prev_group()),
-	Key([], 'XF86Forward', lazy.screen.next_group()),
-	Key([mod], 'XF86Back', lazy.screen.prev_group()),
-	Key([mod], 'XF86Forward', lazy.screen.next_group()),
-	Key([mod], 'Left', lazy.screen.prev_group()),
-	Key([mod], 'Right', lazy.screen.next_group()),
+	Key([], 'XF86Back', lazy.screen.prev_group(skip_managed=True, )),
+	Key([], 'XF86Forward', lazy.screen.next_group(skip_managed=True, )),
+	Key([mod], 'XF86Back', lazy.screen.prev_group(skip_managed=True, )),
+	Key([mod], 'XF86Forward', lazy.screen.next_group(skip_managed=True, )),
+	Key([mod], 'Left', lazy.screen.prev_group(skip_managed=True, )),
+	Key([mod], 'Right', lazy.screen.next_group(skip_managed=True, )),
 	Key([mod], 'Escape', lazy.screen.togglegroup()),
 
 	# Toggle between different layouts as defined below
