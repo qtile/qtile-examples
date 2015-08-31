@@ -30,6 +30,8 @@ from libqtile.command import lazy
 from libqtile import layout, hook, bar, widget
 
 mod = 'mod4'
+color_alert = '#ee9900'
+color_frame = '#808080'
 
 # see http://docs.qtile.org/en/latest/manual/config/keys.html
 keys = [
@@ -103,13 +105,13 @@ for i in groups:
 # see http://docs.qtile.org/en/latest/manual/ref/layouts.html
 layouts = [
 	layout.Max(),
-	layout.Floating(),
+	layout.Floating(border_focus=color_alert, border_normal=color_frame, ),
 	#layout.Matrix(),
 	#layout.MonadTall(),
 	#layout.RatioTile(),
 	#layout.Slice(),
 	#layout.Stack(num_stacks=2),
-	layout.Tile(),
+	layout.Tile(border_focus=color_alert, border_normal=color_frame, ),
 	#layout.TreeTab(),
 	#layout.VerticalTile(),
 	#layout.Zoomy(),
@@ -124,9 +126,9 @@ widget_defaults = dict(
 # see http://docs.qtile.org/en/latest/manual/ref/widgets.html
 # TODO how to detect if 1 or 2 are needed?
 screens = [Screen(top=bar.Bar([
-	widget.GroupBox(disable_drag=True, this_current_screen_border='808080', this_screen_border='808080', ),
+	widget.GroupBox(disable_drag=True, this_current_screen_border=color_frame, this_screen_border=color_frame, urgent_text=color_alert, ),
 	widget.Prompt(),
-	widget.TaskList(font='Nimbus Sans L', border='404040', highlight_method='block', ),
+	widget.TaskList(font='Nimbus Sans L', border=color_frame, highlight_method='block', ),
 	#widget.WindowName(),
 	#widget.WindowTabs(),
 	#widget.TextBox('default config', name='default'),
@@ -147,7 +149,7 @@ def detect_screens(qtile):
 	while len(screens) < len(qtile.conn.pseudoscreens):
 		screens.append(Screen(
 		top=bar.Bar([
-			widget.GroupBox(disable_drag=True, this_current_screen_border='808080', this_screen_border='808080', ),
+			widget.GroupBox(disable_drag=True, this_current_screen_border=color_frame, this_screen_border=color_frame, ),
 			widget.WindowName(),
 			], 28, ), ))
 
