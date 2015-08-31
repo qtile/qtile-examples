@@ -102,6 +102,13 @@ for i in groups:
 		Key([mod, 'shift'], i.name, lazy.window.togroup(i.name))
 	)
 
+try:
+	# ugly hack to make my colors default:
+	layout.Floating.defaults[0] = ("border_focus", color_alert, "Border colour for the focused window.")
+	layout.Floating.defaults[1] = ("border_normal", color_frame, "Border colour for un-focused winows.")
+except:
+	pass
+
 # see http://docs.qtile.org/en/latest/manual/ref/layouts.html
 layouts = [
 	layout.Max(),
