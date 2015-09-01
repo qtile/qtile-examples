@@ -33,8 +33,9 @@ mod = 'mod4'
 color_alert = '#ee9900'
 color_frame = '#808080'
 
-def kick_to_next_screen(qtile):
-	other_scr_index = (qtile.screens.index(qtile.currentScreen) + 1) % len(qtile.screens)
+# kick a window to another screen (handy during presentations)
+def kick_to_next_screen(qtile, direction=1):
+	other_scr_index = (qtile.screens.index(qtile.currentScreen) + direction) % len(qtile.screens)
 	othergroup = None
 	for group in qtile.cmd_groups().values():
 		if group['screen'] == other_scr_index:
@@ -43,28 +44,35 @@ def kick_to_next_screen(qtile):
 	if othergroup:
 		qtile.moveToGroup(othergroup)
 
+# future use: udev code
+def __x():
+	import pyudev
+	context = pyudev.Context()
+	monitor = pyudev.Monitor.from_netlink(context)
+	monitor.filter_by('drm')
+	monitor.enable_receiving()
+	observer = pyudev.MonitorObserver(monitor, setup_monitors)
+	observer.start()
+
 # see http://docs.qtile.org/en/latest/manual/config/keys.html
 keys = [
 	# Switch between windows in current stack pane
 	Key([mod, 'control'], 'Tab', lazy.layout.down()),
 	Key([mod, 'control', 'shift'], 'Tab', lazy.layout.up()),
-
 	# Move windows up or down in current stack
 	Key([mod, 'mod1'], 'Tab', lazy.layout.shuffle_down()),
 	Key([mod, 'mod1', 'shift'], 'Tab', lazy.layout.shuffle_up()),
-
 	# Switch window focus to other pane(s) of stack
 	Key([mod], 'Tab', lazy.layout.next()),
 	Key([mod, 'shift'], 'Tab', lazy.layout.prev()),
-
 	# Swap panes of split stack
 	#Key([mod, 'shift'], 'space', lazy.layout.rotate()),
-
+	# Change ratios
 	Key([mod], 'k', lazy.layout.increase_ratio()),
 	Key([mod], 'j', lazy.layout.decrease_ratio()),
-
-	Key([mod, "shift"], "o", lazy.function(kick_to_next_screen)),
-
+	# kick to next/prev screen
+	Key([mod], "o", lazy.function(kick_to_next_screen)),
+	Key([mod, "shift"], "o", lazy.function(kick_to_next_screen, -1)),
 	# Toggle between split and unsplit sides of stack.
 	# Split = all windows displayed
 	# Unsplit = 1 window displayed, like Max layout, but still with
@@ -78,6 +86,7 @@ keys = [
 	#Key([], 'XF86AudioMicMute', lazy.spawn('amixer -D pulse set Master toggle')),
 	Key([], 'XF86AudioRaiseVolume', lazy.spawn('amixer -c 0 -q set Master 2dB+')),
 	Key([], 'XF86AudioLowerVolume', lazy.spawn('amixer -c 0 -q set Master 2dB-')),
+	# Switch groups
 	Key([], 'XF86Back', lazy.screen.prev_group(skip_managed=True, )),
 	Key([], 'XF86Forward', lazy.screen.next_group(skip_managed=True, )),
 	Key([mod], 'XF86Back', lazy.screen.prev_group(skip_managed=True, )),
@@ -85,26 +94,23 @@ keys = [
 	Key([mod], 'Left', lazy.screen.prev_group(skip_managed=True, )),
 	Key([mod], 'Right', lazy.screen.next_group(skip_managed=True, )),
 	Key([mod], 'Escape', lazy.screen.togglegroup()),
-
 	# Toggle between different layouts as defined below
 	Key([mod], 'space', lazy.next_layout()),
 	Key([mod, 'shift'], 'space', lazy.prev_layout()),
-
 	# lazy.group.setlayout('...
 	Key([mod, 'shift'], 'c', lazy.window.kill()),
-
+	# qtile maintenence
 	Key([mod, 'shift'], 'e', lazy.spawn('gvim {}'.format(__file__))),
 	Key([mod, 'shift'], 'r', lazy.restart()),
 	Key([mod, 'shift'], 'q', lazy.shutdown()),
 	Key([mod], 'r', lazy.spawncmd()),
 	Key([mod], 'f', lazy.window.toggle_floating()),
 	Key([mod], 'm', lazy.window.toggle_fullscreen()),
-
 	#Key( [mod, 'shift'], '2', lazy.to_screen(1), lazy.group.toscreen(1)),
 	]
 
+# create groups
 groups = [Group(i) for i in '1234567890']
-
 for i in groups:
 	# mod1 + letter of group = switch to group
 	keys.append(
@@ -138,11 +144,19 @@ widget_defaults = dict(
 	)
 
 # see http://docs.qtile.org/en/latest/manual/ref/widgets.html
-# TODO how to detect if 1 or 2 are needed?
 screens = [Screen(top=bar.Bar([
-	widget.GroupBox(disable_drag=True, this_current_screen_border=color_frame, this_screen_border=color_frame, urgent_text=color_alert, ),
+	widget.GroupBox(
+		disable_drag=True,
+		this_current_screen_border=color_frame,
+		this_screen_border=color_frame,
+		urgent_text=color_alert,
+		),
 	widget.Prompt(),
-	widget.TaskList(font='Nimbus Sans L', border=color_frame, highlight_method='block', ),
+	widget.TaskList(
+		font='Nimbus Sans L',
+		border=color_frame,
+		highlight_method='block',
+		),
 	widget.Systray(),
 	widget.Backlight(),
 	widget.Battery(
@@ -152,7 +166,9 @@ screens = [Screen(top=bar.Bar([
 	widget.CurrentLayout(),
 	widget.ThermalSensor(),
 	widget.Volume(),
-	widget.Clock(format='%Y-%m-%d %H:%M %p'),
+	widget.Clock(
+		format='%Y-%m-%d %H:%M %p',
+		),
 	], 32, ), ), ]
 
 def detect_screens(qtile):
@@ -176,15 +192,6 @@ def restart_on_randr(qtile, ev):
 	# TODO only if numbers of screens changed
 	qtile.cmd_restart()
 
-def __x():
-	import pyudev
-	context = pyudev.Context()
-	monitor = pyudev.Monitor.from_netlink(context)
-	monitor.filter_by('drm')
-	monitor.enable_receiving()
-	observer = pyudev.MonitorObserver(monitor, setup_monitors)
-	observer.start()
-
 dgroups_key_binder = None
 dgroups_app_rules = []
 main = None
@@ -197,15 +204,8 @@ floating_layout = layout.Floating(
 	float_rules=[dict(role='buddy_list', ), ],
 	)
 auto_fullscreen = True
-
-# XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
-# string besides java UI toolkits; you can see several discussions on the
-# mailing lists, github issues, and other WM documentation that suggest setting
-# this string if your java app doesn't work correctly. We may as well just lie
-# and say that we're a working one by default.
-#
-# We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
-# java that happens to be on java's whitelist.
+# java app don't work correctly if the wmname isn't set to a name that happens to
+# be on java's whitelist (LG3D is a 3D non-reparenting WM written in java).
 wmname = 'LG3D'
 
 def main(qtile):
