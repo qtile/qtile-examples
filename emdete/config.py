@@ -33,6 +33,16 @@ mod = 'mod4'
 color_alert = '#ee9900'
 color_frame = '#808080'
 
+def kick_to_next_screen(qtile):
+	other_scr_index = (qtile.screens.index(qtile.currentScreen) + 1) % len(qtile.screens)
+	othergroup = None
+	for group in qtile.cmd_groups().values():
+		if group['screen'] == other_scr_index:
+			othergroup = group['name']
+			break
+	if othergroup:
+		qtile.moveToGroup(othergroup)
+
 # see http://docs.qtile.org/en/latest/manual/config/keys.html
 keys = [
 	# Switch between windows in current stack pane
@@ -52,6 +62,8 @@ keys = [
 
 	Key([mod], 'k', lazy.layout.increase_ratio()),
 	Key([mod], 'j', lazy.layout.decrease_ratio()),
+
+	Key([mod, "shift"], "o", lazy.function(kick_to_next_screen)),
 
 	# Toggle between split and unsplit sides of stack.
 	# Split = all windows displayed
@@ -77,9 +89,11 @@ keys = [
 	# Toggle between different layouts as defined below
 	Key([mod], 'space', lazy.next_layout()),
 	Key([mod, 'shift'], 'space', lazy.prev_layout()),
+
 	# lazy.group.setlayout('...
 	Key([mod, 'shift'], 'c', lazy.window.kill()),
 
+	Key([mod, 'shift'], 'e', lazy.spawn('gvim {}'.format(__file__))),
 	Key([mod, 'shift'], 'r', lazy.restart()),
 	Key([mod, 'shift'], 'q', lazy.shutdown()),
 	Key([mod], 'r', lazy.spawncmd()),
@@ -101,13 +115,6 @@ for i in groups:
 	keys.append(
 		Key([mod, 'shift'], i.name, lazy.window.togroup(i.name))
 	)
-
-try:
-	# ugly hack to make my colors default:
-	layout.Floating.defaults[0] = ("border_focus", color_alert, "Border colour for the focused window.")
-	layout.Floating.defaults[1] = ("border_normal", color_frame, "Border colour for un-focused winows.")
-except:
-	pass
 
 # see http://docs.qtile.org/en/latest/manual/ref/layouts.html
 layouts = [
@@ -136,12 +143,8 @@ screens = [Screen(top=bar.Bar([
 	widget.GroupBox(disable_drag=True, this_current_screen_border=color_frame, this_screen_border=color_frame, urgent_text=color_alert, ),
 	widget.Prompt(),
 	widget.TaskList(font='Nimbus Sans L', border=color_frame, highlight_method='block', ),
-	#widget.WindowName(),
-	#widget.WindowTabs(),
-	#widget.TextBox('default config', name='default'),
 	widget.Systray(),
 	widget.Backlight(),
-	#widget.BatteryIcon(),
 	widget.Battery(
 		charge_char = u'↑',
 		discharge_char = u'↓',
@@ -188,9 +191,11 @@ main = None
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
-floating_layout = layout.Floating(float_rules=[
-	dict(role='buddy_list', ),
-	])
+floating_layout = layout.Floating(
+	border_focus=color_alert,
+	border_normal=color_frame,
+	float_rules=[dict(role='buddy_list', ), ],
+	)
 auto_fullscreen = True
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
