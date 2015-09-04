@@ -101,7 +101,7 @@ keys = [
 	Key([mod, 'shift'], 'c', lazy.window.kill()),
 	# qtile maintenence
 	Key([mod, 'shift'], 'e', lazy.spawn('gvim {}'.format(__file__))),
-	Key([mod, 'shift'], 'r', lazy.restart()),
+	Key([mod, 'shift'], 'r', lazy.restart()), # default is control! ;)
 	Key([mod, 'shift'], 'q', lazy.shutdown()),
 	Key([mod], 'r', lazy.spawncmd()),
 	Key([mod], 'f', lazy.window.toggle_floating()),
@@ -138,10 +138,56 @@ layouts = [
 	]
 
 widget_defaults = dict(
-	font='Nimbus Sans L',
+	font='Sans',
 	fontsize=16,
-	padding=3,
 	)
+
+class Backlight(widget.Backlight):
+	def poll(self):
+		info = self._get_info()
+		if info is False:
+			return '---'
+		no = int(info['brightness'] / info['max'] * 9.999)
+		char = ' '
+		#self.layout.colour = color_alert
+		return '{}{}{}'.format(char, no, 'L')#chr(0x1F50B))
+
+class Battery(widget.Battery):
+	def _get_text(self):
+		info = self._get_info()
+		if info is False:
+			return '---'
+		no = int(info['now'] / info['full'] * 9.999)
+		if info['stat'] == 'Discharging':
+			char = self.discharge_char
+		elif info['stat'] == 'Charging':
+			char = self.charge_char
+		elif info['stat'] == 'Unknown':
+			char = ' '
+		else:
+			char = '-'
+		return '{}{}{}'.format(char, no, 'B')#chr(0x1F506))
+
+class ThermalSensor(widget.ThermalSensor):
+	def poll(self):
+		temp_values = self.get_temp_sensors()
+		if temp_values is None:
+			return '---'
+		no = int((float(temp_values.get(self.tag_sensor, [0])[0]) + .5) / 10)
+		char = ' '
+		return '{}{}{}'.format(char, no, '°')#chr(0x1F321))
+
+class Volume(widget.Volume):
+	def update(self):
+		vol = self.get_volume()
+		if vol != self.volume:
+			self.volume = vol
+			if vol < 0:
+				no = '0'
+			else:
+				no = int(vol / 100 * 9.999)
+			char = ' '
+			self.text = '{}{}{}'.format(char, no, 'V')#chr(0x1F508))
 
 # see http://docs.qtile.org/en/latest/manual/ref/widgets.html
 screens = [Screen(top=bar.Bar([
@@ -151,21 +197,23 @@ screens = [Screen(top=bar.Bar([
 		this_screen_border=color_frame,
 		urgent_text=color_alert,
 		),
+	widget.CurrentLayout(),
 	widget.Prompt(),
 	widget.TaskList(
 		font='Nimbus Sans L',
 		border=color_frame,
 		highlight_method='block',
+		max_title_width=800,
+		urgent_border=color_alert,
 		),
 	widget.Systray(),
-	widget.Backlight(),
-	widget.Battery(
+	Backlight(),
+	Battery(
 		charge_char = u'↑',
 		discharge_char = u'↓',
 		),
-	widget.CurrentLayout(),
-	widget.ThermalSensor(),
-	widget.Volume(),
+	ThermalSensor(),
+	Volume(),
 	widget.Clock(
 		format='%Y-%m-%d %H:%M %p',
 		),
@@ -175,9 +223,20 @@ def detect_screens(qtile):
 	while len(screens) < len(qtile.conn.pseudoscreens):
 		screens.append(Screen(
 		top=bar.Bar([
-			widget.GroupBox(disable_drag=True, this_current_screen_border=color_frame, this_screen_border=color_frame, ),
-			widget.WindowName(),
-			], 28, ), ))
+			widget.GroupBox(
+				disable_drag=True,
+				this_current_screen_border=color_frame,
+				this_screen_border=color_frame,
+				),
+			widget.CurrentLayout(),
+			widget.TaskList(
+				font='Nimbus Sans L',
+				border=color_frame,
+				highlight_method='block',
+				max_title_width=800,
+				urgent_border=color_alert,
+				),
+			], 32, ), ))
 
 # Drag floating layouts.
 mouse = [
