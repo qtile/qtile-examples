@@ -148,7 +148,7 @@ class Backlight(widget.Backlight):
 		if info is False:
 			return '---'
 		no = int(info['brightness'] / info['max'] * 9.999)
-		char = ' '
+		char = '☼'
 		#self.layout.colour = color_alert
 		return '{}{}{}'.format(char, no, 'L')#chr(0x1F50B))
 
@@ -162,10 +162,9 @@ class Battery(widget.Battery):
 			char = self.discharge_char
 		elif info['stat'] == 'Charging':
 			char = self.charge_char
-		elif info['stat'] == 'Unknown':
-			char = ' '
+		#elif info['stat'] == 'Unknown':
 		else:
-			char = '-'
+			char = '►'
 		return '{}{}{}'.format(char, no, 'B')#chr(0x1F506))
 
 class ThermalSensor(widget.ThermalSensor):
@@ -173,9 +172,8 @@ class ThermalSensor(widget.ThermalSensor):
 		temp_values = self.get_temp_sensors()
 		if temp_values is None:
 			return '---'
-		no = int((float(temp_values.get(self.tag_sensor, [0])[0]) + .5) / 10)
-		char = ' '
-		return '{}{}{}'.format(char, no, '°')#chr(0x1F321))
+		no = int(float(temp_values.get(self.tag_sensor, [0])[0]))
+		return '{}{}'.format(no, '°')#chr(0x1F321))
 
 class Volume(widget.Volume):
 	def update(self):
@@ -186,7 +184,7 @@ class Volume(widget.Volume):
 				no = '0'
 			else:
 				no = int(vol / 100 * 9.999)
-			char = ' '
+			char = '♬'
 			self.text = '{}{}{}'.format(char, no, 'V')#chr(0x1F508))
 
 # see http://docs.qtile.org/en/latest/manual/ref/widgets.html
@@ -209,8 +207,8 @@ screens = [Screen(top=bar.Bar([
 	widget.Systray(),
 	Backlight(),
 	Battery(
-		charge_char = u'↑',
-		discharge_char = u'↓',
+		charge_char = u'▲',
+		discharge_char = u'▼',
 		),
 	ThermalSensor(),
 	Volume(),
