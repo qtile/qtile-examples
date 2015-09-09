@@ -212,6 +212,9 @@ screens = [Screen(top=bar.Bar([
 		),
 	ThermalSensor(),
 	Volume(),
+	widget.CPUGraph(graph_color=color_alert, fill_color='{}.5'.format(color_alert), border_color=color_frame, line_width=2, border_width=1, samples=60, ),
+	widget.MemoryGraph(graph_color=color_alert, fill_color='{}.5'.format(color_alert), border_color=color_frame, line_width=2, border_width=1, samples=60, ),
+	widget.NetGraph(graph_color=color_alert, fill_color='{}.5'.format(color_alert), border_color=color_frame, line_width=2, border_width=1, samples=60, ),
 	widget.Clock(
 		format='%Y-%m-%d %H:%M %p',
 		),
