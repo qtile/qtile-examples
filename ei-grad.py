@@ -49,7 +49,7 @@ keys = [
     Key([mod, "shift"], "Tab", lazy.layout.client_to_next()),
     Key([mod, "shift"], "space", lazy.layout.rotate()),
     Key([mod, "shift"], "Return", lazy.layout.toggle_split()),
-    Key([mod], "space", lazy.nextlayout()),
+    Key([mod], "space", lazy.next_layout()),
 
     Key([mod], "t", lazy.window.toggle_floating()),
 
@@ -225,7 +225,7 @@ def get_bar():
         Metrics(**font_params),
         widget.Systray(icon_size=15),
         widget.Sep(foreground="#000"),
-        widget.Clock(fmt="%c", **font_params),
+        widget.Clock(format="%c", **font_params),
     ], 20)
 
 
