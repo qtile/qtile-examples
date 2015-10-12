@@ -25,6 +25,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# TODO add http://paste.ubuntu.com/12524217/
+# consider https://github.com/hallyn/qtile-config/blob/master/config.py
+
 from libqtile.config import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, hook, bar, widget
@@ -57,14 +60,14 @@ def __x():
 # see http://docs.qtile.org/en/latest/manual/config/keys.html
 keys = [
 	# Switch between windows in current stack pane
-	Key([mod, 'control'], 'Tab', lazy.layout.down()),
-	Key([mod, 'control', 'shift'], 'Tab', lazy.layout.up()),
+	Key([mod], 'Tab', lazy.layout.down()),
+	Key([mod, 'shift'], 'Tab', lazy.layout.up()),
 	# Move windows up or down in current stack
 	Key([mod, 'mod1'], 'Tab', lazy.layout.shuffle_down()),
 	Key([mod, 'mod1', 'shift'], 'Tab', lazy.layout.shuffle_up()),
 	# Switch window focus to other pane(s) of stack
-	Key([mod], 'Tab', lazy.layout.next()),
-	Key([mod, 'shift'], 'Tab', lazy.layout.prev()),
+	Key([mod, 'control'], 'Tab', lazy.layout.next()),
+	Key([mod, 'control', 'shift'], 'Tab', lazy.layout.prev()),
 	# Swap panes of split stack
 	#Key([mod, 'shift'], 'space', lazy.layout.rotate()),
 	# Change ratios
@@ -106,6 +109,7 @@ keys = [
 	Key([mod], 'r', lazy.spawncmd()),
 	Key([mod], 'f', lazy.window.toggle_floating()),
 	Key([mod], 'm', lazy.window.toggle_fullscreen()),
+	Key([mod], 'n', lazy.window.toggle_minimize()),
 	#Key( [mod, 'shift'], '2', lazy.to_screen(1), lazy.group.toscreen(1)),
 	]
 
@@ -157,14 +161,21 @@ class Battery(widget.Battery):
 		info = self._get_info()
 		if info is False:
 			return '---'
-		no = int(info['now'] / info['full'] * 9.999)
+		if info['full']:
+			no = int(info['now'] / info['full'] * 9.999)
+		else:
+			no = 0
 		if info['stat'] == 'Discharging':
 			char = self.discharge_char
+			if no < 2:
+				self.layout.colour = self.low_foreground
+			else:
+				self.layout.colour = self.foreground
 		elif info['stat'] == 'Charging':
 			char = self.charge_char
 		#elif info['stat'] == 'Unknown':
 		else:
-			char = '►'
+			char = '■'
 		return '{}{}{}'.format(char, no, 'B')#chr(0x1F506))
 
 class ThermalSensor(widget.ThermalSensor):
@@ -209,12 +220,34 @@ screens = [Screen(top=bar.Bar([
 	Battery(
 		charge_char = u'▲',
 		discharge_char = u'▼',
+		low_foreground = color_alert,
 		),
 	ThermalSensor(),
 	Volume(),
-	widget.CPUGraph(graph_color=color_alert, fill_color='{}.5'.format(color_alert), border_color=color_frame, line_width=2, border_width=1, samples=60, ),
-	widget.MemoryGraph(graph_color=color_alert, fill_color='{}.5'.format(color_alert), border_color=color_frame, line_width=2, border_width=1, samples=60, ),
-	widget.NetGraph(graph_color=color_alert, fill_color='{}.5'.format(color_alert), border_color=color_frame, line_width=2, border_width=1, samples=60, ),
+	widget.CPUGraph(
+		graph_color=color_alert,
+		fill_color='{}.5'.format(color_alert),
+		border_color=color_frame,
+		line_width=2,
+		border_width=1,
+		samples=60,
+		),
+	widget.MemoryGraph(
+		graph_color=color_alert,
+		fill_color='{}.5'.format(color_alert),
+		border_color=color_frame,
+		line_width=2,
+		border_width=1,
+		samples=60,
+		),
+	widget.NetGraph(
+		graph_color=color_alert,
+		fill_color='{}.5'.format(color_alert),
+		border_color=color_frame,
+		line_width=2,
+		border_width=1,
+		samples=60,
+		),
 	widget.Clock(
 		format='%Y-%m-%d %H:%M %p',
 		),
