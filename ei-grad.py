@@ -3,7 +3,6 @@
 
 from glob import glob
 from random import choice
-from threading import Thread
 from time import sleep
 import os
 import subprocess
@@ -21,7 +20,8 @@ mod = 'mod1'
 def move_window_to_screen(screen):
     def cmd(qtile):
         w = qtile.currentWindow
-        # XXX: strange behaviour - w.focus() doesn't work if toScreen is called after togroup...
+        # XXX: strange behaviour - w.focus() doesn't work
+        # if toScreen is called after togroup...
         qtile.toScreen(screen)
         if w is not None:
             w.togroup(qtile.screens[screen].group.name)
@@ -206,7 +206,7 @@ def get_bar():
         widget.WindowName(**font_params),
         Metrics(**font_params),
         widget.Systray(icon_size=15),
-        widget.Sep(foreground="#000"),
+        widget.Sep(foreground="#000000"),
         widget.Clock(format="%c", **font_params),
     ], 20)
 
@@ -217,56 +217,29 @@ screens = [
 ]
 
 
-float_windows = set([
-    "feh",
-    "x11-ssh-askpass"
-])
+@hook.subscribe.startup_once
+def startup_once():
+    subprocess.Popen(["nm-applet"])
 
 
-def should_be_floating(w):
-    wm_class = w.get_wm_class()
-    if wm_class is None:
-        return True
-    if isinstance(wm_class, tuple):
-        for cls in wm_class:
-            if cls.lower() in float_windows:
-                return True
-    else:
-        if wm_class.lower() in float_windows:
-            return True
-    return w.get_wm_type() == 'dialog' or bool(w.get_wm_transient_for())
+def get_files():
+    patterns = [
+        '/usr/share/backgrounds/*.jpg',
+        '/usr/share/backgrounds/*/*.jpg',
+    ]
+    files = []
+    for i in patterns:
+        files.extend(glob(i))
+    return files
 
 
-@hook.subscribe.client_new
-def dialogs(window):
-    if should_be_floating(window.window):
-        window.floating = True
+def wallpaper():
+    while True:
+        subprocess.call(["feh", "--bg-fill", choice(get_files())])
+        sleep(300)
 
 
-def is_running(process):
-    return subprocess.call(["pgrep", "-f", " ".join(process)]) == 0
-
-
-def execute_once(process):
-    if not is_running(process):
-        Thread(target=lambda: subprocess.check_call(process)).start()
-
-
-# start the applications at Qtile startup
 @hook.subscribe.startup
 def startup():
-
-    def blocking():
-        sleep(1)
-        subprocess.call(["pkill", "-f", "ibus"])
-        execute_once(["unity-settings-daemon"])
-        execute_once(["nm-applet"])
-
-    Thread(target=blocking).start()
-
-    def wallpaper():
-        while True:
-            subprocess.call(["feh", "--bg-fill", choice(glob('/usr/share/backgrounds/*.jpg'))])
-            sleep(300)
-
+    from threading import Thread
     Thread(target=wallpaper).start()
