@@ -110,25 +110,14 @@ def humanize_bytes(value):
     return "%03d%s" % (value, suff[0])
 
 
-class Metrics(base._TextBox):
+class Metrics(base.InLoopPollText):
 
-    defaults = [
-        ("font", "Arial", "Metrics font"),
-        ("fontsize", None, "Metrics pixel size. Calculated if None."),
-        ("padding", None, "Metrics padding. Calculated if None."),
-        ("background", "000000", "Background colour"),
-        ("foreground", "ffffff", "Foreground colour")
-    ]
-
-    def __init__(self, **kwargs):
-        base._TextBox.__init__(self, **kwargs)
+    def __init__(self, **config):
         self.cpu_usage, self.cpu_total = self.get_cpu_stat()
         self.interfaces = {}
         self.idle_ifaces = {}
-
-    def _configure(self, qtile, bar):
-        base._TextBox._configure(self, qtile, bar)
-        self.timeout_add(0, self._update)
+        base.InLoopPollText.__init__(self, **config)
+        self.update_interval = 1
 
     def get_cpu_stat(self):
         stat = [int(i) for i in open('/proc/stat').readline().split()[1:]]
@@ -198,19 +187,12 @@ class Metrics(base._TextBox):
                     del self.idle_ifaces[iface]
         return " ".join(interfaces)
 
-    def _update(self):
-        self.update()
-        self.timeout_add(1, self.update)
-        return False
-
-    def update(self):
+    def poll(self):
         stat = [self.get_cpu_usage(), self.get_mem_usage()]
         net = self.get_net_usage()
         if net:
             stat.append(net)
-        self.text = " ".join(stat)
-        self.bar.draw()
-        return True
+        return " ".join(stat)
 
 
 def get_bar():
