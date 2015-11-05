@@ -3,7 +3,6 @@
 
 from glob import glob
 from random import choice
-from threading import Thread
 from time import sleep
 import os
 import subprocess
@@ -21,7 +20,8 @@ mod = 'mod1'
 def move_window_to_screen(screen):
     def cmd(qtile):
         w = qtile.currentWindow
-        # XXX: strange behaviour - w.focus() doesn't work if toScreen is called after togroup...
+        # XXX: strange behaviour - w.focus() doesn't work
+        # if toScreen is called after togroup...
         qtile.toScreen(screen)
         if w is not None:
             w.togroup(qtile.screens[screen].group.name)
@@ -49,7 +49,7 @@ keys = [
     Key([mod, "shift"], "Tab", lazy.layout.client_to_next()),
     Key([mod, "shift"], "space", lazy.layout.rotate()),
     Key([mod, "shift"], "Return", lazy.layout.toggle_split()),
-    Key([mod], "space", lazy.nextlayout()),
+    Key([mod], "space", lazy.next_layout()),
 
     Key([mod], "t", lazy.window.toggle_floating()),
 
@@ -110,25 +110,14 @@ def humanize_bytes(value):
     return "%03d%s" % (value, suff[0])
 
 
-class Metrics(base._TextBox):
+class Metrics(base.InLoopPollText):
 
-    defaults = [
-        ("font", "Arial", "Metrics font"),
-        ("fontsize", None, "Metrics pixel size. Calculated if None."),
-        ("padding", None, "Metrics padding. Calculated if None."),
-        ("background", "000000", "Background colour"),
-        ("foreground", "ffffff", "Foreground colour")
-    ]
-
-    def __init__(self, **kwargs):
-        base._TextBox.__init__(self, **kwargs)
+    def __init__(self, **config):
         self.cpu_usage, self.cpu_total = self.get_cpu_stat()
         self.interfaces = {}
         self.idle_ifaces = {}
-
-    def _configure(self, qtile, bar):
-        base._TextBox._configure(self, qtile, bar)
-        self.timeout_add(0, self._update)
+        base.InLoopPollText.__init__(self, **config)
+        self.update_interval = 1
 
     def get_cpu_stat(self):
         stat = [int(i) for i in open('/proc/stat').readline().split()[1:]]
@@ -198,19 +187,12 @@ class Metrics(base._TextBox):
                     del self.idle_ifaces[iface]
         return " ".join(interfaces)
 
-    def _update(self):
-        self.update()
-        self.timeout_add(1, self.update)
-        return False
-
-    def update(self):
+    def poll(self):
         stat = [self.get_cpu_usage(), self.get_mem_usage()]
         net = self.get_net_usage()
         if net:
             stat.append(net)
-        self.text = " ".join(stat)
-        self.bar.draw()
-        return True
+        return " ".join(stat)
 
 
 def get_bar():
@@ -224,8 +206,8 @@ def get_bar():
         widget.WindowName(**font_params),
         Metrics(**font_params),
         widget.Systray(icon_size=15),
-        widget.Sep(foreground="#000"),
-        widget.Clock(fmt="%c", **font_params),
+        widget.Sep(foreground="#000000"),
+        widget.Clock(format="%c", **font_params),
     ], 20)
 
 
@@ -235,56 +217,29 @@ screens = [
 ]
 
 
-float_windows = set([
-    "feh",
-    "x11-ssh-askpass"
-])
+@hook.subscribe.startup_once
+def startup_once():
+    subprocess.Popen(["nm-applet"])
 
 
-def should_be_floating(w):
-    wm_class = w.get_wm_class()
-    if wm_class is None:
-        return True
-    if isinstance(wm_class, tuple):
-        for cls in wm_class:
-            if cls.lower() in float_windows:
-                return True
-    else:
-        if wm_class.lower() in float_windows:
-            return True
-    return w.get_wm_type() == 'dialog' or bool(w.get_wm_transient_for())
+def get_files():
+    patterns = [
+        '/usr/share/backgrounds/*.jpg',
+        '/usr/share/backgrounds/*/*.jpg',
+    ]
+    files = []
+    for i in patterns:
+        files.extend(glob(i))
+    return files
 
 
-@hook.subscribe.client_new
-def dialogs(window):
-    if should_be_floating(window.window):
-        window.floating = True
+def wallpaper():
+    while True:
+        subprocess.call(["feh", "--bg-fill", choice(get_files())])
+        sleep(300)
 
 
-def is_running(process):
-    return subprocess.call(["pgrep", "-f", " ".join(process)]) == 0
-
-
-def execute_once(process):
-    if not is_running(process):
-        Thread(target=lambda: subprocess.check_call(process)).start()
-
-
-# start the applications at Qtile startup
 @hook.subscribe.startup
 def startup():
-
-    def blocking():
-        sleep(1)
-        subprocess.call(["pkill", "-f", "ibus"])
-        execute_once(["unity-settings-daemon"])
-        execute_once(["nm-applet"])
-
-    Thread(target=blocking).start()
-
-    def wallpaper():
-        while True:
-            subprocess.call(["feh", "--bg-fill", choice(glob('/usr/share/backgrounds/*.jpg'))])
-            sleep(300)
-
+    from threading import Thread
     Thread(target=wallpaper).start()
