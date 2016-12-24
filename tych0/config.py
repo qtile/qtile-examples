@@ -4,6 +4,8 @@ from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 from libqtile.dgroups import simple_key_binder
 
+from libqtile.log_utils import logger
+
 import platform
 import sys
 
@@ -49,24 +51,37 @@ if num_screens[hostname] == 2:
                 widget.GroupBox(
                     urgent_alert_method='text',
                     this_current_screen_border=inoffensive_green,
+                    disable_drag=True,
                     **widget_defaults
                 ),
                 widget.Prompt(**widget_defaults),
                 widget.Spacer(),
-                widget.Mpris(**widget_defaults),
+                widget.Mpris(name='clementine', stop_pause_text='', **widget_defaults),
+                widget.IdleRPG(url='http://xethron.lolhosting.net/xml.php?player=pants', **widget_defaults),
+                widget.Mpris2(
+                    name='spotify',
+                    objname="org.mpris.MediaPlayer2.spotify",
+                    display_metadata=['xesam:title', 'xesam:artist'],
+                    scroll_chars=None,
+                    stop_pause_text='',
+                    **widget_defaults
+                ),
                 widget.Volume(**widget_defaults),
             ], 30,),
         ),
         Screen(top = bar.Bar([
                 widget.GroupBox(
                     urgent_alert_method='text',
+                    disable_drag=True,
                     this_current_screen_border=inoffensive_green,
                     **widget_defaults
                 ),
                 widget.Clipboard(timeout=None, width=bar.STRETCH, max_width=None),
                 widget.BitcoinTicker(format="BTC: {avg}", **widget_defaults),
+                widget.BitcoinTicker(format="LTC: {avg}", source_currency='ltc'),
+                widget.BitcoinTicker(format="BTC: ฿{avg}", source_currency='ltc', currency='btc', round=False),
                 widget.Systray(**widget_defaults),
-                widget.Clock(format='%H:%M UTC', timezone='UTC', **widget_defaults),
+                widget.Clock(format='%H:%M MSK', timezone='Europe/Moscow', **widget_defaults),
                 widget.Clock(format='%Y-%m-%d %a %I:%M %p', **widget_defaults),
             ], 30,),
         ),
@@ -74,12 +89,21 @@ if num_screens[hostname] == 2:
 else:
     # 1 screen
     screens = [Screen(top = bar.Bar([
-            widget.GroupBox(urgent_alert_method='text', **widget_defaults),
+            widget.GroupBox(urgent_alert_method='text', disable_drag=True, **widget_defaults),
             widget.Prompt(**widget_defaults),
             widget.Clipboard(timeout=None, width=bar.STRETCH, max_width=None),
             widget.BitcoinTicker(format="BTC: {avg}", **widget_defaults),
-            widget.Mpris(**widget_defaults),
-            widget.Volume(cardid=sound_card, **widget_defaults),
+            widget.Mpris2(
+                name='spotify',
+                objname="org.mpris.MediaPlayer2.spotify",
+                display_metadata=['xesam:title', 'xesam:artist'],
+                scroll_chars=None,
+                stop_pause_text='',
+                **widget_defaults
+            ),
+            widget.Mpris(name='clementine', stop_pause_text='', **widget_defaults),
+            # this pollutes ~/.qtile.log and i don't really use it, so drop it for now
+            # widget.Volume(cardid=sound_card, **widget_defaults),
             # 1 screen means this is a laptop, so let's render the battery
             widget.Battery(energy_now_file='charge_now',
                 energy_full_file='charge_full',
@@ -102,6 +126,26 @@ def app_or_group(group, app):
             qtile.groupMap[group].cmd_toscreen()
         except KeyError:
             qtile.cmd_spawn(app)
+    return f
+
+last_playing = 'spotify'
+
+def playpause(qtile):
+    global last_playing
+    if qtile.widgetMap['clementine'].is_playing() or last_playing == 'clementine':
+        qtile.cmd_spawn("clementine --play-pause")
+        last_playing = 'clementine'
+    if qtile.widgetMap['spotify'].is_playing or last_playing == 'spotify':
+        qtile.cmd_spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+        last_playing = 'spotify'
+
+def next_prev(state):
+    def f(qtile):
+        if qtile.widgetMap['clementine'].is_playing():
+            qtile.cmd_spawn("clementine --%s" % state)
+        if qtile.widgetMap['spotify'].is_playing:
+            cmd = "Next" if state == "next" else "Previous"
+            qtile.cmd_spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.%s" % cmd)
     return f
 
 keys = [
@@ -153,22 +197,22 @@ keys = [
     ),
     Key(
         [], "XF86AudioPlay",
-        lazy.spawn("clementine --play-pause")
+        lazy.function(playpause)
     ),
     Key(
         [], "XF86AudioNext",
-        lazy.spawn("clementine --next")
+        lazy.function(next_prev("next"))
     ),
     Key(
         [], "XF86AudioPrev",
-        lazy.spawn("clementine --prev")
+        lazy.function(next_prev("prev"))
     ),
 
     # also allow changing volume, tracks the old fashioned way
     Key([mod], "equal", lazy.spawn("amixer -c %d -q set Master 2dB+" % sound_card)),
     Key([mod], "minus", lazy.spawn("amixer -c %d -q set Master 2dB-" % sound_card)),
-    Key([mod], "bracketleft", lazy.spawn("clementine --prev")),
-    Key([mod], "bracketright", lazy.spawn("clementine --next")),
+    Key([mod], "bracketleft", lazy.function(next_prev("prev"))),
+    Key([mod], "bracketright", lazy.function(next_prev("next"))),
 
     # poor man's middle click
     Key([mod], "v",     lazy.spawn("xdotool click 2")),
@@ -220,22 +264,27 @@ border_args = dict(
 )
 
 layouts = [
-    layout.Stack(stacks=2, **border_args),
+    layout.Stack(num_stacks=2, **border_args),
     layout.Max(),
 
     # a layout just for gimp
-    layout.Slice('left', 192, name='gimp', role='gimp-toolbox',
-         fallback=layout.Slice('right', 256, role='gimp-dock',
-         fallback=layout.Stack(stacks=1, **border_args))),
+    layout.Slice(side='left', width=192, name='gimp', role='gimp-toolbox',
+         fallback=layout.Slice(side='right', width=256, role='gimp-dock',
+         fallback=layout.Stack(num_stacks=1, **border_args))),
 
     # a layout for pidgin
-    layout.Slice('right', 256, name='pidgin', role='buddy_list',
-         fallback=layout.Stack(stacks=1, **border_args)),
+    layout.Slice(side='right', width=256, name='pidgin', role='buddy_list',
+         fallback=layout.Stack(num_stacks=2, **border_args)),
 
     layout.MonadTall(ratio=0.65, **border_args),
 ]
 
 no_utility = layout.floating.DEFAULT_FLOAT_WM_TYPES - {'utility'}
 floating_layout = layout.Floating(auto_float_types=no_utility)
+
+cursor_warp = True
+follow_mouse_focus = True
+
+focus_on_window_activation = "never"
 
 # vim: tabstop=4 shiftwidth=4 expandtab
