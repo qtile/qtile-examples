@@ -409,8 +409,8 @@ keys = [
                                                "/opt/vivaldi/vivaldi-bin")))),
     Key([mod, "shift"], "w", lazy.function(find_or_run(home +
                                                        "/Apps/Internet/tor-browser_en-US/Browser/start-tor-browser "
-                                                       "--detach ", "Tor Browser", cls_grp_dict["Tor Browser"],
-                                                       "\./firefox"))),
+                                                       "--detach ", ("Tor Browser",), cls_grp_dict["Tor Browser"],
+                                                       ("\./firefox",)))),
     Key([mod], "i", lazy.function(find_or_run("/usr/bin/pamac-manager", ["Pamac-manager"],
                                               cls_grp_dict["Pamac-manager"]))),
     Key([], "F10", lazy.function(to_urgent())),
