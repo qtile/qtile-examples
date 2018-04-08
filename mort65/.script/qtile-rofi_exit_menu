@@ -21,11 +21,11 @@ if [ "$CHOICE" == "Lock" ];then
 elif [ "$CHOICE" == "Logout" ];then
     ACTION="$HOME/bin/logoff"
 elif [ "$CHOICE" == "Suspend" ];then
-    ACTION="/usr/bin/systemctl suspend"
+    ACTION="/usr/bin/systemctl -i suspend"
 elif [ "$CHOICE" == "Reboot" ];then
-    ACTION="/usr/bin/systemctl reboot"
+    ACTION="/usr/bin/systemctl -i reboot"
 elif [ "$CHOICE" == "Shutdown" ];then
-    ACTION="/usr/bin/systemctl poweroff"
+    ACTION="/usr/bin/systemctl -i poweroff"
 fi
 
 if [ "$CONFIRM" == "Yes" ];then
