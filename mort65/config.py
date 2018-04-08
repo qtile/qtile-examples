@@ -280,6 +280,7 @@ def exit_menu():
     @lazy.function
     def __inner(qtile):
         subprocess.Popen(["/usr/bin/sh", home + "/.script/qtile-rofi_exit_menu"])
+    
     return __inner
 
 
