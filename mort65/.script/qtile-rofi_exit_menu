@@ -2,8 +2,7 @@
 
 USERNAME=${SUDO_USER:-$(id -u -n)}
 HOMEDIR="/home/$USERNAME"
-ROFI="/usr/bin/rofi -dmenu -i -l \
-         -theme ~/.config/rofi/dmenu-custom.rasi \""
+ROFI="/usr/bin/rofi -dmenu -i -l "
 FIRST_MENU="Lock\nLogout\nSuspend\nReboot\nShutdown"
 SECOND_MENU="No\nYes"
 ACTION=""
