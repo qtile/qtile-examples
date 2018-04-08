@@ -8,11 +8,11 @@ SECOND_MENU="No\nYes"
 ACTION=""
 
 function choose {
-    CHOICE=$(echo -e $FIRST_MENU| $ROFI -p "")
+    CHOICE=$(echo -e $FIRST_MENU | $ROFI -p "")
 }
 
 function confirm {
-    CONFIRM=$(echo -e $SECOND_MENU| $ROFI -p "Are You Sure?")
+    CONFIRM=$(echo -e $SECOND_MENU | $ROFI -p "Are You Sure?")
 }
 
 function execute {
