@@ -1,0 +1,46 @@
+/**
+ * ROFI Color theme
+ * User: Qball
+ * Copyright: Dave Davenport
+ */
+* {
+    background-color:      #271B1B;
+    border-color:          White;
+    text-color:           White;
+    font:            "ubuntu 12";
+}
+
+configuration {
+}
+
+#window {
+    anchor:     north;
+    location:   north;
+    width:      100%;
+    padding:    2px;
+    children:   [ horibox ];
+}
+
+#horibox {
+    orientation: horizontal;
+    children:   [ prompt, entry, listview ];
+}
+
+#listview {
+    layout:     horizontal;
+    spacing:    4px;
+    lines:      100;
+}
+
+#entry {
+    expand:     false;
+    width:      10em;
+}
+
+#element {
+    padding: 0px 8px;
+}
+#element selected {
+    background-color: #FDF3A9;
+    text-color: #271B1B;
+}
