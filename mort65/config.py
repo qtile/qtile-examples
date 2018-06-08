@@ -397,7 +397,7 @@ keys = [
     Key([mod], "d", lazy.spawn("/usr/bin/rofi -modi run,drun -show drun run")),
     Key([mod], "Delete", lazy.function(find_or_run("/usr/bin/lxtask", ("Lxtask",),
                                                    cls_grp_dict["Lxtask"]))),
-    Key([mod], "f", lazy.function(find_or_run("/usr/bin/catfish", ("Catfish",),
+    Key([mod], "F1", lazy.function(find_or_run("/usr/bin/catfish", ("Catfish",),
                                               cls_grp_dict["Catfish"], ("^/usr/bin/python /usr/bin/catfish$",)))),
     Key([mod], "e", lazy.function(find_or_run("/usr/bin/leafpad",
                                               ("Leafpad", "Mousepad", "Pluma"), cls_grp_dict["Leafpad"],
