@@ -29,6 +29,7 @@ tin.py          | custom window shortcuts
 emdete          | simple, beautiful, useful: lots of keyboard shortcuts
 sweenu          | broken up in several files, custom screenshots, backlight
 a13xmt          | rooms and workspaces
+mort65          | rule matching, dynamic shortcuts, dropdown terminal
 
 ## Contributing
 
