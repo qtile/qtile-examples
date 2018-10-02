@@ -23,7 +23,23 @@ def winunstash(qtile):
     for w in qtile.groupMap["X"].windows:
         w.togroup(g.name)
 
-class Mystatus(base.InLoopPollText):
+class MyBright(base.InLoopPollText):
+    def __init__(self):
+        base.InLoopPollText.__init__(self, update_interval=10)
+
+    def poll(self):
+        dirname = "/sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-LVDS-1/intel_backlight"
+        curf = "{0}/brightness".format(dirname)
+        maxf = "{0}/max_brightness".format(dirname)
+        with open(curf) as f:
+            cur = int(f.read().strip())
+        with open(maxf) as f:
+            maxb = int(f.read().strip())
+        pcnt = int(cur * 100 / maxb)
+        txtb = "Bright: {0}%".format(pcnt)
+        return "{0} | ".format(txtb)
+
+class MyBatt(base.InLoopPollText):
 
     def __init__(self):
         base.InLoopPollText.__init__(self, update_interval=10)
@@ -35,42 +51,61 @@ class Mystatus(base.InLoopPollText):
         statusf = "{0}/status".format(dirname)
         with open(statusf) as f:
             status = f.read().strip()[0:3]
+        if status[0] == 'C':
+            charge_char = '▲'
+        elif status[0] == 'D':
+            charge_char = '▼'
+        else:
+            charge_char = status[0:3]
         with open(nowf) as f:
             now = int(f.read().strip())
         with open(fullf) as f:
             full = int(f.read().strip())
         pcnt = int(now * 100 / full)
-        txta = "Batt: {0} {1}%".format(status, pcnt)
-
-
-        dirname = "/sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-LVDS-1/intel_backlight"
-        curf = "{0}/brightness".format(dirname)
-        maxf = "{0}/max_brightness".format(dirname)
-        with open(curf) as f:
-            cur = int(f.read().strip())
-        with open(maxf) as f:
-            maxb = int(f.read().strip())
-        pcnt = int(cur * 100 / maxb)
-        txtb = "Bright: {0}%".format(pcnt)
-        return "{0} | {1} | ".format(txta, txtb)
+        if pcnt < 45:
+            self.background = "#ff0000"
+        elif pcnt > 80:
+            self.background = "#00ff00"
+        txta = "Batt: {0} {1}%".format(charge_char, pcnt)
+        return "{0} |".format(txta)
 
 hostname = platform.node()
 sound_card = 0
 
 mod = "mod4"
 
+GREY = "#444444"
+DARK_GREY = "#333333"
+BLUE = "#007fcf"
+DARK_BLUE = "#005083"
+ORANGE = "#dd6600"
+DARK_ORANGE = "#582c00"
+
 # global font options
 widget_defaults = dict(
     font = 'Consolas',
     fontsize = 14,
     padding = 3,
+    foreground = "#000000",
+    background = "#ffffff",
 )
 
 screens = [Screen(top = bar.Bar([
-    widget.GroupBox(urgent_alert_method='text', disable_drag=True, **widget_defaults),
+    widget.GroupBox(urgent_alert_method='text',
+        disable_drag=True,
+        active = "#00226f",
+        inactive = "#bbbbbb",
+        hilight_color = "#4488ff",
+        this_screen_border = ORANGE,
+        other_current_screen_border = ORANGE,
+        other_screen_border = "#444444",
+        urgent_screen_border = "#ff4444",
+        hilight_method="block",
+        **widget_defaults),
     widget.Prompt(**widget_defaults),
     widget.Clipboard(timeout=None, width=bar.STRETCH, max_width=None),
-    Mystatus(),
+    MyBatt(),
+    MyBright(),
     widget.Systray(**widget_defaults),
     widget.Clock(format='%Y-%m-%d %a %I:%M %p', **widget_defaults),
 ],30,),),
