@@ -1,0 +1,39 @@
+! Magical
+! special
+*.foreground:   #b2b3b8
+*.background:   #f1eee9
+*.cursorColor:  #b2b3b8
+
+! black
+*.color0:       #757475
+*.color8:       #4a4a4a
+
+! red
+*.color1:       #936a6f
+*.color9:       #d76572
+
+! green
+*.color2:       #668462
+*.color10:      #4fae42
+
+! yellow
+*.color3:       #7f7b62
+*.color11:      #a8981f
+
+! blue
+*.color4:       #6e7291
+*.color12:      #7782cf
+
+! magenta
+*.color5:       #846887
+*.color13:      #b754c4
+
+! cyan
+*.color6:       #637e7b
+*.color14:      #2ea89a
+
+! white
+*.color7:       #9a9a9a
+*.color15:      #c4c4c4
+
+*.font:		 	-misc-saucecodepro nerd font mono-*-*-*--0-0-0-0-p-0-*-0
