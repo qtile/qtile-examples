@@ -1,0 +1,39 @@
+! random_blue
+! ! special
+*.foreground:   #d3d3e0
+*.background:   #080811
+*.cursorColor:  #d3d3e0
+
+! black
+*.color0:       #0f101c
+*.color8:       #acb0e1
+
+! red
+*.color1:       #181a29
+*.color9:       #7f86ce
+
+! green
+*.color2:       #282a41
+*.color10:      #54b27e
+
+! yellow
+*.color3:       #3f4261
+*.color11:      #b5b9e2
+
+! blue
+*.color4:       #5b5f8a
+*.color12:      #a8ade2
+
+! magenta
+*.color5:       #8285a9
+*.color13:      #ef937d
+
+! cyan
+*.color6:       #aeb0c8
+*.color14:      #df9ccb
+
+! white
+*.color7:       #e1e2ea
+*.color15:      #a4a8d8
+
+*.font: 		-misc-saucecodepro nerd font mono-*-*-*--0-0-0-0-p-0-*-0

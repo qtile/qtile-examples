@@ -1,0 +1,38 @@
+! special
+*.foreground:   #ffffff
+*.background:   #000000
+*.cursorColor:  #ffffff
+
+! black
+*.color0:       #333333
+*.color8:       #3d3d3d
+
+! red
+*.color1:       #8c4665
+*.color9:       #bf4d80
+
+! green
+*.color2:       #287373
+*.color10:      #53a6a6
+
+! yellow
+*.color3:       #7c7c99
+*.color11:      #9e9ecb
+
+! blue
+*.color4:       #395573
+*.color12:      #477ab3
+
+! magenta
+*.color5:       #5e468c
+*.color13:      #7e62b3
+
+! cyan
+*.color6:       #31658c
+*.color14:      #6096bf
+
+! white
+*.color7:       #899ca1
+*.color15:      #c0c0c0
+
+*.font: 		-misc-saucecodepro nerd font mono-*-*-*--0-0-0-0-p-0-*-0
