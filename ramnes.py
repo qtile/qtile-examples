@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Configuration repository: https://github.com/ramnes/qtile-config/
+# Please check the configuration repository for an always up-to-date version!
+# https://github.com/ramnes/qtile-config
 import os
 import socket
 
