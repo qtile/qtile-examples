@@ -1,0 +1,21 @@
+!! space_amoled01
+*background:  #2c2b33
+*foreground:  #c6c6ce
+*color0:  #6b5466
+*color1:  #cb9895
+*color2:  #97727a
+*color3:  #cb9895
+*color4:  #8a9fba
+*color5:  #8ea6c0
+*color6:  #777e9a
+*color7:  #c6c6ce
+*color8:  #96939e
+*color9:  #ddb2a9
+*color10:  #d19f98
+*color11:  #ddb2a9
+*color12:  #b2c4dc
+*color13:  #b2c4dc
+*color14:  #a3b4ce
+*color15:  #ffffff
+
+*.font:                 -misc-saucecodepro nerd font mono-*-*-*--0-0-0-0-p-0-*-0%

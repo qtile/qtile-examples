@@ -1,73 +1,26 @@
 # -*- coding: utf-8 -*-
-from libqtile.config import Key, Screen, Group, Drag, Click, Match
+from libqtile.config import Key, Screen, Group, Match
 from libqtile.command import lazy
-from libqtile import layout, bar, widget, hook
+from libqtile import layout, bar, widget
 from libqtile.dgroups import simple_key_binder
 
 from libqtile.log_utils import logger
 
 import platform
 import os
-import sys
 
 from libqtile.widget import base
 
 def winstash(qtile):
-    w = qtile.currentWindow
+    w = qtile.current_window
     if w is None:
         return
     w.togroup("X")
 
 def winunstash(qtile):
-    g = qtile.currentGroup
-    for w in qtile.groupMap["X"].windows:
+    g = qtile.current_group
+    for w in qtile.groups_map["X"].windows:
         w.togroup(g.name)
-
-class MyBright(base.InLoopPollText):
-    def __init__(self):
-        base.InLoopPollText.__init__(self, update_interval=10)
-
-    def poll(self):
-        dirname = "/sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-LVDS-1/intel_backlight"
-        curf = "{0}/brightness".format(dirname)
-        maxf = "{0}/max_brightness".format(dirname)
-        with open(curf) as f:
-            cur = int(f.read().strip())
-        with open(maxf) as f:
-            maxb = int(f.read().strip())
-        pcnt = int(cur * 100 / maxb)
-        txtb = "Bright: {0}%".format(pcnt)
-        return "{0} | ".format(txtb)
-
-class MyBatt(base.InLoopPollText):
-
-    def __init__(self):
-        base.InLoopPollText.__init__(self, update_interval=10)
-
-    def poll(self):
-        dirname = "/sys/bus/acpi/drivers/battery/PNP0C0A:00/power_supply/BAT1"
-        nowf = "{0}/energy_now".format(dirname)
-        fullf = "{0}/energy_full".format(dirname)
-        statusf = "{0}/status".format(dirname)
-        with open(statusf) as f:
-            status = f.read().strip()[0:3]
-        if status[0] == 'C':
-            charge_char = '▲'
-        elif status[0] == 'D':
-            charge_char = '▼'
-        else:
-            charge_char = status[0:3]
-        with open(nowf) as f:
-            now = int(f.read().strip())
-        with open(fullf) as f:
-            full = int(f.read().strip())
-        pcnt = int(now * 100 / full)
-        if pcnt < 45:
-            self.background = "#ff0000"
-        elif pcnt > 80:
-            self.background = "#00ff00"
-        txta = "Batt: {0} {1}%".format(charge_char, pcnt)
-        return "{0} |".format(txta)
 
 hostname = platform.node()
 sound_card = 0
@@ -81,6 +34,35 @@ DARK_BLUE = "#005083"
 ORANGE = "#dd6600"
 DARK_ORANGE = "#582c00"
 
+class MyCheckinState(base.InLoopPollText):
+    def __init__(self):
+        base.InLoopPollText.__init__(self, update_interval=10)
+
+    def poll(self):
+        with open("/home/serge/checkinstate") as f:
+            cur = f.read().strip()
+        return "GTD: " + cur
+
+class MyBright(base.InLoopPollText):
+    def __init__(self):
+        base.InLoopPollText.__init__(self, update_interval=10)
+
+    def poll(self):
+        if hostname == "honeybadger":
+            dirname = "/sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-LVDS-1/intel_backlight"
+        else:
+            dirname = "/sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight"
+        curf = "{0}/brightness".format(dirname)
+        maxf = "{0}/max_brightness".format(dirname)
+        with open(curf) as f:
+            cur = int(f.read().strip())
+        with open(maxf) as f:
+            maxb = int(f.read().strip())
+        pcnt = int(cur * 100 / maxb)
+        txtb = "Bright: {0}%".format(pcnt)
+        return "{0} | ".format(txtb)
+
+
 # global font options
 widget_defaults = dict(
     font = 'Consolas',
@@ -89,6 +71,13 @@ widget_defaults = dict(
     foreground = "#000000",
     background = "#ffffff",
 )
+
+bat0 = widget.Battery(energy_now_file='energy_now',
+                    battery_name='BAT0',
+                    update_delay=60,
+                    energy_full_file='energy_full',
+                    power_now_file='current_now',
+                    **widget_defaults)
 
 screens = [Screen(top = bar.Bar([
     widget.GroupBox(urgent_alert_method='text',
@@ -103,9 +92,12 @@ screens = [Screen(top = bar.Bar([
         hilight_method="block",
         **widget_defaults),
     widget.Prompt(**widget_defaults),
-    widget.Clipboard(timeout=None, width=bar.STRETCH, max_width=None),
-    MyBatt(),
+    #widget.Clipboard(timeout=None, width=bar.STRETCH, max_width=None),
+    widget.TextBox("serge@hallyn.com", name="ident", width=bar.STRETCH, max_width=None),
+    widget.TextBox("B0:"),
+    bat0,
     MyBright(),
+    MyCheckinState(),
     widget.Systray(**widget_defaults),
     widget.Clock(format='%Y-%m-%d %a %I:%M %p', **widget_defaults),
 ],30,),),
@@ -119,7 +111,7 @@ def app_or_group(group, app):
     running. """
     def f(qtile):
         try:
-            qtile.groupMap[group].cmd_toscreen()
+            qtile.groups_map[group].cmd_toscreen()
         except KeyError:
             qtile.cmd_spawn(app)
     return f
@@ -162,10 +154,12 @@ keys = [
 
     # start specific apps
     Key([mod], "n",              lazy.function(app_or_group("www", "firefox"))),
+    Key([mod, "shift"], "n",     lazy.window.togroup("www")),
     Key([mod], "m",              lazy.function(app_or_group("music", "clementine"))),
     Key([mod, "shift"], "x",     lazy.window.kill()),
     Key([mod, "control"], "Return", lazy.spawn("tabbed vimprobable -e")),
     Key([mod], "Return",         lazy.spawn("st")),
+    Key([mod], "F10",            lazy.spawn("/home/serge/bin/touchpad")),
 
     # Change the volume if our keyboard has keys
     Key(
@@ -214,9 +208,9 @@ groups.append(Group("X"))
 # groups with special jobs. I usually navigate to these via my app_or_group
 # function.
 groups.extend([
-    Group('music', spawn='clementine', layout='max', persist=False,
+    Group('music', spawn='clementine', layout='columns', persist=False,
           matches=[Match(wm_class=['Clementine', 'Viridian'])]),
-    Group('www', spawn='google-chrome', layout='max', persist=False,
+    Group('www', spawn='firefox', layout='columns', persist=False,
           matches=[Match(wm_class=['Firefox', 'google-chrome', 'Google-chrome'])]),
 ])
 
@@ -224,8 +218,14 @@ border_args = dict(
     border_width=1,
 )
 
+layout_style = {
+    'font': 'ubuntu',
+    'border_normal_stack': '#000022',
+    'border_focus_stack': '#0000ff'
+}
+
 layouts = [
-    layout.Wmii(),
+    layout.Columns(num_columns=1, insert_position=1, **layout_style),
     layout.Stack(num_stacks=2, **border_args),
     layout.Max(),
 
@@ -245,5 +245,7 @@ follow_mouse_focus = True
 
 focus_on_window_activation = "never"
 os.system("xmodmap ~/.xmodmaprc")
+os.system("synclient VertEdgeScroll=0")
+os.system("feh --bg-max ~/catherines_landing.jpg")
 
 # vim: tabstop=4 shiftwidth=4 expandtab

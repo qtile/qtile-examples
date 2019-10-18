@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Configuration repository: https://github.com/ramnes/qtile-config/
+# Please check the configuration repository for an always up-to-date version!
+# https://github.com/ramnes/qtile-config
 import os
 import socket
 
@@ -7,66 +8,79 @@ from libqtile import bar, hook, layout
 from libqtile.command import lazy
 from libqtile.config import Drag, Group, Key, Screen
 from libqtile.widget import (Battery, Clock, CurrentLayout, CurrentLayoutIcon,
-                             GroupBox, Notify, Prompt, Sep, Systray, TaskList,
-                             TextBox)
+                             GroupBox, Notify, Prompt, Sep, Spacer, Systray,
+                             TaskList, TextBox)
 
 DEBUG = os.environ.get("DEBUG")
-HOME = os.path.expanduser("~") + "/"
 
-GREY = "#444444"
-DARK_GREY = "#333333"
-BLUE = "#007fcf"
-DARK_BLUE = "#005083"
+GREY = "#222222"
+DARK_GREY = "#111111"
+BLUE = "#007fdf"
+DARK_BLUE = "#002a4a"
 ORANGE = "#dd6600"
-DARK_ORANGE = "#582c00"
+DARK_ORANGE = "#371900"
 
 
-def window_to_prev_group():
+def window_to_previous_column_or_group():
     @lazy.function
     def __inner(qtile):
-        i = qtile.groups.index(qtile.currentGroup)
-        if qtile.currentWindow and i != 0:
-            group = qtile.groups[i - 1].name
-            qtile.currentWindow.togroup(group)
+        layout = qtile.current_group.layout
+        group_index = qtile.groups.index(qtile.current_group)
+        previous_group_name = qtile.current_group.get_previous_group().name
+
+        if layout.name != "columns":
+            qtile.current_window.togroup(previous_group_name)
+        elif layout.current == 0 and len(layout.cc) == 1:
+            if group_index != 0:
+                qtile.current_window.togroup(previous_group_name)
+        else:
+            layout.cmd_shuffle_left()
     return __inner
 
 
-def window_to_next_group():
+def window_to_next_column_or_group():
     @lazy.function
     def __inner(qtile):
-        i = qtile.groups.index(qtile.currentGroup)
-        if qtile.currentWindow and i != len(qtile.groups):
-            group = qtile.groups[i + 1].name
-            qtile.currentWindow.togroup(group)
+        layout = qtile.current_group.layout
+        group_index = qtile.groups.index(qtile.current_group)
+        next_group_name = qtile.current_group.get_next_group().name
+
+        if layout.name != "columns":
+            qtile.current_window.togroup(next_group_name)
+        elif layout.current + 1 == len(layout.columns) and len(layout.cc) == 1:
+            if group_index + 1 != len(qtile.groups):
+                qtile.current_window.togroup(next_group_name)
+        else:
+            layout.cmd_shuffle_right()
     return __inner
 
 
-def window_to_prev_screen():
+def window_to_previous_screen():
     @lazy.function
     def __inner(qtile):
-        i = qtile.screens.index(qtile.currentScreen)
+        i = qtile.screens.index(qtile.current_screen)
         if i != 0:
             group = qtile.screens[i - 1].group.name
-            qtile.currentWindow.togroup(group)
+            qtile.current_window.togroup(group)
     return __inner
 
 
 def window_to_next_screen():
     @lazy.function
     def __inner(qtile):
-        i = qtile.screens.index(qtile.currentScreen)
-        if i != len(qtile.screens):
+        i = qtile.screens.index(qtile.current_screen)
+        if i + 1 != len(qtile.screens):
             group = qtile.screens[i + 1].group.name
-            qtile.currentWindow.togroup(group)
+            qtile.current_window.togroup(group)
     return __inner
 
 
 def switch_screens():
     @lazy.function
     def __inner(qtile):
-        i = qtile.screens.index(qtile.currentScreen)
+        i = qtile.screens.index(qtile.current_screen)
         group = qtile.screens[i - 1].group
-        qtile.currentScreen.setGroup(group)
+        qtile.current_screen.set_group(group)
     return __inner
 
 
@@ -75,12 +89,21 @@ def set_floating(window):
     floating_types = ["notification", "toolbar", "splash", "dialog"]
     floating_roles = ["EventDialog", "Msgcompose", "Preferences"]
     floating_names = ["Terminator Preferences"]
+    floating_classes = ["gcr-prompter", "gnome-screenshot",
+                        "nm-connection-editor"]
 
     if (window.window.get_wm_type() in floating_types
         or window.window.get_wm_window_role() in floating_roles
         or window.window.get_name() in floating_names
         or window.window.get_wm_transient_for()):
         window.floating = True
+        return
+
+    try:
+        if window.window.get_wm_class()[0] in floating_classes:
+            window.floating = True
+    except IndexError:
+        pass
 
 
 def init_keys():
@@ -88,26 +111,32 @@ def init_keys():
         Key([mod], "Left", lazy.screen.prev_group(skip_managed=True)),
         Key([mod], "Right", lazy.screen.next_group(skip_managed=True)),
 
-        Key([mod, "shift"], "Left", window_to_prev_group()),
-        Key([mod, "shift"], "Right", window_to_next_group()),
+        Key([mod, "shift"], "Left", window_to_previous_column_or_group()),
+        Key([mod, "shift"], "Right", window_to_next_column_or_group()),
+
+        Key([mod, "control"], "Up", lazy.layout.grow_up()),
+        Key([mod, "control"], "Down", lazy.layout.grow_down()),
+        Key([mod, "control"], "Left", lazy.layout.grow_left()),
+        Key([mod, "control"], "Right", lazy.layout.grow_right()),
 
         Key([mod, "mod1"], "Left", lazy.prev_screen()),
         Key([mod, "mod1"], "Right", lazy.next_screen()),
 
-        Key([mod, "shift", "mod1"], "Left", window_to_prev_screen()),
+        Key([mod, "shift", "mod1"], "Left", window_to_previous_screen()),
         Key([mod, "shift", "mod1"], "Right", window_to_next_screen()),
 
         Key([mod], "t", switch_screens()),
 
-        Key([mod], "Up", lazy.group.next_window()),
-        Key([mod], "Down", lazy.group.prev_window()),
+        Key([mod], "Up", lazy.group.prev_window()),
+        Key([mod], "Down", lazy.group.next_window()),
+
+        Key([mod, "shift"], "Up", lazy.layout.shuffle_up()),
+        Key([mod, "shift"], "Down", lazy.layout.shuffle_down()),
 
         Key([mod], "space", lazy.next_layout()),
 
-        Key([mod], "j", lazy.layout.up()),
-        Key([mod], "k", lazy.layout.down()),
-
         Key([mod], "f", lazy.window.toggle_floating()),
+        Key([mod], "s", lazy.layout.toggle_split()),
 
         Key([mod], "r", lazy.spawncmd()),
         Key([mod], "u", lazy.spawn(browser)),
@@ -117,26 +146,35 @@ def init_keys():
         Key([mod, "shift"], "r", lazy.restart()),
         Key([mod, "shift"], "q", lazy.shutdown()),
 
-        Key([], "Print", lazy.spawn("scrot")),
-        Key([], "Scroll_Lock", lazy.spawn(HOME + ".local/bin/i3lock -d")),
+        Key([], "Print", lazy.spawn("gnome-screenshot -i")),
+        Key([mod], "Print", lazy.spawn("gnome-screenshot -p")),
+        Key([], "Scroll_Lock", lazy.spawn(screenlocker)),
         Key([mod], "Delete", lazy.spawn("amixer set Master toggle")),
         Key([mod], "Prior", lazy.spawn("amixer set Master 5+")),
         Key([mod], "Next", lazy.spawn("amixer set Master 5-")),
-        Key([mod], "Insert", lazy.spawn(HOME + ".local/bin/spotify-dbus playpause")),
-        Key([mod], "End", lazy.spawn(HOME + ".local/bin/spotify-dbus next")),
-        Key([mod], "Home", lazy.spawn(HOME + ".local/bin/spotify-dbus previous")),
+        Key([mod], "Insert", lazy.spawn("spotify-dbus playpause")),
+        Key([mod], "End", lazy.spawn("spotify-dbus next")),
+        Key([mod], "Home", lazy.spawn("spotify-dbus previous")),
     ]
     if DEBUG:
-        keys += [Key(["mod1"], "Tab", lazy.layout.next()),
-                 Key(["mod1", "shift"], "Tab", lazy.layout.previous())]
+        keys += [
+            Key([mod], "Tab", lazy.layout.next()),
+            Key([mod, "shift"], "Tab", lazy.layout.previous()),
+            Key([mod, "shift"], "f", lazy.layout.flip()),
+            Key([mod, "shift"], "s", lazy.group["scratch"].dropdown_toggle("term"))
+        ]
     return keys
 
 
 def init_mouse():
-    return [Drag([mod], "Button1", lazy.window.set_position_floating(),
-                 start=lazy.window.get_position()),
-            Drag([mod], "Button3", lazy.window.set_size_floating(),
-                 start=lazy.window.get_size())]
+    mouse = [Drag([mod], "Button1", lazy.window.set_position_floating(),
+                  start=lazy.window.get_position()),
+             Drag([mod], "Button3", lazy.window.set_size_floating(),
+                  start=lazy.window.get_size())]
+    if DEBUG:
+        mouse += [Drag([mod, "shift"], "Button1", lazy.window.set_position(),
+                       start=lazy.window.get_position())]
+    return mouse
 
 
 def init_groups():
@@ -148,11 +186,19 @@ def init_groups():
     groups = [("dead_grave", "00")]
     groups += [(str(i), "0" + str(i)) for i in range(1, 10)]
     groups += [("0", "10"), ("minus", "11"), ("equal", "12")]
-    return [_inner(*i) for i in groups]
+    groups = [_inner(*i) for i in groups]
+
+    if DEBUG:
+        from libqtile.config import DropDown, ScratchPad
+        dropdowns = [DropDown("term", terminal, x=0.125, y=0.25,
+                              width=0.75, height=0.5, opacity=0.8,
+                              on_focus_lost_hide=True)]
+        groups.append(ScratchPad("scratch", dropdowns))
+    return groups
 
 
 def init_floating_layout():
-    return layout.Floating(border_focus=BLUE)
+    return layout.Floating(border_focus=ORANGE)
 
 
 def init_widgets():
@@ -165,7 +211,7 @@ def init_widgets():
                 background=DARK_GREY),
         CurrentLayoutIcon(scale=0.6, padding=-4),
 
-        TextBox(text=" ", padding=2),
+        Spacer(width=10),
         GroupBox(fontsize=8, padding=4, borderwidth=1, urgent_border=DARK_BLUE,
                  disable_drag=True, highlight_method="block",
                  this_screen_border=DARK_BLUE, other_screen_border=DARK_ORANGE,
@@ -181,18 +227,11 @@ def init_widgets():
         Systray(background=GREY),
         TextBox(text="◤", fontsize=45, padding=-1,
                 foreground=GREY, background=DARK_GREY),
-
-        TextBox(text=" ⚠", foreground=BLUE, fontsize=18),
-        Notify(),
-
-        TextBox(text=" ⌚", foreground=BLUE, fontsize=18),
-        Clock(format="%A %d-%m-%Y %H:%M")
+        Notify(fmt=" 🔥 {}"),
+        Clock(fmt=" ⌚ {}", format="%A %d-%m-%Y %H:%M")
     ]
-    if hostname in ("spud", "saiga"):
-        widgets[-2:-2] = [
-            TextBox(text=" ↯", foreground=BLUE, fontsize=14),
-            Battery(update_delay=2)
-        ]
+    if os.path.isdir("/sys/module/battery"):
+        widgets.insert(-1, Battery(fmt=" ⚡️ {}", update_delay=2))
     if DEBUG:
         widgets += [Sep(), CurrentLayout()]
     return widgets
@@ -215,8 +254,11 @@ def init_layouts(num_screens):
     margin = 0
     if num_screens > 1:
         margin = 8
-    layouts.extend([layout.Tile(ratio=0.5, margin=margin, border_width=1,
-                                border_normal="#111111", border_focus=BLUE)])
+    kwargs = dict(margin=margin, border_width=1, border_normal="#111111",
+                  border_focus=BLUE, border_focus_stack=ORANGE)
+    layouts.extend([
+        layout.Columns(num_columns=2, grow_amount=5, **kwargs)
+    ])
 
 
 # very hacky, much ugly
@@ -227,12 +269,14 @@ def main(qtile):
 
 
 if __name__ in ["config", "__main__"]:
-    if HOME + ".local/bin" not in os.environ["PATH"]:
-        os.environ["PATH"] = HOME + ".local/bin:{}".format(os.environ["PATH"])
+    local_bin = os.path.expanduser("~") + "/.local/bin"
+    if local_bin not in os.environ["PATH"]:
+        os.environ["PATH"] = "{}:{}".format(local_bin, os.environ["PATH"])
 
     mod = "mod4"
-    browser = "chromium-browser"
+    browser = "google-chrome"
     terminal = "roxterm"
+    screenlocker = "i3lock -d"
     hostname = socket.gethostname()
     cursor_warp = False
 
@@ -246,8 +290,7 @@ if __name__ in ["config", "__main__"]:
 
     if DEBUG:
         layouts += [
-            floating_layout, layout.Stack(), layout.Zoomy(), layout.Matrix(),
-            layout.TreeTab(), layout.MonadTall(), layout.RatioTile(),
-            layout.Slice('left', 192, name='slice-test', role='gnome-terminal',
-                         fallback=layout.Slice('right', 256, role='gimp-dock',
-                                               fallback=layout.Stack(stacks=1)))]
+            floating_layout, layout.Zoomy(), layout.Tile(), layout.Matrix(),
+            layout.TreeTab(), layout.MonadTall(margin=10), layout.RatioTile(),
+            layout.Stack()
+        ]
