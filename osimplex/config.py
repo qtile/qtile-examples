@@ -59,7 +59,7 @@ if __name__ in ["config", "__main__"]:
 
 # @hook.subscribe.startup_once
 @hook.subscribe.startup
-def start_once():
+def start():
 	call([expanduser("~/.config/qtile/autostart.sh")])
 
 ##### FLOATING TRANSIENT CLIENTS #####
