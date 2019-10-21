@@ -62,6 +62,6 @@ Notes
 Maybe tomorrow
 --------------
 
-1. Dmenu extension not used, but there is an default for this in aesthetics
+1. Dmenu extension not used, but there is a default for this in aesthetics
 1. Powerline like bar
 1. Dynamical layout-based bindings
