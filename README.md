@@ -12,25 +12,26 @@ is available in the main qtile repo under
 
 Config          | Description
 ----------------|------------
-cjbarnes        | java support and application specific floating rules
-dwakar          | themed widgets
-roger           | dynamic groups, rule matching for windows
-rxcomm          | Google Calendar widget
-tych0           | qtile development, multiple screens
-zordsdavini     | various dmenu apps, screenshots, multiscreen, gmailwidget
+a13xmt          | rooms and workspaces
 aeronotix.py    | dynamic groups
 arkchar.py      | basic configuration
 bglasber.py     | python functions in config
+cjbarnes        | java support and application specific floating rules
 cortesi.py      | kinesis keyboard keybindings
+dwakar          | themed widgets
 ei-grad.py      | custom widgets
-ramnes.py       | debug layouts
-tailhook.py     | unicode-based window sorting
-tin.py          | custom window shortcuts
 emdete          | simple, beautiful, useful: lots of keyboard shortcuts
-sweenu          | broken up in several files, custom screenshots, backlight
-a13xmt          | rooms and workspaces
 mort65          | rule matching, dynamic shortcuts, dropdown terminal
 oboingo         | multiscreen, groups assigned to specific screens
+osimplex        | OOP, scratchpad, aesthetics file, defaults files
+ramnes.py       | debug layouts
+roger           | dynamic groups, rule matching for windows
+rxcomm          | Google Calendar widget
+sweenu          | broken up in several files, custom screenshots, backlight
+tailhook.py     | unicode-based window sorting
+tin.py          | custom window shortcuts
+tych0           | qtile development, multiple screens
+zordsdavini     | various dmenu apps, screenshots, multiscreen, gmailwidget
 
 ## Contributing
 
