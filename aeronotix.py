@@ -1,11 +1,9 @@
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 try:
-    from libqtile.manager import Key, Group
+    from libqtile.manager import Key, Group, Click, Drag, Screen
 except ImportError:
-    from libqtile.config import Key, Group
-
-from libqtile.manager import Click, Drag, Screen
+    from libqtile.config import Key, Group, Click, Drag, Screen
 
 sup = "mod4"
 alt = "mod1"
