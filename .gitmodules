@@ -1,0 +1,3 @@
+[submodule "ramnes"]
+	path = ramnes
+	url = https://github.com/ramnes/qtile-config.git
