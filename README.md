@@ -6,7 +6,7 @@ of user configurations and their descriptions.
 Documentation for the default configuration is available
 [here](http://docs.qtile.org/en/latest/manual/config/index.html) and the code
 is available in the main qtile repo under
-[libqtile/resources/default_config.py](https://github.com/qtile/qtile/blob/develop/libqtile/resources/default_config.py).
+[libqtile/resources/default_config.py](https://github.com/qtile/qtile/blob/master/libqtile/resources/default_config.py).
 
 ## Configs
 
