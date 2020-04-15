@@ -10,31 +10,31 @@ is available in the main qtile repo under
 
 ## Configs
 
-Config          | Last working version* | Description
-----------------|----------------------------------------
-a13xmt          | E: currentGroup       | rooms and workspaces
-aeronotix.py    | E: nextgroup          | dynamic groups
-arkchar.py      | E: xmonad-tall        | basic configuration
-bglasber.py     | E: !libqtile.manager  | python functions in config
-cjbarnes        | E: !libqtile.manager  | java support and application specific floating rules
-cortesi.py      | E: !libqtile.manager  | kinesis keyboard keybindings
-dwakar          | E: widget.clock       | themed widgets
-ei-grad.py      | E: !libqtile.manager  | custom widgets
-emdete          | E: backlight          | simple, beautiful, useful: lots of keyboard shortcuts
-lightspeedlight | can't test            | dynamic keybindings, theme on Xresources
-mort65          | E: Client             | rule matching, dynamic shortcuts, dropdown terminal
-oboingo         | can't test            | multiscreen, groups assigned to specific screens
-osimplex        | can't test            | OOP, scratchpad, aesthetics file, defaults files
-ramnes.py       | 0.15.1                | debug layouts
-roger           | can't test            | dynamic groups, rule matching for windows
-rxcomm          | can't test            | Google Calendar widget
-sarge           | almost                | state?
-ShriBhat        | broken                | ??
-sweenu          | broken                | broken up in several files, custom screenshots, backlight
-tailhook.py     | E: !libqtile.manager  | unicode-based window sorting
-tin.py          | E: !libqtile.manager  | custom window shortcuts
-tych0           | screen broken         | qtile development, multiple screens
-zordsdavini     | 0.15.1                | various dmenu apps, monadtall custom maximum, watson ticker, next keyboeard layout
+| Config          | Last working version* | Description |
+|-----------------|---------------------------------------- |
+| a13xmt          | E: currentGroup       | rooms and workspaces |
+| aeronotix.py    | E: nextgroup          | dynamic groups |
+| arkchar.py      | E: xmonad-tall        | basic configuration |
+| bglasber.py     | E: !libqtile.manager  | python functions in config |
+| cjbarnes        | E: !libqtile.manager  | java support and application specific floating rules |
+| cortesi.py      | E: !libqtile.manager  | kinesis keyboard keybindings |
+| dwakar          | E: widget.clock       | themed widgets |
+| ei-grad.py      | E: !libqtile.manager  | custom widgets |
+| emdete          | E: backlight          | simple, beautiful, useful: lots of keyboard shortcuts |
+| lightspeedlight | can't test            | dynamic keybindings, theme on Xresources |
+| mort65          | E: Client             | rule matching, dynamic shortcuts, dropdown terminal |
+| oboingo         | can't test            | multiscreen, groups assigned to specific screens |
+| osimplex        | can't test            | OOP, scratchpad, aesthetics file, defaults files |
+| ramnes.py       | 0.15.1                | debug layouts |
+| roger           | can't test            | dynamic groups, rule matching for windows |
+| rxcomm          | can't test            | Google Calendar widget |
+| sarge           | almost                | state? |
+| ShriBhat        | broken                | ?? |
+| sweenu          | broken                | broken up in several files, custom screenshots, backlight |
+| tailhook.py     | E: !libqtile.manager  | unicode-based window sorting |
+| tin.py          | E: !libqtile.manager  | custom window shortcuts |
+| tych0           | screen broken         | qtile development, multiple screens |
+| zordsdavini     | 0.15.1                | various dmenu apps, monadtall custom maximum, watson ticker, next keyboeard layout |
 
 `* last check 2020-04-15`
 
