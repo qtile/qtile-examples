@@ -11,7 +11,7 @@ is available in the main qtile repo under
 ## Configs
 
 | Config          | Last working version* | Description |
-|-----------------|---------------------------------------- |
+|---------------- | --------------------- | ----------------- |
 | a13xmt          | E: currentGroup       | rooms and workspaces |
 | aeronotix.py    | E: nextgroup          | dynamic groups |
 | arkchar.py      | E: xmonad-tall        | basic configuration |
