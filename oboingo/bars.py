@@ -5,6 +5,8 @@ from libqtile import bar, widget
 
 from platforms import num_screens, hostname
 
+from KeyChain import Keywidget
+
 soft_sep = {'linewidth': 2, 'size_percent': 70,
             'foreground': '393939', 'padding': 7}
 
@@ -18,18 +20,19 @@ if num_screens[hostname] == 4:
     chat_bar = bar.Bar(
         [
             widget.CurrentLayoutIcon(scale=0.9, foreground="EFEFEF", ),
+            Keywidget(),
             widget.GroupBox(),
             widget.Sep(linewidth=2, size_percent=100, padding=12),
             widget.Prompt(),
             widget.TaskList(),
             widget.DF(),
-            widget.Pomodoro(),
+            widget.Pomodoro(length_pomodori=20),
             widget.Systray(),
             widget.Net(interface="eno1"),
             widget.Sep(**soft_sep),
-            widget.Volume(),
+            widget.Volume(update_interval=1),
             widget.Sep(**soft_sep),
-            widget.ThermalSensor(),
+            widget.ThermalSensor(update_interval=5),
             widget.Sep(**soft_sep),
             widget.Memory(),
             widget.Sep(**soft_sep),
@@ -43,13 +46,13 @@ if num_screens[hostname] == 4:
             widget.Prompt(),
             widget.TaskList(),
             widget.DF(),
-            widget.Pomodoro(),
+            widget.Pomodoro(length_pomodori=20),
             widget.Systray(),
             widget.Net(interface="eno1"),
             widget.Sep(**soft_sep),
-            widget.Volume(),
+            widget.Volume(update_interval=1),
             widget.Sep(**soft_sep),
-            widget.ThermalSensor(),
+            widget.ThermalSensor(update_interval=5),
             widget.Sep(**soft_sep),
             widget.Memory(),
             widget.Sep(**soft_sep),
@@ -63,7 +66,8 @@ if num_screens[hostname] == 4:
             widget.Prompt(),
             widget.TaskList(),
             widget.Sep(**soft_sep),
-            widget.Volume(),
+            widget.Volume(update_interval=1),
+            widget.Clock(format='%Y-%m-%d %a %H:%M:%S'),
         ], 30)
     code_bar = bar.Bar(
         [
@@ -73,13 +77,13 @@ if num_screens[hostname] == 4:
             widget.Prompt(),
             widget.TaskList(),
             widget.DF(),
-            widget.Pomodoro(),
+            widget.Pomodoro(length_pomodori=20),
             widget.Systray(),
             widget.Net(interface="eno1"),
             widget.Sep(**soft_sep),
-            widget.Volume(),
+            widget.Volume(update_interval=1),
             widget.Sep(**soft_sep),
-            widget.ThermalSensor(),
+            widget.ThermalSensor(update_interval=5),
             widget.Sep(**soft_sep),
             widget.Memory(),
             widget.Sep(**soft_sep),
@@ -89,20 +93,21 @@ else:
     main_bar = bar.Bar(
         [
             widget.CurrentLayoutIcon(scale=0.9, foreground="EFEFEF", ),
+            Keywidget(),
             widget.GroupBox(),
             widget.Sep(linewidth=2, size_percent=100, padding=12),
             widget.Prompt(),
             widget.TaskList(),
             widget.DF(),
-            widget.Pomodoro(),
+            widget.Pomodoro(length_pomodori=20),
             widget.Systray(),
             widget.Net(interface="wlp2s0"),
             widget.Sep(**soft_sep),
-            widget.Volume(),
+            widget.Volume(update_interval=1),
             widget.Sep(**soft_sep),
             widget.Battery(),
             widget.Sep(**soft_sep),
-            widget.ThermalSensor(),
+            widget.ThermalSensor(update_interval=5),
             widget.Sep(**soft_sep),
             widget.Memory(),
             widget.Sep(**soft_sep),
