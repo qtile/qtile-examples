@@ -9,7 +9,7 @@ if num_screens[hostname] == 4:
     # 4 Screens (Desktop)
     groups = []
     groups.extend([
-        Group("chat", spawn="urxvt -e weechat", layout="columns", persist=True),
+        Group("話", spawn="urxvt -e weechat", layout="columns", persist=True),
         Group("code", spawn="", layout="max", persist=True),
         Group("web", spawn="google-chrome", layout="max", persist=True),
         Group("files", spawn=["pcmanfm", "urxvt -e vifm"], layout="columns", persist=True),
@@ -18,7 +18,7 @@ if num_screens[hostname] == 4:
         Group("server", spawn="urxvt -e tmux", layout="max", persist=True),
         Group("local", spawn="urxvt -e tmux", layout="max", persist=True),
         Group("tor", spawn="", layout="max", persist=True),
-        Group("rip", spawn=["filezilla", "makemkv", "ghb"], layout="columns", persist=True),
+        Group("rip", spawn=["makemkv", "filezilla", "ghb"], layout="columns", persist=True),
         Group("books", spawn="", layout="max", persist=True)
     ])
 else:

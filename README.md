@@ -22,7 +22,7 @@ dwakar          | themed widgets
 ei-grad.py      | custom widgets
 emdete          | simple, beautiful, useful: lots of keyboard shortcuts
 mort65          | rule matching, dynamic shortcuts, dropdown terminal
-oboingo         | multiscreen, groups assigned to specific screens
+oboingo         | multiscreen, groups assigned to specific screens, key chording, time logger
 osimplex        | OOP, scratchpad, aesthetics file, defaults files
 ramnes.py       | debug layouts
 roger           | dynamic groups, rule matching for windows

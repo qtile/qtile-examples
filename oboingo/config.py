@@ -25,10 +25,11 @@
 # SOFTWARE.
 
 import os
+import time
 
 from libqtile import layout, hook
 
-from keys import keys  # NOQA
+from keys import keys, mouse  # NOQA
 from groups import groups  # NOQA
 from screens import screens  # NOQA
 
@@ -49,7 +50,8 @@ def autostart():
 layouts = [
     layout.Max(),
     layout.Columns(),
-    layout.Stack(num_stacks=2)
+    layout.Stack(num_stacks=2),
+    layout.VerticalTile(),
 ]
 
 widget_defaults = dict(
@@ -94,3 +96,12 @@ focus_on_window_activation = "smart"
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
+
+
+# for handling android studio hiding itself
+@hook.subscribe.client_name_updated
+def fixAndroidStudio(w):
+    if w.name == "Welcome to Android Studio":
+        for i in range(5):
+            time.sleep(5)
+            w.unhide()
