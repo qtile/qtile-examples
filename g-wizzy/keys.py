@@ -2,6 +2,7 @@ from libqtile.config import EzKey as Key, EzDrag as Drag, EzClick as Click
 from libqtile.lazy import lazy
 
 from datetime import datetime as time
+import subprocess
 
 # BSP resizing taken from https://github.com/qtile/qtile/issues/1402
 def resize(qtile, direction):
@@ -50,6 +51,23 @@ def float_to_front(qtile):
             if window.floating:
                 window.cmd_bring_to_front()
 
+def screenshot(to_clip = False, rect_select = False):
+    def f(qtile):
+        command = []
+        
+        if to_clip:
+            # Requires to write one-line script `maim_to_clip` and have it in $PATH
+            command += ["maim_to_clip"]
+        else:
+            command += ["maim", f"/home/pierre/Pictures/{time.now().isoformat()}.png"]
+
+        if rect_select:
+            command += ["-s"]
+
+        subprocess.run(command)
+
+    return f
+
 keys = [
     # Layout change
     Key("M-<Tab>", lazy.next_layout()),
@@ -93,11 +111,11 @@ keys = [
     Key("<XF86Calculator>", lazy.spawn("gnome-calculator")),
     
     # Screen capture (Shift => selection, Ctrl => to clipboard)
-    # Requires to write one-line script `maim_to_clip` and have it in $PATH
-    Key("<Print>", lazy.spawn(f"maim /home/pierre/Pictures/{time.now().isoformat()}.png")),
-    Key("S-<Print>", lazy.spawn(f"maim -s /home/pierre/Pictures/{time.now().isoformat()}.png")),
-    Key("C-<Print>", lazy.spawn("maim_to_clip")),
-    Key("C-S-<Print>", lazy.spawn("maim_to_clip -s")),
+    Key("<Print>", lazy.function(screenshot())),
+    Key("C-<Print>", lazy.function(screenshot(to_clip = True))),
+    Key("S-<Print>", lazy.function(screenshot(rect_select = True))),
+    Key("C-S-<Print>", lazy.function(screenshot(to_clip = True, rect_select = True))),
+
 
     Key("M-w", lazy.window.kill()),
     Key("M-C-r", lazy.restart()),
