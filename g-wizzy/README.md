@@ -1,6 +1,6 @@
 # G-Wizzy's qtile config files
 
-The main interest in these config files might be the shortcuts in keys.py and the bar customization in screens.py.
+The main interests in these config files might be the shortcuts in keys.py and the bar customization in screens.py.
 
 Some parts of the the code (for instance the screenshot or multi-screen shortcuts in keys.py) reference some scripts that I have not included, since they aren't relevant in this repository. Feel free to contact me if you are interested.
 
