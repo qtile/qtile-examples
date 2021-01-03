@@ -1,9 +1,8 @@
 import os, subprocess
 from libqtile import hook
 from libqtile.config import Key, Screen, Group, Drag, Click
-from libqtile.command import lazy
+from libqtile.lazy import lazy
 from libqtile import layout, bar, widget
-
 
 # ----------------------------
 # -------- Hotkeys -----------
@@ -25,6 +24,7 @@ keys = [
     # Window hotkeys
     Key([mod], "space", lazy.window.toggle_fullscreen()),
     Key([mod], "c", lazy.window.kill()),
+    Key([mod, "shift"], "c", lazy.window.kill()),
 
     # Spec hotkeys
     Key([mod], "Return", lazy.spawncmd()),
@@ -33,12 +33,17 @@ keys = [
 
     # Apps hotkeys
     Key([mod], "v", lazy.spawn("urxvt")),
-    Key([mod], "g", lazy.spawn("emacs")),
+    Key([mod, "shift"], "v", lazy.spawn("sudo urxvt")),
+    Key([mod], "y", lazy.spawn("urxvt -e python")),
+    Key([mod], "g", lazy.spawn("emacsclient -nc -s instance1")),
+    Key([mod], "b", lazy.spawn("freemind-unstable")),
     Key([mod], "z", lazy.spawn("pcmanfm")),
     Key([mod], "x", lazy.spawn("deadbeef")),
-    Key([mod], "Insert", lazy.spawn("firefox")),
+    Key([mod], "Insert", lazy.spawn("firefox -P default")),
     Key([mod], "Home", lazy.spawn("firefox -P music")),
-    Key([mod], "Prior", lazy.spawn("firefox --private-window")),
+    Key([mod], "Prior", lazy.spawn("firefox -P default --private-window")),
+    Key([mod], "Delete", lazy.spawn("firefox -P dev")),
+    Key([mod], "End", lazy.spawn("firefox -P dev --private-window")),
 
     # System hotkeys
     Key([mod, "shift", "control"], "F11", lazy.spawn("sudo hibernate-reboot")),
@@ -109,20 +114,20 @@ def to_workspace(workspace):
 
         # we need to save current active room(group) somewhere
         # to return to it later
-        wsp[wsp['current']]['active_group'] = qtile.currentGroup.name
+        wsp[wsp['current']]['active_group'] = qtile.current_group.name
 
         # now we can change current workspace to the new one
         # (no actual switch there)
         wsp['current'] = workspace
         # and navigate to the active group from the workspace
         # (actual switch)
-        qtile.groupMap[
+        qtile.groups_map[
             wsp[workspace]['active_group']
-        ].cmd_toscreen()
+        ].cmd_toscreen(toggle=False)
 
         # we also need to change subset of visible groups in the GroupBox widget
-        qtile.widgetMap['groupbox'].visible_groups=get_workspace_groups(workspace)
-        qtile.widgetMap['groupbox'].draw()
+        qtile.widgets_map['groupbox'].visible_groups=get_workspace_groups(workspace)
+        qtile.widgets_map['groupbox'].draw()
         # You can do some other cosmetic stuff here.
         # For example, change Bar background depending on the current workspace.
         # # qtile.widgetMap['groupbox'].bar.background="ff0000"
@@ -133,7 +138,7 @@ def to_room(room):
     """
     def f(qtile):
         global wsp
-        qtile.groupMap[get_group_name(wsp['current'], room)].cmd_toscreen()
+        qtile.groups_map[get_group_name(wsp['current'], room)].cmd_toscreen(toggle=False)
     return f
 
 def window_to_workspace(workspace, room=rooms[0]):
@@ -141,7 +146,7 @@ def window_to_workspace(workspace, room=rooms[0]):
     """
     def f(qtile):
         global wsp
-        qtile.currentWindow.togroup(wsp[workspace]['active_group'])
+        qtile.current_window.togroup(wsp[workspace]['active_group'])
     return f
 
 def window_to_room(room):
@@ -149,7 +154,7 @@ def window_to_room(room):
     """
     def f(qtile):
         global wsp
-        qtile.currentWindow.togroup(get_group_name(wsp['current'], room))
+        qtile.current_window.togroup(get_group_name(wsp['current'], room))
     return f
 
 # Create individual Group for each (workspace,room) combination we have
@@ -206,27 +211,27 @@ screens = [
                     visible_groups=get_workspace_groups(wsp['current']),
                     spacing=0,
                 ),
-                widget.Prompt(
-                    prompt="run: ",
-                    ignore_dups_history=True,
-                ),
-                widget.WindowName(),
-                widget.CPUGraph(
-                    width=30,
-                    border_width=1,
-                    border_color="#000000",
-                    frequency=5,
-                    line_width=1,
-                    samples=50,
-                ),
-                widget.MemoryGraph(
-                    width=30,
-                    border_width=1,
-                    border_color="#000000",
-                    line_width=1,
-                    frequency=5,
-                    fill_color="EEE8AA"
-                ),
+                 widget.Prompt(
+                     prompt="run: ",
+                     ignore_dups_history=True,
+                 ),
+                 widget.WindowName(),
+                 widget.CPUGraph(
+                     width=30,
+                     border_width=1,
+                     border_color="#000000",
+                     frequency=5,
+                     line_width=1,
+                     samples=50,
+                 ),
+                 widget.MemoryGraph(
+                     width=30,
+                     border_width=1,
+                     border_color="#000000",
+                     line_width=1,
+                     frequency=5,
+                     fill_color="EEE8AA"
+                 ),
                 widget.Volume(fontsize=10, update_interval=2),
                 widget.Systray(),
                 widget.Clock(
@@ -252,11 +257,22 @@ main = None
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
-floating_layout = layout.Floating()
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 extentions = []
 wmname = "LG3D"
+
+floating_layout = layout.Floating(float_rules=[
+    {'wmclass': 'confirm'},
+    {'wmclass': 'dialog'},
+    {'wmclass': 'download'},
+    {'wmclass': 'error'},
+    {'wmclass': 'file_progress'},
+    {'wmclass': 'notification'},
+    {'wmclass': 'splash'},
+    {'wmclass': 'toolbar'},
+    {'wmclass': 'DBeaver'}
+])
 
 @hook.subscribe.startup_once
 def autostart():
