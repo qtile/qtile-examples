@@ -4,3 +4,6 @@
 [submodule "zordsdavini"]
 	path = zordsdavini
 	url = https://github.com/zordsdavini/qtile-config.git
+[submodule "justinesmithies"]
+	path = justinesmithies
+	url = https://github.com/justinesmithies/dotfiles
