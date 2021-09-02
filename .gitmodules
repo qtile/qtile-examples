@@ -7,3 +7,6 @@
 [submodule "justinesmithies"]
 	path = justinesmithies
 	url = https://github.com/justinesmithies/dotfiles
+[submodule "mcol"]
+	path = mcol
+	url = https://github.com/m-col/qtile-config
