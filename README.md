@@ -36,9 +36,10 @@ zordsdavini     | various dmenu apps, screenshots, multiscreen, gmailwidget
 
 ## Plugins
 
-Module          | Description
-----------------|------------
-traverse        | Functions for traversing focus over windows based on global position
+Module                  | Description
+------------------------|------------
+traverse                | Functions for traversing focus over windows based on global position
+graphical_notifications | An interactive graphical notification server similar to dunst
 
 ## Contributing
 
