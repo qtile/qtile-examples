@@ -34,6 +34,12 @@ tin.py          | custom window shortcuts
 tych0           | qtile development, multiple screens
 zordsdavini     | various dmenu apps, screenshots, multiscreen, gmailwidget
 
+## Plugins
+
+Module          | Description
+----------------|------------
+traverse        | Functions for traversing focus over windows based on global position
+
 ## Contributing
 
 To contribute please fork the repo on github and make a pull request. Please
