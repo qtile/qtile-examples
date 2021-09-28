@@ -28,35 +28,51 @@ import os
 import re
 import socket
 import subprocess
-from typing import List  # noqa: F401
+from libqtile import qtile
 from libqtile import bar, layout, widget, hook
-from libqtile.config import Click, Drag, Group, Key, KeyChord, Screen
+from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.command import lazy
+from typing import List  # noqa: F401
 
+#mod4 or mod = super key
 mod = "mod4"
+mod1 = "alt"
+#mod2 = "control"
+home = os.path.expanduser('~')
+
 myTerminal = "alacritty"
 myConfig = "~/.config/qtile/config.py"
 
 keys = [
-    # Switch between windows in current stack pane
-    Key([mod], "k", lazy.layout.down(),
-        desc="Move focus down in stack pane"),
-    Key([mod], "j", lazy.layout.up(),
-        desc="Move focus up in stack pane"),
-
-    # Move windows up or down in current stack
-    Key([mod, "control"], "k", lazy.layout.shuffle_down(),
-        desc="Move window down in current stack "),
-    Key([mod, "control"], "j", lazy.layout.shuffle_up(),
-        desc="Move window up in current stack "),
-
-    # Switch window focus to other pane(s) of stack
+    # Switch between windows
+    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
+    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
+    Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
+    Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
     Key([mod], "space", lazy.layout.next(),
-        desc="Switch window focus to other pane(s) of stack"),
-    # Swap panes of split stack
-    Key([mod, "shift"], "space", lazy.layout.rotate(),
-        desc="Swap panes of split stack"),
+        desc="Move window focus to other window"),
+
+    # Move windows between left/right columns or move up/down in current stack.
+    # Moving out of range in Columns layout will create new column.
+    Key([mod, "shift"], "h", lazy.layout.shuffle_left(),
+        desc="Move window to the left"),
+    Key([mod, "shift"], "l", lazy.layout.shuffle_right(),
+        desc="Move window to the right"),
+    Key([mod, "shift"], "j", lazy.layout.shuffle_down(),
+        desc="Move window down"),
+    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+
+    # Grow windows. If current window is on the edge of screen and direction
+    # will be to screen edge - window would shrink.
+    Key([mod, "control"], "h", lazy.layout.grow_left(),
+        desc="Grow window to the left"),
+    Key([mod, "control"], "l", lazy.layout.grow_right(),
+        desc="Grow window to the right"),
+    Key([mod, "control"], "j", lazy.layout.grow_down(),
+        desc="Grow window down"),
+    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
 
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
@@ -68,14 +84,23 @@ keys = [
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod], "x", lazy.window.kill(), desc="Kill focused window"),
 
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
-    Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
+    Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
+    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([mod], "r", lazy.spawncmd(),
+        desc="Spawn a command using a prompt widget"),
 
-    Key([mod], "r", lazy.spawn("rofi -show run"), desc="Launch rofi"),
+    # Keybindings to launch user defined programs
+    Key(["mod1"], "w", lazy.spawn("brave-browser"), desc="Launch brave-browser"),
+    Key(["mod1"], "r", lazy.spawn("rofi -show run"), desc="Launch rofi"),
+    Key(["mod1"], "d", lazy.spawn("dmenu_run"), desc="Launch dmenu"),
+    Key(["mod1"], "f", lazy.spawn('thunar'), desc="Launch thunar"),
+    Key(["mod1"], "t", lazy.spawn('st'), desc="Launch st"),
+    Key(["mod1"], "n", lazy.spawn('nitrogen'), desc="Launch nitrogen"),
 ]
 
+#groups = [Group(i) for i in "123456789"]
 groups = [Group(i) for i in "asdfuiop"]
 
 for i in groups:
@@ -94,7 +119,7 @@ for i in groups:
     ])
 
 def init_layout_theme():
-    return {"margin": 4,
+    return {"margin": 5,
             "border_width": 2,
             "border_focus": '#5e81ac',
             "border_normal": '#4c566a'
@@ -106,15 +131,15 @@ layouts = [
     # layout.Max(),
     # layout.Stack(num_stacks=2),
     # Try more layouts by unleashing below layouts.
-    layout.Bsp(**layout_theme),
+    # layout.Bsp(**layout_theme),
     # layout.Columns(),
     layout.Matrix(**layout_theme),
-    layout.MonadTall(margin=6, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
-    layout.MonadWide(margin=6, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
+    layout.MonadTall(margin=5, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
+    layout.MonadWide(margin=5, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
     layout.RatioTile(**layout_theme),
     # layout.Tile(),
     # layout.TreeTab(),
-    layout.VerticalTile(**layout_theme),
+    # layout.VerticalTile(**layout_theme),
     # layout.Zoomy(),
 ]
 
@@ -205,10 +230,25 @@ floating_layout = layout.Floating(float_rules=[
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 
+main = None
+
 @hook.subscribe.startup_once
-def autostart():
+def start_once():
     home = os.path.expanduser('~')
-    subprocess.Popen([home + '/.config/qtile/autostart.sh'])
+    subprocess.call([home + '/.config/qtile/autostart.sh'])
+
+@hook.subscribe.startup
+def start_always():
+    # Set the cursor to something sane in X
+    subprocess.Popen(['xsetroot', '-cursor_name', 'left_ptr'])
+
+@hook.subscribe.client_new
+def set_floating(window):
+    if (window.window.get_wm_transient_for()
+            or window.window.get_wm_type() in floating_types):
+        window.floating = True
+
+floating_types = ["notification", "toolbar", "splash", "dialog"]
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
