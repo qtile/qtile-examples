@@ -197,13 +197,17 @@ def init_widgets_list():
     prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
     widgets_list = [
         widget.Image(
-            filename = "~/.config/qtile/icons/dnanordsmall.png",
+            filename = "~/.config/qtile/icons/qtilelogo.png",
             iconsize = 10,
             background = colors[1],
             mouse_callbacks = {'Button1': lambda : qtile.cmd_spawn('rofi -show run')}
             ),
-        widget.Sep(),
-
+        widget.Sep(
+            linewidth = 1,
+            padding = 10,
+            foreground = colors[2],
+            background = colors[1]
+            ),
         widget.GroupBox(
             active=colors[9],
             inactive=colors[5],
@@ -212,21 +216,70 @@ def init_widgets_list():
             foreground = colors[2],
             background = colors[1]
             ),
-
-        widget.Spacer(),
-
+        widget.Sep(
+            linewidth = 1,
+            padding = 10,
+            foreground = colors[2],
+            background = colors[1]
+            ),
+        widget.WindowName(font="Noto Sans",
+            fontsize = 12,
+            foreground = colors[5],
+            background = colors[1],
+            ),
+        #widget.Spacer(),
+        widget.Sep(
+            linewidth = 1,
+            padding = 10,
+            foreground = colors[2],
+            background = colors[1]
+            ),
+        widget.Systray(
+            background=colors[1],
+            icon_size=20,
+            padding = 4
+            ),
+        widget.Sep(
+            linewidth = 1,
+            padding = 10,
+            foreground = colors[2],
+            background = colors[1]),
         widget.CPUGraph(
             border_color = colors[2],
-            fill_color = colors[8],
-            graph_color = colors[8],
+            fill_color = colors[3],
+            graph_color = colors[3],
             background=colors[1],
             border_width = 1,
             line_width = 1,
             core = "all",
             type = "box"
             ),
-        widget.Sep(),
-
+        widget.Sep(
+            linewidth = 1,
+            padding = 10,
+            foreground = colors[2],
+            background = colors[1]
+            ),
+        widget.NetGraph(
+            font="Noto Sans",
+            fontsize=12,
+            bandwidth="down",
+            interface="auto",
+            fill_color = colors[3],
+            foreground=colors[2],
+            background=colors[1],
+            graph_color = colors[3],
+            border_color = colors[2],
+            padding = 0,
+            border_width = 1,
+            line_width = 1,
+            ),
+        widget.Sep(
+            linewidth = 1,
+            padding = 10,
+            foreground = colors[2],
+            background = colors[1]
+            ),
         widget.Memory(
             font="Noto Sans",
             format='{MemUsed:.0f}{mm}',
@@ -235,33 +288,35 @@ def init_widgets_list():
             foreground = colors[5],
             background = colors[1],
             ),
-        widget.Sep(),
-
-        widget.Net(
-            font="Noto Sans",
-            fontsize=12,
-            interface="all",
-            foreground=colors[2],
-            background=colors[1],
-            padding = 0,
+        widget.Sep(
+            linewidth = 1,
+            padding = 10,
+            foreground = colors[2],
+            background = colors[1]
             ),
-        widget.Sep(),
-
         widget.Clock(
             foreground = colors[5],
             background = colors[1],
             fontsize = 12,
             format="%Y-%m-%d %H:%M"
             ),
-        widget.Sep(),
-
+        widget.Sep(
+            linewidth = 1,
+            padding = 10,
+            foreground = colors[2],
+            background = colors[1]
+            ),
         widget.CurrentLayout(
             font = "Noto Sans Bold",
             foreground = colors[5],
             background = colors[1]
             ),
-        widget.Sep(),
-
+        widget.Sep(
+            linewidth = 1,
+            padding = 10,
+            foreground = colors[2],
+            background = colors[1]
+            ),
         widget.CurrentLayoutIcon(
             custom_icon_paths = [os.path.expanduser("~/.config/qtile/icons")],
             foreground = colors[8],
