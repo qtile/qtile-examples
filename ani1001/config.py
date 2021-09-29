@@ -197,7 +197,7 @@ def init_widgets_list():
     prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
     widgets_list = [
         widget.Image(
-            filename = "~/.config/qtile/icons/qtilelogo.png",
+            filename = "~/.config/qtile/icons/dnanordsmall.png",
             iconsize = 10,
             background = colors[1],
             mouse_callbacks = {'Button1': lambda : qtile.cmd_spawn('rofi -show run')}
