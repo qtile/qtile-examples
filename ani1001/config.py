@@ -112,13 +112,16 @@ keys = [
 
 groups = []
 
-group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",]
+#group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",]
+group_names = ["1", "2", "3", "4", "5",]
 
 #group_labels = ["1 ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "0",]
-group_labels = ["web", "irc", "mail", "net", "doc", "gfx", "media", "sys", "dev", "misc",]
+#group_labels = ["web", "irc", "mail", "net", "doc", "gfx", "media", "sys", "dev", "misc",]
+group_labels = ["web", "irc", "mail", "dev", "sys",]
 
-group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "treetab", "floating",]
+#group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "treetab", "floating",]
 #group_layouts = ["monadtall", "matrix", "monadtall", "bsp", "monadtall", "matrix", "monadtall", "bsp", "monadtall", "monadtall",]
+group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall",]
 
 for i in range(len(group_names)):
     groups.append(
@@ -133,8 +136,8 @@ for i in groups:
     keys.extend([
         #Change workspaces
         Key([mod], i.name, lazy.group[i.name].toscreen()),
-        Key(["mod1"], "space", lazy.screen.next_group()),
-        Key([mod, "shift" ], "Tab", lazy.screen.prev_group()),
+        #Key([mod], "Tab", lazy.screen.next_group()),
+        #Key([mod, "shift" ], "Tab", lazy.screen.prev_group()),
         Key(["mod1"], "Tab", lazy.screen.next_group()),
         Key(["mod1", "shift"], "Tab", lazy.screen.prev_group()),
 
@@ -197,7 +200,7 @@ def init_widgets_list():
     prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
     widgets_list = [
         widget.Image(
-            filename = "~/.config/qtile/icons/qtilelogo.png",
+            filename = "~/.config/qtile/icons/python.png",
             iconsize = 10,
             background = colors[1],
             mouse_callbacks = {'Button1': lambda : qtile.cmd_spawn('rofi -show run')}
@@ -228,17 +231,17 @@ def init_widgets_list():
             background = colors[1],
             ),
         #widget.Spacer(),
-        widget.Sep(
-            linewidth = 1,
-            padding = 10,
-            foreground = colors[2],
-            background = colors[1]
-            ),
-        widget.Systray(
-            background=colors[1],
-            icon_size=20,
-            padding = 4
-            ),
+        #widget.Sep(
+        #    linewidth = 1,
+        #    padding = 10,
+        #    foreground = colors[2],
+        #    background = colors[1]
+        #    ),
+        #widget.Systray(
+        #    background=colors[1],
+        #    icon_size=20,
+        #    padding = 4
+        #    ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
