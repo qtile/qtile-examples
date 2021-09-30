@@ -4,3 +4,5 @@ nitrogen --restore &
 picom &
 lxpolkit &
 urxvtd -q -o -f &
+#nm-applet &
+volumeicon &
