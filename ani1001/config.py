@@ -40,7 +40,7 @@ mod1 = "alt"
 home = os.path.expanduser('~')
 
 #terminal = guess_terminal()
-terminal = "alacritty"
+terminal = "kitty"
 
 @lazy.function
 def window_to_prev_group(qtile):
@@ -102,11 +102,11 @@ keys = [
         #desc="Spawn a command using a prompt widget"),
 
     # Keybindings to launch user defined programs
-    Key(["mod1"], "w", lazy.spawn("brave-browser"), desc="Launch brave-browser"),
+    Key(["mod1"], "w", lazy.spawn("firefox"), desc="Launch firefox"),
     Key(["mod1"], "r", lazy.spawn("rofi -show run"), desc="Launch rofi"),
     Key(["mod1"], "d", lazy.spawn("dmenu_run"), desc="Launch dmenu"),
     Key(["mod1"], "f", lazy.spawn('thunar'), desc="Launch thunar"),
-    Key(["mod1"], "t", lazy.spawn('urxvtc'), desc="Launch rxvt-unicode"),
+    Key(["mod1"], "t", lazy.spawn('xterm'), desc="Launch xterm"),
     Key(["mod1"], "n", lazy.spawn('nitrogen'), desc="Launch nitrogen"),
 ]
 
