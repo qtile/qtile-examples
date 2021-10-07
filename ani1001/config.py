@@ -40,7 +40,7 @@ mod1 = "alt"
 home = os.path.expanduser('~')
 
 #terminal = guess_terminal()
-terminal = "kitty"
+terminal = "alacritty"
 
 @lazy.function
 def window_to_prev_group(qtile):
@@ -94,7 +94,7 @@ keys = [
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
@@ -102,12 +102,15 @@ keys = [
         #desc="Spawn a command using a prompt widget"),
 
     # Keybindings to launch user defined programs
-    Key(["mod1"], "w", lazy.spawn("firefox"), desc="Launch firefox"),
-    Key(["mod1"], "r", lazy.spawn("rofi -show run"), desc="Launch rofi"),
     Key(["mod1"], "d", lazy.spawn("dmenu_run"), desc="Launch dmenu"),
-    Key(["mod1"], "f", lazy.spawn('thunar'), desc="Launch thunar"),
-    Key(["mod1"], "t", lazy.spawn('xterm'), desc="Launch xterm"),
-    Key(["mod1"], "n", lazy.spawn('nitrogen'), desc="Launch nitrogen"),
+    Key(["mod1"], "e", lazy.spawn("emacs"), desc="Launch emacs"),
+    Key(["mod1"], "f", lazy.spawn("pcmanfm"), desc="Launch pcmanfm"),
+    Key(["mod1"], "m", lazy.spawn("/usr/local/src/thunderbird/thunderbird"), desc="Launch thunderbird"),
+    Key(["mod1"], "n", lazy.spawn("nitrogen"), desc="Launch nitrogen"),
+    Key(["mod1"], "r", lazy.spawn("rofi -show run"), desc="Launch rofi"),
+    Key(["mod1"], "t", lazy.spawn("urxvtc"), desc="Launch rxvt-unicode"),
+    Key(["mod1"], "w", lazy.spawn("/usr/local/src/firefox/firefox"), desc="Launch firefox"),
+    Key(["mod1", "control"], "w", lazy.spawn("/usr/local/src/waterfox/waterfox"), desc="Launch waterfox"),
 ]
 
 groups = []
@@ -157,11 +160,11 @@ def init_layout_theme():
 layout_theme = init_layout_theme()
 
 layouts = [
-    layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
+    # layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
     # layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
-    layout.Bsp(**layout_theme),
+    # layout.Bsp(**layout_theme),
     layout.Matrix(**layout_theme),
     layout.MonadTall(margin=4, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
     layout.MonadWide(margin=4, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
@@ -369,7 +372,7 @@ def init_widgets_screen():
 widgets_screen = init_widgets_screen()
 
 def init_screens():
-    return [Screen(top=bar.Bar(widgets=init_widgets_screen(), size=20, opacity=0.9))]
+    return [Screen(top=bar.Bar(widgets=init_widgets_screen(), size=20, opacity=1.0))]
 screens = init_screens()
 
 # Drag floating layouts.
