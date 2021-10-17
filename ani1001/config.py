@@ -115,16 +115,17 @@ keys = [
 
 groups = []
 
-#group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",]
-group_names = ["1", "2", "3", "4", "5",]
+group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",]
+#group_names = ["1", "2", "3", "4", "5",]
 
 #group_labels = ["1 ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "0",]
+group_labels = ["", "", "", "", "", "", "", "", "", "",]
 #group_labels = ["web", "irc", "mail", "net", "doc", "gfx", "media", "sys", "dev", "misc",]
-group_labels = ["web", "irc", "mail", "dev", "sys",]
+#group_labels = ["web", "irc", "mail", "dev", "sys",]
 
 #group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "treetab", "floating",]
-#group_layouts = ["monadtall", "matrix", "monadtall", "bsp", "monadtall", "matrix", "monadtall", "bsp", "monadtall", "monadtall",]
-group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall",]
+group_layouts = ["monadtall", "matrix", "monadtall", "bsp", "monadtall", "matrix", "monadtall", "bsp", "monadtall", "monadtall",]
+#group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall",]
 
 for i in range(len(group_names)):
     groups.append(
@@ -164,7 +165,7 @@ layouts = [
     # layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
-    # layout.Bsp(**layout_theme),
+    layout.Bsp(**layout_theme),
     layout.Matrix(**layout_theme),
     layout.MonadTall(margin=4, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
     layout.MonadWide(margin=4, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
@@ -192,7 +193,7 @@ colors = init_colors()
 
 #Widgets for the bar
 def init_widgets_defaults():
-    return dict(font="Noto Sans",
+    return dict(font="Ubuntu Nerd Font",
                 fontsize = 12,
                 padding = 3,
                 background=colors[1])
@@ -210,7 +211,7 @@ def init_widgets_list():
             ),
         widget.Image(
             filename = "~/.config/qtile/icons/python.png",
-            iconsize = 9,
+            iconsize = 10,
             background = colors[1],
             mouse_callbacks = {'Button1': lambda : qtile.cmd_spawn('rofi -show run')}
             ),
@@ -221,12 +222,21 @@ def init_widgets_list():
             background = colors[1]
             ),
         widget.GroupBox(
+            font = "Ubuntu Nerd Font",
+            fontsize = 14,
+            margin_y = 2,
+            margin_x = 5,
+            padding_y = 5,
+            padding_x = 4,
+            borderwidth = 2,
+            disable_drag = True,
             active = colors[9],
             inactive = colors[3],
-            highlight_method = 'line',
+            rounded = False,
+            highlight_method = "line",
             this_current_screen_border = colors[7],
             foreground = colors[2],
-            background = colors[1]
+            background = colors[1],
             ),
         widget.Sep(
             linewidth = 1,
@@ -235,7 +245,7 @@ def init_widgets_list():
             background = colors[1]
             ),
         widget.WindowName(
-            font="Noto Sans",
+            font="Ubuntu",
             fontsize = 12,
             foreground = colors[3],
             background = colors[1],
@@ -258,8 +268,16 @@ def init_widgets_list():
             foreground = colors[2],
             background = colors[1]
             ),
+        #widget.TextBox(
+        #    font = "Ubuntu Nerd Font",
+        #    text = " ",
+        #    foreground = colors[2],
+        #    background = colors[1],
+        #    padding = 0,
+        #    fontsize = 12
+        #    ),
         widget.CPU(
-            font="Noto Sans",
+            font="Ubuntu Nerd Font",
             format="CPU {freq_current}GHz {load_percent}%",
             update_interval = 1,
             fontsize = 12,
@@ -282,8 +300,16 @@ def init_widgets_list():
             foreground = colors[2],
             background = colors[1]
             ),
+        #widget.TextBox(
+        #    font = "Ubuntu Nerd Font",
+        #    text = " ",
+        #    foreground = colors[2],
+        #    background = colors[1],
+        #    padding = 0,
+        #    fontsize = 14
+        #    ),
         widget.Memory(
-            font="Noto Sans",
+            font="Ubuntu Nerd Font",
             format="{MemUsed: .0f}{mm} /{MemTotal: .0f}{mm}",
             update_interval = 1,
             fontsize = 12,
@@ -296,33 +322,49 @@ def init_widgets_list():
             foreground = colors[2],
             background = colors[1]
             ),
-        widget.Net(
-            font = "Noto Sans",
-            fontsize = 12,
-            interface = "all",
-            foreground = colors[2],
-            background = colors[1],
-            padding = 0,
-            ),
-        #widget.NetGraph(
-        #    font = "Noto Sans",
-        #    fontsize = 12,
-        #    bandwidth = "down",
-        #    interface = "auto",
-        #    fill_color = colors[5],
+        #widget.TextBox(
+        #    font = "Ubuntu Nerd Font",
+        #    text = " ",
         #    foreground = colors[2],
         #    background = colors[1],
-        #    graph_color = colors[5],
-        #    border_color = colors[2],
         #    padding = 0,
-        #    border_width = 1,
-        #    line_width = 1,
+        #    fontsize = 12
         #    ),
+        #widget.Net(
+        #    font = "Ubuntu Nerd Font",
+        #    fontsize = 12,
+        #    interface = "all",
+        #    foreground = colors[2],
+        #    background = colors[1],
+        #    padding = 0,
+        #    ),
+        widget.NetGraph(
+            font = "Ubuntu Nerd Font",
+            fontsize = 12,
+            bandwidth = "down",
+            interface = "auto",
+            fill_color = colors[5],
+            foreground = colors[2],
+            background = colors[1],
+            graph_color = colors[5],
+            border_color = colors[2],
+            padding = 0,
+            border_width = 1,
+            line_width = 1,
+            ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
+            ),
+        widget.TextBox(
+            font = "Ubuntu Nerd Font",
+            text = " ",
+            foreground = colors[2],
+            background = colors[1],
+            padding = 0,
+            fontsize = 14
             ),
         widget.Clock(
             foreground = colors[3],
@@ -337,7 +379,7 @@ def init_widgets_list():
             background = colors[1]
             ),
         widget.CurrentLayout(
-            font = "Noto Sans Bold",
+            font = "Ubuntu Nerd Font Bold",
             foreground = colors[3],
             background = colors[1]
             ),
@@ -372,7 +414,7 @@ def init_widgets_screen():
 widgets_screen = init_widgets_screen()
 
 def init_screens():
-    return [Screen(top=bar.Bar(widgets=init_widgets_screen(), size=20, opacity=1.0))]
+    return [Screen(top=bar.Bar(widgets=init_widgets_screen(), size=22, opacity=0.9))]
 screens = init_screens()
 
 # Drag floating layouts.
