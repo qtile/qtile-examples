@@ -40,7 +40,7 @@ mod1 = "alt"
 home = os.path.expanduser('~')
 
 #terminal = guess_terminal()
-terminal = "alacritty"
+terminal = "kitty"
 
 @lazy.function
 def window_to_prev_group(qtile):
