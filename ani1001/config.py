@@ -237,7 +237,7 @@ def init_widgets_list():
             urgent_alert_method = "line", #block
             this_current_screen_border = colors[7],
             foreground = colors[2],
-            background = colors[1],
+            background = colors[1]
             ),
         widget.Sep(
             linewidth = 1,
@@ -250,6 +250,7 @@ def init_widgets_list():
             fontsize = 12,
             foreground = colors[3],
             background = colors[1],
+            max_chars = 45
             ),
         #widget.Spacer(),
         widget.Sep(
@@ -283,7 +284,7 @@ def init_widgets_list():
             update_interval = 1,
             fontsize = 12,
             foreground = colors[3],
-            background = colors[1],
+            background = colors[1]
             ),
         #widget.CPUGraph(
         #    border_color = colors[2],
@@ -315,7 +316,7 @@ def init_widgets_list():
             update_interval = 1,
             fontsize = 12,
             foreground = colors[3],
-            background = colors[1],
+            background = colors[1]
             ),
         widget.Sep(
             linewidth = 1,
@@ -351,7 +352,7 @@ def init_widgets_list():
             border_color = colors[2],
             padding = 0,
             border_width = 1,
-            line_width = 1,
+            line_width = 1
             ),
         widget.Sep(
             linewidth = 1,
