@@ -167,8 +167,8 @@ layouts = [
     # layout.Stack(num_stacks=2),
     layout.Bsp(**layout_theme),
     layout.Matrix(**layout_theme),
-    layout.MonadTall(margin=4, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
-    layout.MonadWide(margin=4, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
+    layout.MonadTall(margin=0, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
+    layout.MonadWide(margin=0, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
     layout.RatioTile(**layout_theme),
     # layout.Tile(),
     # layout.TreeTab(),
@@ -224,16 +224,17 @@ def init_widgets_list():
         widget.GroupBox(
             font = "Ubuntu Nerd Font",
             fontsize = 14,
-            margin_y = 2,
-            margin_x = 5,
-            padding_y = 5,
-            padding_x = 4,
+            margin_y = 3,
+            margin_x = 0,
+            padding_y = 8,
+            padding_x = 5,
             borderwidth = 2,
             disable_drag = True,
             active = colors[9],
             inactive = colors[3],
             rounded = False,
-            highlight_method = "line",
+            highlight_method = "line", #block
+            urgent_alert_method = "line", #block
             this_current_screen_border = colors[7],
             foreground = colors[2],
             background = colors[1],
@@ -414,7 +415,7 @@ def init_widgets_screen():
 widgets_screen = init_widgets_screen()
 
 def init_screens():
-    return [Screen(top=bar.Bar(widgets=init_widgets_screen(), size=22, opacity=0.9))]
+    return [Screen(top=bar.Bar(widgets=init_widgets_screen(), size=22, opacity=1.0))]
 screens = init_screens()
 
 # Drag floating layouts.
