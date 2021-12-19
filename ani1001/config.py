@@ -35,12 +35,9 @@ from libqtile.widget import Spacer
 #mod4 or mod = super key
 mod = "mod4"
 mod1 = "alt"
-#mod2 = "control"
-#mod3 = "shift"
 home = os.path.expanduser('~')
-
 #terminal = guess_terminal()
-terminal = "kitty"
+terminal = "alacritty"
 
 @lazy.function
 def window_to_prev_group(qtile):
@@ -109,23 +106,15 @@ keys = [
     Key(["mod1"], "n", lazy.spawn("nitrogen"), desc="Launch nitrogen"),
     Key(["mod1"], "r", lazy.spawn("rofi -show run"), desc="Launch rofi"),
     Key(["mod1"], "t", lazy.spawn("urxvtc"), desc="Launch rxvt-unicode"),
-    Key(["mod1"], "w", lazy.spawn("/usr/local/src/firefox/firefox"), desc="Launch firefox"),
+    Key(["mod1"], "w", lazy.spawn("firefox"), desc="Launch firefox"),
     Key(["mod1", "control"], "w", lazy.spawn("/usr/local/src/waterfox/waterfox"), desc="Launch waterfox"),
+    Key(["mod1", "control"], "s", lazy.spawn("/usr/local/src/sublime_text/sublime_text"), desc="Launch sublime_text"),
 ]
 
 groups = []
-
 group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",]
-#group_names = ["1", "2", "3", "4", "5",]
-
-#group_labels = ["1 ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "0",]
 group_labels = ["", "", "", "", "", "", "", "", "", "",]
-#group_labels = ["web", "irc", "mail", "net", "doc", "gfx", "media", "sys", "dev", "misc",]
-#group_labels = ["web", "irc", "mail", "dev", "sys",]
-
-#group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "treetab", "floating",]
 group_layouts = ["monadtall", "matrix", "monadtall", "bsp", "monadtall", "matrix", "monadtall", "bsp", "monadtall", "monadtall",]
-#group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall",]
 
 for i in range(len(group_names)):
     groups.append(
@@ -152,7 +141,8 @@ for i in groups:
     ])
 
 def init_layout_theme():
-    return {"margin": 4,
+    return {
+            "margin": 4,
             "border_width": 2,
             "border_focus": '#5e81ac',
             "border_normal": '#4c566a'
@@ -162,17 +152,17 @@ layout_theme = init_layout_theme()
 
 layouts = [
     # layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
-    # layout.Max(),
+    layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     layout.Bsp(**layout_theme),
     layout.Matrix(**layout_theme),
     layout.MonadTall(margin=0, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
-    layout.MonadWide(margin=0, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
-    layout.RatioTile(**layout_theme),
+    # layout.MonadWide(margin=0, border_width=2, border_focus='#5e81ac', border_normal='#4c566a'),
+    # layout.RatioTile(**layout_theme),
     # layout.Tile(),
     # layout.TreeTab(),
-    layout.VerticalTile(**layout_theme),
+    # layout.VerticalTile(**layout_theme),
     # layout.Zoomy(),
 ]
 
@@ -193,10 +183,12 @@ colors = init_colors()
 
 #Widgets for the bar
 def init_widgets_defaults():
-    return dict(font="Ubuntu Nerd Font",
+    return dict(
+                font="Ubuntu Nerd Font",
                 fontsize = 12,
                 padding = 3,
-                background=colors[1])
+                background=colors[1]
+                )
 
 widget_defaults = init_widgets_defaults()
 
@@ -208,19 +200,19 @@ def init_widgets_list():
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         widget.Image(
             filename = "~/.config/qtile/icons/python.png",
             iconsize = 10,
             background = colors[1],
             mouse_callbacks = {'Button1': lambda : qtile.cmd_spawn('rofi -show run')}
-            ),
+        ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         widget.GroupBox(
             font = "Ubuntu Nerd Font",
             fontsize = 14,
@@ -238,38 +230,38 @@ def init_widgets_list():
             this_current_screen_border = colors[7],
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         widget.WindowName(
-            font="Ubuntu",
+            font = "Ubuntu",
             fontsize = 12,
             foreground = colors[3],
             background = colors[1],
             max_chars = 45
-            ),
+        ),
         #widget.Spacer(),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         widget.Systray(
             background = colors[1],
             icon_size = 20,
             padding = 4
-            ),
+        ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         #widget.TextBox(
         #    font = "Ubuntu Nerd Font",
         #    text = " ",
@@ -277,15 +269,15 @@ def init_widgets_list():
         #    background = colors[1],
         #    padding = 0,
         #    fontsize = 12
-        #    ),
+        #),
         widget.CPU(
-            font="Ubuntu Nerd Font",
-            format="CPU {freq_current}GHz {load_percent}%",
+            font = "Ubuntu Nerd Font",
+            format = "CPU {freq_current}GHz {load_percent}%",
             update_interval = 1,
             fontsize = 12,
             foreground = colors[3],
             background = colors[1]
-            ),
+        ),
         #widget.CPUGraph(
         #    border_color = colors[2],
         #    fill_color = colors[5],
@@ -295,13 +287,13 @@ def init_widgets_list():
         #    line_width = 1,
         #    core = "all",
         #    type = "box"
-        #    ),
+        #),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         #widget.TextBox(
         #    font = "Ubuntu Nerd Font",
         #    text = " ",
@@ -309,21 +301,21 @@ def init_widgets_list():
         #    background = colors[1],
         #    padding = 0,
         #    fontsize = 14
-        #    ),
+        #),
         widget.Memory(
-            font="Ubuntu Nerd Font",
-            format="{MemUsed: .0f}{mm} /{MemTotal: .0f}{mm}",
+            font = "Ubuntu Nerd Font",
+            format = "{MemUsed: .0f}{mm} /{MemTotal: .0f}{mm}",
             update_interval = 1,
             fontsize = 12,
             foreground = colors[3],
             background = colors[1]
-            ),
+        ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         #widget.TextBox(
         #    font = "Ubuntu Nerd Font",
         #    text = " ",
@@ -331,7 +323,7 @@ def init_widgets_list():
         #    background = colors[1],
         #    padding = 0,
         #    fontsize = 12
-        #    ),
+        #),
         #widget.Net(
         #    font = "Ubuntu Nerd Font",
         #    fontsize = 12,
@@ -339,7 +331,7 @@ def init_widgets_list():
         #    foreground = colors[2],
         #    background = colors[1],
         #    padding = 0,
-        #    ),
+        #),
         widget.NetGraph(
             font = "Ubuntu Nerd Font",
             fontsize = 12,
@@ -353,13 +345,13 @@ def init_widgets_list():
             padding = 0,
             border_width = 1,
             line_width = 1
-            ),
+        ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         widget.TextBox(
             font = "Ubuntu Nerd Font",
             text = " ",
@@ -367,43 +359,43 @@ def init_widgets_list():
             background = colors[1],
             padding = 0,
             fontsize = 14
-            ),
+        ),
         widget.Clock(
             foreground = colors[3],
             background = colors[1],
             fontsize = 12,
             format = "%Y-%m-%d %H:%M"
-            ),
+        ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         widget.CurrentLayout(
             font = "Ubuntu Nerd Font Bold",
             foreground = colors[3],
             background = colors[1]
-            ),
+        ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         widget.CurrentLayoutIcon(
             custom_icon_paths = [os.path.expanduser("~/.config/qtile/icons")],
             foreground = colors[3],
             background = colors[1],
             padding = 0,
             scale = 0.7
-            ),
+        ),
         widget.Sep(
             linewidth = 1,
             padding = 10,
             foreground = colors[2],
             background = colors[1]
-            ),
+        ),
         ]
     return widgets_list
 
@@ -428,6 +420,7 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front())
 ]
 
+main = None
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: List
 follow_mouse_focus = True
@@ -442,9 +435,11 @@ floating_layout = layout.Floating(float_rules=[
     Match(wm_class='ssh-askpass'),  # ssh-askpass
     Match(title='branchdialog'),  # gitk
     Match(title='pinentry'),  # GPG key password entry
-])
+    ],
+    border_focus=colors[7] [0]
+)
 auto_fullscreen = True
-focus_on_window_activation = "smart"
+focus_on_window_activation = "urgent"
 reconfigure_screens = True
 
 @hook.subscribe.restart
@@ -472,7 +467,7 @@ def set_floating(window):
             or window.window.get_wm_type() in floating_types):
         window.floating = True
 
-#floating_types = ["notification", "toolbar", "splash", "dialog"]
+floating_types = ["notification", "toolbar", "splash", "dialog"]
 
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
