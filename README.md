@@ -1,5 +1,11 @@
 # qtile-examples
 
+## Table of Contents
+
+- [Configs](#configs)
+- [Plugins](#plguins)
+- [Other Links](#other_links)
+
 This is a repository for examples of how to use qtile by users. Below is a list
 of user configurations and their descriptions.
 
