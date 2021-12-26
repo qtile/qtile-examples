@@ -1,5 +1,11 @@
 # qtile-examples
 
+## Table of Contents
+
+- [Configs](#configs)
+- [Plugins](#plguins)
+- [Other Links](#other_links)
+
 This is a repository for examples of how to use qtile by users. Below is a list
 of user configurations and their descriptions.
 
@@ -41,6 +47,14 @@ Module                  | Description
 ------------------------|------------
 traverse                | Functions for traversing focus over windows based on global position
 graphical_notifications | An interactive graphical notification server similar to dunst
+
+## Other links
+
+Site                    | Description
+------------------------|------------
+[qtile-extras][1]       | A collection of widgets and other mods made by elParaguayo
+
+[1]: https://github.com/elParaguayo/qtile-extras/ "qtile-extras"
 
 ## Contributing
 
