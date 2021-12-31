@@ -46,6 +46,7 @@ Module                  | Description
 ------------------------|------------
 traverse                | Functions for traversing focus over windows based on global position
 graphical_notifications | An interactive graphical notification server similar to dunst
+Qminimize               | A rofi script to handle minimize/unminimize of multiple windows at once
 
 ## Other links
 
