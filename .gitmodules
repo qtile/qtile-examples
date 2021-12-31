@@ -10,3 +10,6 @@
 [submodule "mcol"]
 	path = mcol
 	url = https://github.com/m-col/qtile-config
+[submodule "Qminimize"]
+	path = Qminimize
+	url = https://github.com/emanuelep57/Qminimize
