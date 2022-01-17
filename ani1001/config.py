@@ -32,7 +32,7 @@ from typing import List  # noqa: F401
 from libqtile.widget import Spacer
 
 home = os.path.expanduser('~')
-terminal = "kitty"
+terminal = "alacritty"
 
 keys = [
     # Switch between windows
@@ -78,8 +78,8 @@ keys = [
 
     Key("M-C-r", lazy.restart(), desc="Restart Qtile"),
     Key("M-C-q", lazy.shutdown(), desc="Shutdown Qtile"),
-    #Key("M-r", lazy.spawncmd(),
-        #desc="Spawn a command using a prompt widget"),
+    Key("M-r", lazy.spawncmd(),
+        desc="Spawn a command using a prompt widget"),
 
     # Keybindings to launch user defined programs
     Key("A-d", lazy.spawn("dmenu_run"), desc="Launch dmenu"),
@@ -88,9 +88,10 @@ keys = [
     Key("A-m", lazy.spawn("/usr/local/src/thunderbird/thunderbird"), desc="Launch thunderbird"),
     Key("A-n", lazy.spawn("nitrogen"), desc="Launch nitrogen"),
     Key("A-r", lazy.spawn("rofi -show run"), desc="Launch rofi"),
+    Key("A-s", lazy.spawn("st"), desc="Launch suckless terminal"),
     Key("A-t", lazy.spawn("urxvtc"), desc="Launch rxvt-unicode"),
-    Key("A-w", lazy.spawn("firefox"), desc="Launch firefox"),
-    Key("A-C-w", lazy.spawn("/usr/local/src/waterfox/waterfox"), desc="Launch waterfox"),
+    Key("A-w", lazy.spawn("/usr/local/src/waterfox/waterfox-bin"), desc="Launch waterfox"),
+    Key("A-C-w", lazy.spawn("brave-browser"), desc="Launch brave-browser"),
     Key("A-C-s", lazy.spawn("/usr/local/src/sublime_text/sublime_text"), desc="Launch sublime_text"),
 ]
 
@@ -165,6 +166,8 @@ def init_colors():
 
 colors = init_colors()
 
+prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
+
 widget_defaults = dict(
     font='Ubuntu Nerd Font',
     fontsize=12,
@@ -182,7 +185,7 @@ screens = [
                     background=colors[1], #2e3440
                     foreground=colors[5], #d8dee9
                     linewidth=1,
-                    padding=10                   
+                    padding=10
                 ),
                 widget.Image(
                     filename="~/.config/qtile/icons/qtilelogo.png",
@@ -243,6 +246,12 @@ screens = [
                     linewidth=1,
                     padding=10
                 ),
+                widget.Prompt(
+                    background=colors[1],
+                    font='Ubuntu',
+                    fontsize=12,
+                    foreground=colors[6]
+                ),
                 widget.Spacer(),
                 widget.TextBox(
                     background=colors[1],
@@ -253,6 +262,12 @@ screens = [
                     text=' '
                 ),
                 widget.KeyboardLayout(
+                    background=colors[1],
+                    font='Ubuntu',
+                    fontsize=12,
+                    foreground=colors[6]
+                ),
+                widget.CapsNumLockIndicator(
                     background=colors[1],
                     font='Ubuntu',
                     fontsize=12,
@@ -277,7 +292,7 @@ screens = [
                     font='Ubuntu',
                     fontsize=12,
                     foreground=colors[6],
-                    format='%a %d, (%B) %H:%M:%S'
+                    format='%a %d, (%B) %H:%M:%S '
                 ),
             ],
             22,
@@ -297,6 +312,27 @@ screens = [
                     background=colors[1],
                     icon_size=20,
                     padding=4
+                ),
+                widget.Sep(
+                    background=colors[1],
+                    foreground=colors[5],
+                    linewidth=1,
+                    padding=10
+                ),
+                widget.TextBox(
+                    background=colors[1],
+                    font='Ubuntu Nerd Font',
+                    fontsize=14,
+                    foreground=colors[6],
+                    padding=0,
+                    text=' '
+                ),
+                widget.ThermalSensor(
+                    background=colors[1],
+                    font='Ubuntu',
+                    fontsize=12,
+                    foreground=colors[6],
+                    update_interval=2
                 ),
                 widget.Sep(
                     background=colors[1],
@@ -340,7 +376,7 @@ screens = [
                     fontsize=12,
                     foreground=colors[6],
                     format='CPU {load_percent}%',
-                    update_interval=1    
+                    update_interval=1
                 ),
                 #widget.CPUGraph(
                 #    background=colors[1],
@@ -372,6 +408,7 @@ screens = [
                     font='Ubuntu',
                     fontsize=12,
                     foreground=colors[5],
+                    format='{interface}: {down} ↓ ',
                     interface='all',
                     padding=0
                 ),
@@ -390,7 +427,7 @@ screens = [
                 #),
             ],
             22,
-            opacity=0.9
+            opacity=1.0
         ),
     ),
 ]
