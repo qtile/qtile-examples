@@ -13,3 +13,6 @@
 [submodule "Qminimize"]
 	path = Qminimize
 	url = https://github.com/emanuelep57/Qminimize
+[submodule "ani1001"]
+	path = ani1001
+	url = https://github.com/ani1001/dotfiles/.config/qtile
