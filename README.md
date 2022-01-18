@@ -47,7 +47,7 @@ Module                  | Description
 traverse                | Functions for traversing focus over windows based on global position
 graphical_notifications | An interactive graphical notification server similar to dunst
 Qminimize               | A rofi script to handle minimize/unminimize of multiple windows at once
-floating_window_snapping| Floating window borders snap to other window/screen borders when moved with mouse
+floating_window_snapping| Floating window borders snap to other window/screen borders when moved with mouse (X11 only)
 
 ## Other links
 
