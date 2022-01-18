@@ -3,8 +3,8 @@
 ## Table of Contents
 
 - [Configs](#configs)
-- [Plugins](#plguins)
-- [Other Links](#other_links)
+- [Plugins](#plugins)
+- [Other Links](#other-links)
 
 This is a repository for examples of how to use qtile by users. Below is a list
 of user configurations and their descriptions.
@@ -48,6 +48,7 @@ traverse                | Functions for traversing focus over windows based on g
 graphical_notifications | An interactive graphical notification server similar to dunst
 Qminimize               | A rofi script to handle minimize/unminimize of multiple windows at once
 floating_window_snapping| Floating window borders snap to other window/screen borders when moved with mouse (X11 only)
+[Mutable Scratch](https://github.com/jrwrigh/qtile-mutable-scratch) | A i3-like scratch pad, where windows maybe added/removed on the fly
 
 ## Other links
 
