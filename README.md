@@ -50,6 +50,7 @@ graphical_notifications | An interactive graphical notification server similar t
 Qminimize               | A rofi script to handle minimize/unminimize of multiple windows at once
 floating_window_snapping| Floating window borders snap to other window/screen borders when moved with mouse (X11 only)
 [Mutable Scratch](https://github.com/jrwrigh/qtile-mutable-scratch) | A i3-like scratch pad, where windows maybe added/removed on the fly
+[qtile-plasma](https://github.com/numirias/qtile-plasma) | An tree-based layout, very similar to i3
 
 ## Other links
 

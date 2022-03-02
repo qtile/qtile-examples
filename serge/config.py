@@ -4,6 +4,12 @@ from libqtile.command import lazy
 from libqtile import layout, bar, widget
 from libqtile.dgroups import simple_key_binder
 
+
+#def warp(x, y):
+    #qtile.root.warp_pointer(x, y)
+#
+#Key(..., lazy.function(warp))
+
 from libqtile.log_utils import logger
 
 import platform
@@ -64,13 +70,28 @@ class MyBright(base.InLoopPollText):
 
 
 # global font options
-widget_defaults = dict(
-    font = 'Consolas',
-    fontsize = 14,
-    padding = 3,
-    foreground = "#000000",
-    background = "#ffffff",
-)
+if os.path.exists("/home/serge/bright"):
+    widget_defaults = dict(
+        font = 'Consolas',
+        fontsize = 14,
+        padding = 3,
+        foreground = "#000000",
+        background = "#ffffff",
+    )
+    active = "#00226f"
+    inactive = "#bbbbbb"
+    hilight_color = "#4488ff"
+else:
+    widget_defaults = dict(
+        font = 'Consolas',
+        fontsize = 14,
+        padding = 3,
+        foreground = ORANGE,
+        background = DARK_GREY,
+    )
+    active = "#666666"
+    inactive = DARK_ORANGE
+    hilight_color = "#4488ff"
 
 bat0 = widget.Battery(energy_now_file='energy_now',
                     battery_name='BAT0',
@@ -82,9 +103,9 @@ bat0 = widget.Battery(energy_now_file='energy_now',
 screens = [Screen(top = bar.Bar([
     widget.GroupBox(urgent_alert_method='text',
         disable_drag=True,
-        active = "#00226f",
-        inactive = "#bbbbbb",
-        hilight_color = "#4488ff",
+        active = active,
+        inactive = inactive,
+        hilight_color = hilight_color,
         this_screen_border = ORANGE,
         other_current_screen_border = ORANGE,
         other_screen_border = "#444444",
@@ -93,7 +114,11 @@ screens = [Screen(top = bar.Bar([
         **widget_defaults),
     widget.Prompt(**widget_defaults),
     #widget.Clipboard(timeout=None, width=bar.STRETCH, max_width=None),
-    widget.TextBox("serge@hallyn.com", name="ident", width=bar.STRETCH, max_width=None),
+    #widget.TextBox("serge@hallyn.com", name="ident", width=bar.STRETCH, max_width=None),
+    #widget.WindowCount(),
+    widget.TextBox("serge@hallyn.com", name="ident", max_width=None),
+    widget.WindowCount(width=bar.STRETCH, foreground="#5b447a", text_format="|w:{num}"),
+    widget.KhalCalendar(foreground="#5b447a", max_width=25),
     widget.TextBox("B0:"),
     bat0,
     MyBright(),
@@ -111,7 +136,7 @@ def app_or_group(group, app):
     running. """
     def f(qtile):
         try:
-            qtile.groups_map[group].cmd_toscreen()
+            qtile.groups_map[group].cmd_toscreen(toggle=False)
         except KeyError:
             qtile.cmd_spawn(app)
     return f
@@ -147,10 +172,16 @@ keys = [
     Key([mod, "shift", "control"], "h", lazy.layout.grow_left()),
     Key([mod, "shift"], "h", lazy.layout.shuffle_left()),
     Key([mod], "s", lazy.layout.toggle_split()),
+    #Key(["shift", "control"], "l", warp(100, 0)),
+    #Key(["shift", "control"], "h", warp(-100, 0)),
+    #Key(["shift", "control"], "j", warp(0, 100)),
+    #Key(["shift", "control"], "k", warp(0, -100)),
 
     # interact with prompts
     Key([mod], "r",              lazy.spawncmd()),
     Key([mod], "g",              lazy.togroup()),
+
+    Key([mod, "control"], "v",   lazy.spawn("/home/serge/bin/urlimg.xclip")),
 
     # start specific apps
     Key([mod], "n",              lazy.function(app_or_group("www", "firefox"))),
@@ -159,7 +190,10 @@ keys = [
     Key([mod, "shift"], "x",     lazy.window.kill()),
     Key([mod, "control"], "Return", lazy.spawn("tabbed vimprobable -e")),
     Key([mod], "Return",         lazy.spawn("st")),
+    Key([mod, "shift"], "Return",         lazy.spawn("alacritty")),
+    #Key([mod], "Return",         lazy.spawn("urxvt")),
     Key([mod], "F10",            lazy.spawn("/home/serge/bin/touchpad")),
+    Key([mod], "F12",            lazy.spawn("/home/serge/bin/screengrab")),
 
     # Change the volume if our keyboard has keys
     Key(
@@ -183,10 +217,8 @@ keys = [
     Key([mod], "v",     lazy.spawn("xdotool click 2")),
 
     # backlight controls
-    Key([], "XF86KbdBrightnessUp", lazy.spawn("maclight keyboard up")),
-    Key([], "XF86KbdBrightnessDown", lazy.spawn("maclight keyboard down")),
-    Key([], "XF86MonBrightnessUp", lazy.spawn("maclight screen up")),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("maclight screen down")),
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightness up")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightness down")),
 ]
 
 # Next, we specify group names, and use the group name list to generate an appropriate
@@ -197,7 +229,7 @@ groups = []
 for i in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
     groups.append(Group(i))
     keys.append(
-        Key([mod], i, lazy.group[i].toscreen())
+        Key([mod], i, lazy.group[i].toscreen(toggle=False))
     )
     keys.append(
         Key([mod, "shift"], i, lazy.window.togroup(i))
@@ -221,7 +253,10 @@ border_args = dict(
 layout_style = {
     'font': 'ubuntu',
     'border_normal_stack': '#000022',
-    'border_focus_stack': '#0000ff'
+    'border_focus_stack': '#0000ff',
+    'wrap_focus_columns': False,
+    'wrap_focus_rows': False,
+    'focus_window_move': True
 }
 
 layouts = [
@@ -237,15 +272,24 @@ layouts = [
     layout.MonadTall(ratio=0.65, **border_args),
 ]
 
-no_utility = layout.floating.DEFAULT_FLOAT_WM_TYPES - {'utility'}
-floating_layout = layout.Floating(auto_float_types=no_utility)
+#no_utility = layout.floating.DEFAULT_FLOAT_WM_TYPES - {'utility'}
+#floating_layout = layout.Floating(auto_float_types=no_utility)
 
 cursor_warp = True
 follow_mouse_focus = True
+mouse = []
 
 focus_on_window_activation = "never"
 os.system("xmodmap ~/.xmodmaprc")
+os.system("xrdb -merge ~/.Xresources")
 os.system("synclient VertEdgeScroll=0")
-os.system("feh --bg-max ~/catherines_landing.jpg")
+#os.system("feh --bg-max ~/catherines_landing.jpg")
+os.system("pidof xplanet || xplanet -longitude -95.358 -latitude 29.749 -fork")
+os.system("synclient TouchpadOff=1")
+os.system("pidof syndaemon || syndaemon  -R -k -K -d")
+os.system("killall autocutsel")
+os.system("autocutsel -selection PRIMARY -fork")
+os.system("autocutsel -selection CLIPBOARD -fork")
+os.system('xinput --set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Speed" 1')
 
 # vim: tabstop=4 shiftwidth=4 expandtab
