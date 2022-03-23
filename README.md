@@ -19,7 +19,7 @@ is available in the main qtile repo under
 Config          | Description
 ----------------|------------
 a13xmt          | rooms and workspaces
-ani1001         | nord-theme, workspaces, additional-keys and some basics 
+ani1001         | nord-theme, workspaces, additional-keys and basics 
 aeronotix.py    | dynamic groups
 arkchar.py      | basic configuration
 bglasber.py     | python functions in config
