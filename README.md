@@ -52,6 +52,7 @@ floating_window_snapping| Floating window borders snap to other window/screen bo
 [Mutable Scratch](https://github.com/jrwrigh/qtile-mutable-scratch) | A i3-like scratch pad, where windows maybe added/removed on the fly
 [qtile-plasma](https://github.com/numirias/qtile-plasma) | An tree-based layout, very similar to i3
 toggle_debug            | A command to toggle debug logging with notification
+tidygroups              | Function for moving windows to the leftmost groups (like dwm's `reorganizetags`)
 
 ## Other links
 
