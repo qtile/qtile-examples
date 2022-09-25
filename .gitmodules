@@ -1,24 +1,21 @@
-[submodule "ramnes"]
+[submodule "plugins/Qminimize"]
+	path = plugins/Qminimize
+	url = https://github.com/emanuelep57/Qminimize.git
+[submodule "example-configs/ani1001"]
+	path = example-configs/ani1001
+	url = https://github.com/ani1001/dotfiles.git
+[submodule "example-configs/justinesmithies"]
+	path = example-configs/justinesmithies
+	url = https://github.com/justinesmithies/qtile-x-dotfiles.git
+[submodule "example-configs/m-col"]
+	path = example-configs/m-col
+	url = https://github.com/m-col/qtile-config.git
+[submodule "example-configs/ramnes"]
 	path = example-configs/ramnes
 	url = https://github.com/ramnes/qtile-config.git
-[submodule "zordsdavini"]
+[submodule "example-configs/zordsdavini"]
 	path = example-configs/zordsdavini
 	url = https://github.com/zordsdavini/qtile-config.git
-[submodule "justinesmithies"]
-	path = example-configs/justinesmithies
-	url = https://github.com/justinesmithies/dotfiles
-[submodule "mcol"]
-	path = example-configs/mcol
-	url = https://github.com/m-col/qtile-config
-[submodule "Qminimize"]
-	path = example-configs/Qminimize
-	url = https://github.com/emanuelep57/Qminimize
-[submodule "ani1001"]
-	path = example-configs/ani1001
-	url = https://github.com/ani1001/dotfiles
-[submodule "ThanosApollo"]
-	path = ThanosApollo
-	url = https://github.com/ThanosApollo/config.git
-[submodule "config"]
+[submodule "example-configs/ThanosApollo"]
 	path = example-configs/ThanosApollo
 	url = https://github.com/ThanosApollo/config.git
