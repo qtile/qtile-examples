@@ -18,4 +18,7 @@
 	url = https://github.com/ani1001/dotfiles
 [submodule "ThanosApollo"]
 	path = ThanosApollo
-	url = https://github.com/ThanosApollo/config
+	url = https://github.com/ThanosApollo/config.git
+[submodule "config"]
+	path = example-configs/ThanosApollo
+	url = https://github.com/ThanosApollo/config.git
