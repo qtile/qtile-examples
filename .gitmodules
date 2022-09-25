@@ -16,6 +16,3 @@
 [submodule "example-configs/zordsdavini"]
 	path = example-configs/zordsdavini
 	url = https://github.com/zordsdavini/qtile-config.git
-[submodule "example-configs/ThanosApollo"]
-	path = example-configs/ThanosApollo
-	url = https://github.com/ThanosApollo/config.git
