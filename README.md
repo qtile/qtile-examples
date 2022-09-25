@@ -40,6 +40,7 @@ tailhook.py     | unicode-based window sorting
 tin.py          | custom window shortcuts
 tych0           | qtile development, multiple screens
 zordsdavini     | various dmenu apps, screenshots, multiscreen, gmailwidget
+ThanosApollo    | OOP,colorschemes
 
 ## Plugins
 
