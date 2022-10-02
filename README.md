@@ -69,6 +69,7 @@ Site                    | Description
 ``` shell
 cd qtile-examples/config-examples 
 git submodule add <repo_link> <your_name>
+git submodule foreach git pull #update all submodules
 ```
 * You can find more on git submodules [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
 
