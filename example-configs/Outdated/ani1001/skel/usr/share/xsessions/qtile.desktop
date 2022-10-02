@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Qtile
+Comment=Qtile Session
+Exec=/home/anik/.local/bin/qtile start
+Type=Application
+Keywords=wm;tiling

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<JWM>
+    <Desktops width="4" height="1">
+        <Desktop>
+            <Background type="command">
+                nitrogen --restore
+            </background>
+        </Desktop>
+    </Desktops>
+
+    <!-- Double click speed (in milliseconds) -->
+    <DoubleClickSpeed>400</DoubleClickSpeed>
+
+    <!-- Double click delta (in pixels) -->
+    <DoubleClickDelta>2</DoubleClickDelta>
+
+    <!-- The focus model (sloppy or click) -->
+    <FocusModel>sloppy</FocusModel>
+
+    <!-- The snap mode (none, screen, or border) -->
+    <SnapMode distance="10">border</SnapMode>
+
+    <!-- The move mode (outline or opaque) -->
+    <MoveMode>opaque</MoveMode>
+
+    <!-- The resize mode (outline or opaque) -->
+    <ResizeMode>opaque</ResizeMode>
+
+    <!-- No coordinates of x and y displayed -->
+    <MoveMode coordinates="off">opaque</MoveMode>
+    <ResizeMode coordinates="off">outline</ResizeMode>
+    
+</JWM>

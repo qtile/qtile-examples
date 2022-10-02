@@ -1,0 +1,36 @@
+Config { font = "-misc-fixed-*-*-*-*-13-*-*-*-*-*-*-*"
+       , additionalFonts = []
+       , borderColor = "#4c566a"
+       , border = BottomB
+       , bgColor = "#2e3440"
+       , fgColor = "#d8dee9"
+       , alpha = 255
+       , position = TopW L 95
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = True
+       , hideOnStart = False
+       , iconRoot = "."
+       , allDesktops = True
+       , overrideRedirect = False
+       , commands = [ Run Weather "VGHS" ["-t"," <tempC>°C",
+                                          "-L","18","-H","25",
+                                          "--normal","#a3be8c",
+                                          "--high","#d08770",
+                                          "--low","#81a1c1"] 36000
+                    , Run Network "usb0" ["-L","0","-H","32",
+                                          "--normal","#a3be8c","--high","#d08770"] 10
+                    , Run Cpu ["-L","3","-H","50",
+                               "--normal","#a3be8c","--high","#d08770"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run Swap [] 10
+                    , Run Com "uname" ["-s","-r"] "" 36000
+                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                    , Run XMonadLog
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%XMonadLog% }{ %cpu% | %memory% * %swap% | %usb0% | <fc=#b48ead>%date%</fc> | %uname% [%VGHS%]"
+       }

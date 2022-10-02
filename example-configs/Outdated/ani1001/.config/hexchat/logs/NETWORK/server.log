@@ -1,0 +1,68 @@
+**** BEGIN LOGGING AT Sun Aug 21 16:35:19 2022
+
+Aug 21 16:35:19 Python interface loaded
+Aug 21 16:35:19 Perl interface loaded
+Aug 21 16:35:19 Sysinfo plugin loaded
+Aug 21 16:35:19 Checksum plugin loaded
+Aug 21 16:35:19 FiSHLiM plugin loaded
+**** BEGIN LOGGING AT Sun Aug 21 16:36:13 2022
+
+Aug 21 16:36:13 Python interface loaded
+Aug 21 16:36:13 Perl interface loaded
+Aug 21 16:36:13 Sysinfo plugin loaded
+Aug 21 16:36:13 Checksum plugin loaded
+Aug 21 16:36:13 FiSHLiM plugin loaded
+Aug 21 16:36:13 *	Looking up chat.freenode.net
+Aug 21 16:36:13 *	Unknown host. Maybe you misspelled it?
+Aug 21 16:36:19 FiSHLiM plugin unloaded
+Aug 21 16:36:19 Checksum plugin unloaded
+Aug 21 16:36:19 Sysinfo plugin unloaded
+Aug 21 16:36:19 Perl interface unloaded
+**** ENDING LOGGING AT Sun Aug 21 16:36:19 2022
+
+**** BEGIN LOGGING AT Sun Aug 21 16:38:20 2022
+
+Aug 21 16:38:20 Python interface loaded
+Aug 21 16:38:20 Perl interface loaded
+Aug 21 16:38:20 Sysinfo plugin loaded
+Aug 21 16:38:20 Checksum plugin loaded
+Aug 21 16:38:21 FiSHLiM plugin loaded
+Aug 21 16:38:21 *	Looking up chat.freenode.net
+Aug 21 16:38:21 *	Unknown host. Maybe you misspelled it?
+Aug 21 16:38:31 Cycling to next server in freenode...
+Aug 21 16:38:31 *	Disconnected ()
+**** ENDING LOGGING AT Sun Aug 21 16:38:31 2022
+
+**** BEGIN LOGGING AT Mon Aug 22 01:49:19 2022
+
+Aug 22 01:49:19 Python interface loaded
+Aug 22 01:49:19 Perl interface loaded
+Aug 22 01:49:19 Sysinfo plugin loaded
+Aug 22 01:49:19 Checksum plugin loaded
+Aug 22 01:49:19 FiSHLiM plugin loaded
+Aug 22 01:49:19 *	Looking up chat.freenode.net
+Aug 22 01:49:24 *	Connecting to chat.freenode.net (64:ff9b::cf94:1c7e:6667)
+Aug 22 01:49:24 *	Connection failed (Network is unreachable)
+Aug 22 01:49:34 Cycling to next server in freenode...
+Aug 22 01:49:34 *	Disconnected ()
+**** ENDING LOGGING AT Mon Aug 22 01:49:34 2022
+
+**** BEGIN LOGGING AT Sat Aug 27 22:29:18 2022
+
+Aug 27 22:29:18 Python interface loaded
+Aug 27 22:29:18 Perl interface loaded
+Aug 27 22:29:18 Sysinfo plugin loaded
+Aug 27 22:29:18 Checksum plugin loaded
+Aug 27 22:29:18 FiSHLiM plugin loaded
+Aug 27 22:29:18 *	Looking up chat.freenode.net
+Aug 27 22:29:24 *	Connecting to chat.freenode.net (149.28.246.185:6667)
+Aug 27 22:29:24 *	Connected. Now logging in.
+Aug 27 22:29:25 *	*** Looking up your ident...
+Aug 27 22:29:25 *	*** Looking up your hostname...
+Aug 27 22:29:25 *	Capabilities supported: account-notify account-tag away-notify batch cap-notify chghost draft/relaymsg=/ echo-message extended-join inspircd.org/poison inspircd.org/standard-replies invite-notify labeled-response message-tags multi-prefix sasl=EXTERNAL,PLAIN server-time setname userhost-in-names 
+Aug 27 22:29:25 *	Capabilities requested: account-notify away-notify cap-notify chghost extended-join multi-prefix server-time userhost-in-names 
+Aug 27 22:29:25 *	*** Could not resolve your hostname: Domain not found; using your IP address (43.245.121.231) instead.
+Aug 27 22:29:26 *	Capabilities acknowledged: account-notify away-notify cap-notify chghost extended-join multi-prefix server-time userhost-in-names
+Aug 27 22:29:30 *	*** Ident lookup timed out, using ~manjaro-i instead.
+**** ENDING LOGGING AT Sat Aug 27 22:29:30 2022
+

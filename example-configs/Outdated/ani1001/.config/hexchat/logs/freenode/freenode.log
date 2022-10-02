@@ -1,0 +1,146 @@
+**** BEGIN LOGGING AT Mon Aug 22 01:49:40 2022
+
+Aug 22 01:49:40 *	*** Looking up your ident...
+Aug 22 01:49:40 *	*** Looking up your hostname...
+Aug 22 01:49:41 *	Capabilities supported: account-notify account-tag away-notify batch cap-notify chghost draft/relaymsg=/ echo-message extended-join inspircd.org/poison inspircd.org/standard-replies invite-notify labeled-response message-tags multi-prefix sasl=EXTERNAL,PLAIN server-time setname userhost-in-names 
+Aug 22 01:49:41 *	Capabilities requested: account-notify away-notify cap-notify chghost extended-join multi-prefix server-time userhost-in-names 
+Aug 22 01:49:41 *	*** Could not resolve your hostname: Domain not found; using your IP address (103.67.157.116) instead.
+Aug 22 01:49:41 *	Capabilities acknowledged: account-notify away-notify cap-notify chghost extended-join multi-prefix server-time userhost-in-names
+Aug 22 01:49:45 *	*** Ident lookup timed out, using ~manjaro-i instead.
+**** ENDING LOGGING AT Mon Aug 22 01:49:45 2022
+
+**** BEGIN LOGGING AT Mon Aug 22 01:49:45 2022
+
+Aug 22 01:49:45 *	Welcome to the freenode IRC Network anik!~manjaro-i@103.67.157.116
+Aug 22 01:49:45 *	Your host is *.freenode.net, running version InspIRCd-3
+Aug 22 01:49:45 *	This server was created 00:20:08 Apr 21 2022
+Aug 22 01:49:45 *	*.freenode.net InspIRCd-3 BDHILRSTWcdghikorswxz ABCDEFIJKLMNOPQRSTUWXYZbcdefhijklmnoprstuvwz :BEFIJLWXYZbdefhjklovw
+Aug 22 01:49:45 *	ACCEPT=30 AWAYLEN=200 BOT=B CALLERID=g CASEMAPPING=ascii CHANLIMIT=#:20 CHANMODES=IXZbew,k,BEFJLWdfjl,ACDKMNOPQRSTUcimnprstuz CHANNELLEN=64 CHANTYPES=# ELIST=CMNTU ESILENCE=CcdiNnPpTtx EXCEPTS=e :are supported by this server
+Aug 22 01:49:45 *	EXTBAN=,ACNOQRSTUacjmnpruwz HOSTLEN=64 INVEX=I KEYLEN=32 KICKLEN=255 LINELEN=512 MAXLIST=I:100,X:100,b:100,e:100,w:100 MAXTARGETS=20 MODES=20 MONITOR=30 NAMELEN=128 NAMESX NETWORK=freenode :are supported by this server
+Aug 22 01:49:45 *	NICKLEN=30 PREFIX=(Yohv)!@%+ REMOVE SAFELIST SECURELIST=60 SILENCE=32 STATUSMSG=!@%+ TOPICLEN=390 UHNAMES USERIP USERLEN=10 USERMODES=,,s,BDHILRSTWcdghikorwxz VBANLIST :are supported by this server
+Aug 22 01:49:45 *	VLIST=b WATCH=32 WHOX :are supported by this server
+Aug 22 01:49:45 *	There are 21 users and 9346 invisible on 9 servers
+Aug 22 01:49:45 *	5 :operator(s) online
+Aug 22 01:49:45 *	20 :unknown connections
+Aug 22 01:49:45 *	13573 :channels formed
+Aug 22 01:49:45 *	I have 2724 clients and 1 servers
+Aug 22 01:49:45 *	Current local users: 2724  Max: 4875
+Aug 22 01:49:45 *	Current global users: 9367  Max: 10916
+Aug 22 01:49:45 *	*.freenode.net message of the day
+Aug 22 01:49:45 *	  Hello, World!
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  Welcome to the
+Aug 22 01:49:45 *	          __                               _
+Aug 22 01:49:45 *	         / _|_ __ ___  ___ _ __   ___   __| | ___
+Aug 22 01:49:45 *	        | |_| '__/ _ \/ _ \ '_ \ / _ \ / _` |/ _ \
+Aug 22 01:49:45 *	        |  _| | |  __/  __/ | | | (_) | (_| |  __/
+Aug 22 01:49:45 *	        |_| |_|  \___|\___|_| |_|\___/ \__,_|\___|
+Aug 22 01:49:45 *	                                   AUTONOMOUS ZONE
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  Connect to us on:
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  Hostname: irc.freenode.net / chat.freenode.net
+Aug 22 01:49:45 *	  Plaintext: 6660-6669
+Aug 22 01:49:45 *	  TLS/SSL: 6697,7000,7070
+Aug 22 01:49:45 *	  Webchat: https://webchat.freenode.net
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  By connecting to freenode you indicate that you have read and accept our
+Aug 22 01:49:45 *	  policies and guidelines as set out on https://freenode.net and agree to
+Aug 22 01:49:45 *	  be scanned for an open proxy.
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  If you are looking for assistance, please try:
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  #help                    - Help with general IRC and Services.
+Aug 22 01:49:45 *	  #chanhelp                - Help with channels and channel services.
+Aug 22 01:49:45 *	  #IRC                     - Help with the IRC.com by freenode app.
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  Checkout some of our communities and services:
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  #freenode-bbs            - BBS [https://bbs.freenode.net/]
+Aug 22 01:49:45 *	  #freenode-bbs-discussion - BBS Discussion
+Aug 22 01:49:45 *	  #freenode-jobs           - Jobs [https://jobs.freenode.net/]
+Aug 22 01:49:45 *	  #freenode                - Chat about freenode.
+Aug 22 01:49:45 *	  #anonchan                - Chat anonymously.
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  Type /join #<channel>
+Aug 22 01:49:45 *	 
+Aug 22 01:49:45 *	  Thank you for using freenode!
+Aug 22 01:49:45 *	End of message of the day.
+Aug 22 01:49:45 *	freenode-1fh.96j.icc39s.IP :is now your displayed host
+Aug 22 01:49:45 *	anik sets mode +w on anik
+Aug 22 01:49:45 *	anik sets mode +R on anik
+Aug 22 01:49:45 *	anik sets mode +i on anik
+Aug 22 01:49:45 *	anik sets mode +x on anik
+Aug 22 01:50:33 FiSHLiM plugin unloaded
+Aug 22 01:50:33 Checksum plugin unloaded
+Aug 22 01:50:33 Sysinfo plugin unloaded
+Aug 22 01:50:33 Perl interface unloaded
+**** ENDING LOGGING AT Mon Aug 22 01:50:33 2022
+
+**** BEGIN LOGGING AT Sat Aug 27 22:29:30 2022
+
+Aug 27 22:29:30 *	Welcome to the freenode IRC Network anik!~manjaro-i@43.245.121.231
+Aug 27 22:29:30 *	Your host is *.freenode.net, running version InspIRCd-3
+Aug 27 22:29:30 *	This server was created 08:12:31 Jul 07 2022
+Aug 27 22:29:30 *	*.freenode.net InspIRCd-3 BDHILRSTWcdghikorswxz ABCDEFIJKLMNOPQRSTUWXYZbcdefhijklmnoprstuvwz :BEFIJLWXYZbdefhjklovw
+Aug 27 22:29:30 *	ACCEPT=30 AWAYLEN=200 BOT=B CALLERID=g CASEMAPPING=ascii CHANLIMIT=#:20 CHANMODES=IXZbew,k,BEFJLWdfjl,ACDKMNOPQRSTUcimnprstuz CHANNELLEN=64 CHANTYPES=# ELIST=CMNTU ESILENCE=CcdiNnPpTtx EXCEPTS=e :are supported by this server
+Aug 27 22:29:30 *	EXTBAN=,ACNOQRSTUacjmnpruwz HOSTLEN=64 INVEX=I KEYLEN=32 KICKLEN=255 LINELEN=512 MAXLIST=I:100,X:100,b:100,e:100,w:100 MAXTARGETS=20 MODES=20 MONITOR=30 NAMELEN=128 NAMESX NETWORK=freenode :are supported by this server
+Aug 27 22:29:30 *	NICKLEN=30 PREFIX=(Yohv)!@%+ REMOVE SAFELIST SECURELIST=60 SILENCE=32 STATUSMSG=!@%+ TOPICLEN=390 UHNAMES USERIP USERLEN=10 USERMODES=,,s,BDHILRSTWcdghikorwxz VBANLIST :are supported by this server
+Aug 27 22:29:30 *	VLIST=b WATCH=32 WHOX :are supported by this server
+Aug 27 22:29:30 *	There are 24 users and 9474 invisible on 9 servers
+Aug 27 22:29:30 *	5 :operator(s) online
+Aug 27 22:29:30 *	20 :unknown connections
+Aug 27 22:29:30 *	13478 :channels formed
+Aug 27 22:29:30 *	I have 3307 clients and 1 servers
+Aug 27 22:29:30 *	Current local users: 3307  Max: 3952
+Aug 27 22:29:30 *	Current global users: 9498  Max: 10575
+Aug 27 22:29:30 *	*.freenode.net message of the day
+Aug 27 22:29:30 *	  Hello, World!
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  Welcome to the
+Aug 27 22:29:30 *	          __                               _
+Aug 27 22:29:30 *	         / _|_ __ ___  ___ _ __   ___   __| | ___
+Aug 27 22:29:30 *	        | |_| '__/ _ \/ _ \ '_ \ / _ \ / _` |/ _ \
+Aug 27 22:29:30 *	        |  _| | |  __/  __/ | | | (_) | (_| |  __/
+Aug 27 22:29:30 *	        |_| |_|  \___|\___|_| |_|\___/ \__,_|\___|
+Aug 27 22:29:30 *	                                   AUTONOMOUS ZONE
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  Connect to us on:
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  Hostname: irc.freenode.net / chat.freenode.net
+Aug 27 22:29:30 *	  Plaintext: 6660-6669
+Aug 27 22:29:30 *	  TLS/SSL: 6697,7000,7070
+Aug 27 22:29:30 *	  Webchat: https://webchat.freenode.net
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  By connecting to freenode you indicate that you have read and accept our
+Aug 27 22:29:30 *	  policies and guidelines as set out on https://freenode.net and agree to
+Aug 27 22:29:30 *	  be scanned for an open proxy.
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  If you are looking for assistance, please try:
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  #help                    - Help with general IRC and Services.
+Aug 27 22:29:30 *	  #chanhelp                - Help with channels and channel services.
+Aug 27 22:29:30 *	  #IRC                     - Help with the IRC.com by freenode app.
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  Checkout some of our communities and services:
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  #freenode-bbs            - BBS [https://bbs.freenode.net/]
+Aug 27 22:29:30 *	  #freenode-bbs-discussion - BBS Discussion
+Aug 27 22:29:30 *	  #freenode-jobs           - Jobs [https://jobs.freenode.net/]
+Aug 27 22:29:30 *	  #freenode                - Chat about freenode.
+Aug 27 22:29:30 *	  #anonchan                - Chat anonymously.
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  Type /join #<channel>
+Aug 27 22:29:30 *	 
+Aug 27 22:29:30 *	  Thank you for using freenode!
+Aug 27 22:29:30 *	End of message of the day.
+Aug 27 22:29:30 *	freenode-aqk.ap7.vd70kn.IP :is now your displayed host
+Aug 27 22:29:30 *	anik sets mode +w on anik
+Aug 27 22:29:30 *	anik sets mode +R on anik
+Aug 27 22:29:30 *	anik sets mode +i on anik
+Aug 27 22:29:30 *	anik sets mode +x on anik
+Aug 27 22:41:43 Checksum plugin unloaded
+Aug 27 22:41:43 Sysinfo plugin unloaded
+Aug 27 22:41:43 Perl interface unloaded
+**** ENDING LOGGING AT Sat Aug 27 22:41:43 2022
+

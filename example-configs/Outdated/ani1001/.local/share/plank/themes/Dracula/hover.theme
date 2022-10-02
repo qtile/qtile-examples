@@ -1,0 +1,17 @@
+#Dracula Theme 
+
+[PlankDrawingTheme]
+#The roundness of the top corners.
+TopRoundness=10
+#The roundness of the bottom corners.
+BottomRoundness=10
+#The thickness (in pixels) of lines drawn.
+LineWidth=1
+#The color (RGBA) of the outer stroke.
+OuterStrokeColor=40;;42;;54;;240
+#The starting color (RGBA) of the fill gradient.
+FillStartColor=40;;42;;54;;240
+#The ending color (RGBA) of the fill gradient.
+FillEndColor=40;;42;;54;;240
+#The color (RGBA) of the inner stroke.
+InnerStrokeColor=68;;71;;90;;240

@@ -1,0 +1,8 @@
+T 1661617889 19*	Now talking on 22#debian
+T 1661617889 22*	Topic for 22#debian is: [#Linux for more support] Welcome to #debian | Home of the freenode debian community | debian/linux discussion and support
+T 1661617889 22*	Topic for 22#debian set by 26riddle!riddle@joseon-rvb.0b9.t8er8d.IP (24Sat Jan  8 01:10:22 2022)
+T 1661617926 23*	cyboman33 (~cyboman33@freenode-ai0.j3o.tm3m4b.IP23) has joined
+T 1661617928 24*	antoine0 has quit (Connection closed)
+T 1661617949 23*	antoine0 (~antoine@freenode-nda.1d0.9166ff.IP23) has joined
+T 1661618159 23*	hippy (~hippy@freenode/user/hippy23) has joined
+T 1661618503 FiSHLiM plugin unloaded

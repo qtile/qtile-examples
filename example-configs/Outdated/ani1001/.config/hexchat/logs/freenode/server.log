@@ -1,0 +1,58 @@
+**** BEGIN LOGGING AT Sun Aug 21 16:35:19 2022
+
+Aug 21 16:35:19 *	Looking up chat.freenode.net
+**** BEGIN LOGGING AT Sun Aug 21 16:35:29 2022
+
+Aug 21 16:35:29 *	Looking up irc.freenode.net
+Aug 21 16:35:29 *	Unknown host. Maybe you misspelled it?
+Aug 21 16:35:39 Cycling to next server in freenode...
+Aug 21 16:35:39 *	Disconnected ()
+**** ENDING LOGGING AT Sun Aug 21 16:35:39 2022
+
+**** BEGIN LOGGING AT Sun Aug 21 16:35:39 2022
+
+Aug 21 16:35:39 *	Looking up chat.freenode.net
+Aug 21 16:35:39 *	Unknown host. Maybe you misspelled it?
+Aug 21 16:35:49 Cycling to next server in freenode...
+Aug 21 16:35:49 *	Disconnected ()
+**** ENDING LOGGING AT Sun Aug 21 16:35:49 2022
+
+**** BEGIN LOGGING AT Sun Aug 21 16:35:49 2022
+
+Aug 21 16:35:49 *	Looking up chat.freenode.net
+Aug 21 16:35:49 *	Unknown host. Maybe you misspelled it?
+**** ENDING LOGGING AT Sun Aug 21 16:35:57 2022
+
+**** BEGIN LOGGING AT Sun Aug 21 16:35:59 2022
+
+Aug 21 16:35:59 *	Looking up irc.freenode.net
+Aug 21 16:35:59 *	Unknown host. Maybe you misspelled it?
+Aug 21 16:36:06 FiSHLiM plugin unloaded
+Aug 21 16:36:06 Checksum plugin unloaded
+Aug 21 16:36:06 Sysinfo plugin unloaded
+Aug 21 16:36:06 Perl interface unloaded
+**** ENDING LOGGING AT Sun Aug 21 16:36:06 2022
+
+**** BEGIN LOGGING AT Sun Aug 21 16:38:31 2022
+
+Aug 21 16:38:31 *	Looking up irc.freenode.net
+Aug 21 16:38:31 *	Unknown host. Maybe you misspelled it?
+Aug 21 16:38:41 Cycling to next server in freenode...
+Aug 21 16:38:41 *	Disconnected ()
+**** ENDING LOGGING AT Sun Aug 21 16:38:41 2022
+
+**** BEGIN LOGGING AT Sun Aug 21 16:38:41 2022
+
+Aug 21 16:38:41 *	Looking up chat.freenode.net
+Aug 21 16:38:41 *	Unknown host. Maybe you misspelled it?
+Aug 21 16:38:42 FiSHLiM plugin unloaded
+Aug 21 16:38:42 Checksum plugin unloaded
+Aug 21 16:38:42 Sysinfo plugin unloaded
+Aug 21 16:38:42 Perl interface unloaded
+**** ENDING LOGGING AT Sun Aug 21 16:38:42 2022
+
+**** BEGIN LOGGING AT Mon Aug 22 01:49:34 2022
+
+Aug 22 01:49:34 *	Looking up irc.freenode.net
+Aug 22 01:49:39 *	Connecting to chat.freenode.net (207.148.28.126:6667)
+Aug 22 01:49:40 *	Connected. Now logging in.

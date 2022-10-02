@@ -1,0 +1,42 @@
+#!/bin/sh
+
+run() {
+  if ! pgrep -f "$1" ;
+  then
+    "$@"&
+  fi
+}
+
+run $HOME/.config/polybar/launch.sh
+run xsetroot -cursor_name left_ptr
+run sxhkd -c $HOME/.config/berry/sxhkd/sxhkdrc
+run xfce4-power-manager
+run nitrogen --restore
+run picom
+run lxpolkit
+run mpd
+run nm-applet
+#run numlockx on
+#run volumeicon
+#run urxvtd -q -o -f
+#run emacs --daemon
+
+# Set decoration geometry
+berryc border_width       2
+berryc inner_border_width 2
+berryc title_height       0
+berryc top_gap            30
+
+# Set decoration colors
+berryc focus_color         5e81ac
+berryc unfocus_color       4c566a
+berryc inner_focus_color   none
+berryc inner_unfocus_color none
+berryc text_focus_color    ffffff
+berryc text_unfocus_color  eeeeee
+
+# Other options
+berryc smart_place "true"
+berryc draw_text   "true"
+berryc edge_lock   "true"
+berryc set_font    "Noto"

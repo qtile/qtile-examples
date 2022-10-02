@@ -1,0 +1,9 @@
+# See https://wiki.debian.org/SourcesList for more information.
+deb http://mirror.0x.sg/debian/ bullseye main contrib non-free
+deb-src http://mirror.0x.sg/debian/ bullseye main contrib non-free
+
+deb http://mirror.0x.sg/debian/ bullseye-updates main contrib non-free
+deb-src http://mirror.0x.sg/debian/ bullseye-updates main contrib non-free
+
+deb http://deb.debian.org/debian-security/ bullseye-security main contrib non-free
+deb-src http://deb.debian.org/debian-security/ bullseye-security main contrib non-free

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<JWM>
+
+  <Include>$HOME/.jwm/keys</Include>
+  <Include>$HOME/.jwm/menu</Include>
+  <Include>$HOME/.jwm/preferences</Include>
+  <Include>$HOME/.jwm/start</Include>
+  <Include>$HOME/.jwm/theme</Include>
+  <Include>$HOME/.jwm/tray</Include>
+  <Include>$HOME/.jwm/groups</Include>
+
+</JWM>

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=berry
+Comment=berry - a small window manager
+Exec=berry
+Type=XSession

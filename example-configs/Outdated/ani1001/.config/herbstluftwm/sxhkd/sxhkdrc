@@ -1,0 +1,441 @@
+#################################################################
+# KEYBOARD BINDINGS FOR ANY TWM
+#################################################################
+
+#################################################################
+# SUPER + FUNCTION KEYS
+#################################################################
+
+# Brave
+super + F1
+	brave-browser
+
+# Emacs
+super + F2
+	emacs
+
+# Inkscape
+super + F3
+	inkscape
+
+# Gimp
+super + F4
+	gimp
+
+# Meld
+super + F5
+	meld
+
+# Vlc
+super + F6
+	vlc --video-on-top
+
+# Virtualbox
+super + F7
+	virtualbox
+
+# Thunar
+super + F8
+	thunar
+
+# Evolution
+super + F9
+	evolution
+
+# Spotify
+super + F10
+	spotify
+
+# Rofi Fullscreen
+super + F11
+	rofi -theme-str 'window \{width: 100%;height: 100%;\}' -show drun
+
+# Rofi
+super + F12
+	rofi -show drun
+
+#################################################################
+# SUPER + ... KEYS
+#################################################################
+
+# Emacs
+super + e
+	emacs
+
+# Browser
+super + w
+	brave-browser
+
+# Conky-toggle
+super + c
+	conky-toggle
+
+#Conflicts
+#Htop
+#super + h
+#	urxvt 'htop task manager' -e htop
+
+#archlinux-logout
+#super + x
+#	archlinux-logout
+
+#Conflicts
+#Rofi theme selector
+#super + r
+#	rofi-theme-selector
+
+# Urxvt
+super + t
+	urxvtc
+
+# Pavucontrol
+super + v
+	pavucontrol
+
+# Pragha
+super + m
+	pragha
+
+# Alacritty
+super + Return
+	alacritty
+
+# Xkill
+super + Escape
+	xkill
+
+# Keyboard dependent
+# alacritty
+# super + KP_Enter
+#	alacritty
+
+#################################################################
+# SUPER + SHIFT KEYS
+#################################################################
+
+# File-Manager
+super + shift + Return
+	thunar
+
+# Keyboard dependent
+# File-Manager
+# super + shift + KP_Enter
+#	thunar
+
+# dmenu
+super + shift + d
+	dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'
+
+# reload sxhkd
+super + shift + s
+	pkill -USR1 -x sxhkd
+
+# Keyboard dependent
+# super + shift + KP_Enter
+#	thunar
+
+
+#################################################################
+# CONTROL + ALT KEYS
+#################################################################
+
+# arcolinux-welcome-app
+# ctrl + alt + w
+#	arcolinux-welcome-app
+
+# archlinux-tweak-tool
+# ctrl + alt + e
+#	archlinux-tweak-tool
+
+# conky-rotate
+ctrl + alt + Next
+	conky-rotate -n
+
+# conky-rotate
+ctrl + alt + Prior
+	conky-rotate -p
+
+# File-Manager
+ctrl + alt + b
+	thunar
+
+# Catfish
+ctrl + alt + c
+	catfish
+
+# Chromium
+ctrl + alt + g
+	chromium -no-default-browser-check
+
+# Firefox
+ctrl + alt + f
+	firefox-esr
+
+# Nitrogen
+ctrl + alt + i
+	nitrogen
+
+# archlinux-logout
+# ctrl + alt + k
+#	archlinux-logout
+
+# archlinux-logout
+# ctrl + alt + l
+#	archlinux-logout
+
+# Pamac-manager
+# ctrl + alt + p
+#	pamac-manager
+
+# Xfce4-settings-manager
+ctrl + alt + m
+	xfce4-settings-manager
+
+# Pulse Audio Control
+ctrl + alt + u
+	pavucontrol
+
+# Rofi theme selector
+ctrl + alt + r
+	rofi-theme-selector
+
+# Spotify
+ctrl + alt + s
+	spotify
+
+# alacritty
+ctrl + alt + Return
+	alacritty
+
+# alacritty
+ctrl + alt + t
+	alacritty
+
+# Vivaldi
+ctrl + alt + v
+	vivaldi-stable
+
+# Xfce4-appfinder
+ctrl + alt + a
+	xfce4-appfinder
+
+
+# Keyboard dependent
+# alacritty
+# ctrl + alt + KP_Enter
+#	alacritty
+
+#################################################################
+# ALT + ... KEYS
+#################################################################
+
+# Wallpaper trash
+alt + t
+	variety -t
+
+# Wallpaper next
+alt + n
+	variety -n
+
+# Wallpaper previous
+alt + p
+	variety -p
+
+# Wallpaper favorite
+alt + f
+	variety -f
+
+# Wallpaper previous
+alt + Left
+	variety -p
+
+# Wallpaper next
+alt + Right
+	variety -n
+
+# Wallpaper toggle-pause
+alt + Up
+	variety --toggle-pause
+
+# Wallpaper resume
+alt + Down
+	variety --resume
+
+# Xfce4-appfinder
+alt + F2
+	xfce4-appfinder --collapsed
+
+# Xfce4-appfinder
+alt + F3
+	xfce4-appfinder
+
+#################################################################
+#VARIETY KEYS WITH PYWAL
+#################################################################
+
+# Wallpaper trash
+alt + shift + t
+	variety -t && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
+
+# Wallpaper next
+alt + shift + n
+	variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
+
+# Wallpaper previous
+alt + shift + p
+	variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
+
+# Wallpaper favorite
+alt + shift + f
+	variety -f && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
+
+# Wallpaper update
+alt + shift + u
+	wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&
+
+#################################################################
+# CONTROL + SHIFT KEYS
+#################################################################
+
+# Xcfe4-TaskManager
+ctrl + shift + Escape
+	xfce4-taskmanager
+
+#################################################################
+#     SCREENSHOTS
+#################################################################
+
+# Scrot
+# Print
+#	scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'
+
+# screeenshooter
+ctrl + Print
+	xfce4-screenshooter
+
+# Gnome-Screenshot
+ctrl + shift + Print
+	gnome-screenshot -i
+
+# Flameshot
+super + ctrl + Print
+	flameshot gui
+
+#################################################################
+#     FUNCTION KEYS
+#################################################################
+
+# xfce4-terminal dropdown
+F12
+	xfce4-terminal --drop-down
+
+#################################################################
+#     MULTIMEDIA KEYS
+#################################################################
+
+# Raises volume
+XF86AudioRaiseVolume
+	amixer set Master 10%+
+
+# Lowers volume
+XF86AudioLowerVolume
+	amixer set Master 10%-
+
+# Mute
+XF86AudioMute
+	amixer -D pulse set Master 1+ toggle
+
+# Playerctl works for Pragha, Spotify and others
+# Delete the line for playerctl if you want to use mpc
+# and replace it with the corresponding code
+# mpc works for e.g.ncmpcpp
+# mpc toggle
+# mpc next
+# mpc prev
+# mpc stop
+
+# Play
+XF86AudioPlay
+	playerctl play-pause
+
+# Next
+XF86AudioNext
+	playerctl next
+
+# Previous
+XF86AudioPrev
+	playerctl previous
+
+# Stop
+XF86AudioStop
+	playerctl stop
+
+# Brightness up
+XF86MonBrightnessUp
+	xbacklight -inc 10
+
+# Brightness down
+XF86MonBrightnessDown
+	xbacklight -dec 10
+
+#########################
+#        POLYBAR        #
+#########################
+
+# Hide polybar
+super + y
+	polybar-msg cmd toggle
+
+#################################################################
+#################################################################
+##################   DESKTOP SPECIFIC    ########################
+#################################################################
+#################################################################
+
+#################################################################
+# CTRL + ALT KEYS
+#################################################################
+
+# Picom Toggle
+ctrl + alt + o
+	~/.config/herbstluftwm/scripts/picom-toggle.sh
+
+#################################################################
+# SUPER + KEYS
+#################################################################
+
+# if you want to assign applications to specific tags or workspaces
+# add a command behind the application to focus on that workspace if required
+# index 0 corresponds to tag or workspace 1
+# index 1 corresponds to tag or workspace	2
+# example
+
+# Vivaldi
+# super + F1
+#	vivaldi-stable & herbstclient use_index 0
+
+#################################################################
+# HLWM Terminate Keybindings
+#################################################################
+
+# close window/application
+# super + q
+#	herbstclient close
+
+# close window/application
+super + shift + q
+	herbstclient close
+
+# realod herbstluftwm
+super + shift +r
+	herbstclient reload
+
+# Xkill
+super + shift + x
+	herbstclient quit
+
+#################################################################
+#################################################################
+##################   AZERTY/QWERTY/ ... KEYBOARD   ##############
+#################################################################
+#################################################################

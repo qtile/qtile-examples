@@ -1,0 +1,64 @@
+#!/bin/sh
+
+[ -e ~/.profile ] && . ~/.profile
+
+pgrep -x sxhkd > /dev/null || sxhkd &
+set -U SXHKD_SHELL sh &
+pgrep -x panel > /dev/null || $HOME/.config/bspwm/panel/panel &
+#$HOME/.config/polybar/launch.sh &
+nitrogen --restore &
+picom -b &
+lxpolkit &
+mpd &
+urxvtd -q -o -f &
+emacs --daemon &
+xsetroot -cursor_name left_ptr &
+wmname LG3D &
+
+bspc monitor -d I II III IV V VI VII VIII IX X
+
+#overlapping borders
+BW=2
+bspc config border_width $BW
+bspc config window_gap -$BW
+for side in top right bottom left ; do
+	bspc config ${side}_padding $BW
+done
+
+#external rules
+bspc config external_rules_command "$(which external_rules)"
+
+#bspc config border_radius                 8
+#bspc config border_width                  2
+#bspc config window_gap                    10
+bspc config top_padding                   34
+bspc config bottom_padding                10
+bspc config left_padding                  10
+bspc config right_padding                 10
+bspc config single_monocle                false
+#bspc config click_to_focus                true
+bspc config split_ratio                   0.50
+bspc config borderless_monocle            true
+bspc config gapless_monocle               true
+#bspc config focus_by_distance             true
+bspc config focus_follows_pointer         true
+#bspc config history_aware_focus           true
+bspc config pointer_modifier mod4
+bspc config pointer_action1 move
+bspc config pointer_action2 resize_side
+bspc config pointer_action3 resize_corner
+bspc config remove_disabled_monitors true
+bspc config merge_overlapping_monitors true
+
+#bspwm coloring
+bspc config normal_border_color        "#4c566a"
+bspc config active_border_color        "#1e1e1e"
+bspc config focused_border_color       "#5e81ac"
+bspc config presel_feedback_color      "#5e81ac"
+#bspc config urgent_border_color        "#dd2727"
+
+bspc rule -a Gimp desktop='^8' state=floating follow=on
+bspc rule -a Chromium desktop='^2'
+bspc rule -a mplayer2 state=floating
+bspc rule -a Kupfer.py focus=on
+bspc rule -a Screenkey manage=off

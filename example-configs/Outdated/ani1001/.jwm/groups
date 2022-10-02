@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<JWM>
+    <Group>
+        <Option>aerosnap</Option>
+    </Group>
+    <Group>
+        <Name>xclock</Name>
+        <Option>drag</Option>
+        <Option>notitle</Option>
+    </Group>
+    <!--centered applications -->
+    <Group>
+        <Class>URxvt</Class>
+        <Class>Xfce4-terminal</Class>
+        <Option>centered</Option>
+        <Option>opacity:0.8</Option>        
+    </Group>
+    <Group>
+        <Class>Xdgmenumaker</Class>
+        <Option>opacity:0.8</Option>        
+    </Group>
+    <Group>
+        <Name>pcmanfm</Name>
+        <Option>centered</Option>
+    </Group>
+    <Group>
+        <Name>nemo</Name>
+        <Option>centered</Option>
+    </Group>
+    <Group>
+        <Name>firefox</Name>
+        <Option>maximized</Option>
+    </Group>
+    <Group>
+        <Name>chromium</Name>
+        <Option>maximized</Option>
+    </Group>
+</JWM>

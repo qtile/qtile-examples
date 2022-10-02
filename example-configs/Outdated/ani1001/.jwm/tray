@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<JWM>
+
+  <!-- Tray of the environment. -->
+  <Tray x="0" y="-1" autohide="off" height="23" layer="above" halign="left" valign="top">
+    <Spacer width="5"/>
+    <TrayButton label="Apps">root:3</TrayButton>
+    <Spacer width="5"/>
+    <TrayButton label="_">showdesktop</TrayButton>
+    <Spacer width="5"/>
+    <Pager labeled="true"/>
+    <TaskList maxwidth="130" border="false"/>
+    <Dock/>
+    <Spacer width="5"/>
+    <Clock format="%H:%M"></Clock>
+    <Spacer width="5"/>
+  </Tray>
+
+</JWM>

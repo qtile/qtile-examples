@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	The MIT License (MIT)
+
+	Copyright (c) 2018 Dracula Theme
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+-->
+
+<style-scheme id="dracula" _name="Dracula" version="1.0">
+  <author>Alvin Septiano</author>
+  <_description>Dracula color scheme</_description>
+  
+	<!-- Dracula Color Palette -->
+	<color name="background" value="#282a36"/>
+	<color name="current-line" value="#44475a"/>
+	<color name="selection" value="#bd93f9"/>
+	<color name="foreground" value="#f8f8f2"/>
+	<color name="comment" value="#6272a4"/>
+	<color name="cyan" value="#8be9fd"/>
+	<color name="green" value="#50fa7b"/>
+	<color name="orange" value="#ffb86c"/>
+	<color name="pink" value="#ff79c6"/>
+	<color name="purple" value="#bd93f9"/>
+	<color name="red" value="#ff5555"/>
+	<color name="yellow" value="#f1fa8c"/>
+	<color name="white" value="#ffffff"/>
+	<color name="bone-white" value="#f8f8f0"/>
+	<color name="weird-gray" value="#909194"/>
+
+  <!-- Global Settings -->
+  <style name="text"                        foreground="white" background="background"/>
+  <style name="selection"                   foreground="bone-white" background="current-line"/>
+  <style name="cursor"                      foreground="bone-white"/>
+  <style name="secondary-cursor"            foreground="white"/>
+  <style name="selection-unfocused"         foreground="background" background="white"/>
+  <style name="current-line"                background="current-line"/>
+  <style name="line-numbers"                foreground="current-line" background="background"/>
+  <style name="background-pattern"          background="background"/>
+  <style name="bracket-match"               foreground="yellow" background="white"/>
+  <style name="bracket-mismatch"            foreground="red" background="white"/>
+  <style name="search-match"                foreground="white" background="white"/>
+  
+  <style name="def:keyword"                 foreground="pink" bold="true"/>
+  <style name="def:statement"               foreground="pink"/>
+  <style name="def:function"                foreground="green"/>
+  <style name="def:decimal"                 foreground="purple"/>
+  <style name="def:preprocessor"            foreground="white"/>
+  <style name="def:type"                    foreground="pink"/>
+  
+  <style name="def:character"               foreground="yellow"/>
+  
+  <style name="def:comment"                 foreground="comment"/>
+  <style name="def:number"                  foreground="purple"/>
+  <style name="def:string"                  foreground="yellow"/>
+  <style name="def:net-address-in-comment"  foreground="cyan" italic="true" underline="true"/>
+  <style name="def:underlined"              italic="true" underline="true"/>
+  <style name="def:note"                    foreground="white" background="background" bold="true"/>
+  <style name="def:error"                   foreground="red" bold="true"/>
+  <style name="def:escape"                  foreground="purple"/>
+  <style name="def:shebang"                 foreground="pink" bold="true"/>
+  <style name="def:doc-comment-element"     italic="true"/>
+  <style name="def:identifier"              foreground="green" bold="true"/>
+  
+  <style name="def:specials"                foreground="white" background="purple"/>
+  
+  <style name="def:variable"                foreground="orange"/>
+  <style name="def:boolean"                 foreground="pink" bold="true"/>
+  <style name="def:constant"                foreground="pink"/>
+  <style name="def:special-constant"        foreground="pink" bold="true"/>
+  
+  <style name="diff:added-line"             foreground="bone-white"/>
+  <style name="diff:removed-line"           foreground="cyan"/>
+  <style name="diff:changed-line"           foreground="red"/>
+  <style name="diff:diff-file"              foreground="green" bold="true"/>
+  <style name="diff:location"               foreground="yellow"/>
+  <style name="diff:special-case"           foreground="white" bold="true"/>	
+  
+  <style name="latex:command"               foreground="orange" bold="true"/>
+  <style name="latex:include"               use-style="def:preprocessor"/>
+  
+  <style name="def:emphasis"                italic="true"/>
+  <style name="def:strong-emphasis"         foreground="white" bold="true"/>
+  <style name="def:inline-code"             foreground="background"/>
+  <style name="def:insertion"               underline="single"/>
+  <style name="def:deletion"                strikethrough="true"/>
+  <style name="def:link-text"               foreground="cyan"/>
+  <style name="def:link-symbol"             foreground="cyan" bold="true"/>
+  <style name="def:link-destination"        italic="true" underline="single"/>
+  <style name="def:heading"                 foreground="green" bold="true"/>
+  <style name="def:thematic-break"          foreground="orange" bold="true"/>
+  <style name="def:preformatted-section"    foreground="cyan"/>
+  <style name="def:list-marker"             foreground="white" bold="true"/>
+  
+  <style name="def:heading0"                scale="5.0"/>
+  <style name="def:heading1"                scale="2.5"/>
+  <style name="def:heading2"                scale="2.0"/>
+  <style name="def:heading3"                scale="1.7"/>
+  <style name="def:heading4"                scale="1.5"/>
+  <style name="def:heading5"                scale="1.3"/>
+  <style name="def:heading6"                scale="1.2"/>
+</style-scheme>

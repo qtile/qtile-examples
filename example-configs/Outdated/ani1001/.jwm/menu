@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<JWM>
+    <RootMenu onroot="3">
+      <Program label="Filemanager">
+        thunar
+      </Program>
+      <Program label="Terminal">
+        urxvtc
+      </Program>
+      <Program label="Waterfox">
+        /usr/local/src/waterfox/waterfox-bin
+      </Program>
+      <Separator/>
+      <Include>exec:xdgmenumaker -n -f jwm</Include>
+      <Separator/>
+      <Program label="Jwm folder">thunar ~/.jwm</Program>
+      <Separator/>
+      <Restart label="Restart Jwm"/>
+      <Exit label="Exit" confirm="true"/>
+    </RootMenu>
+</JWM>

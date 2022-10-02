@@ -1,0 +1,22 @@
+#!/bin/bash
+## HLWM Xmobar Tag Status ######
+# Version 0.1 by Scott Garrett #
+# Wintervenom [(at)] gmail.com #
+################################
+
+hc () {
+    herbstclient "$@"
+}
+
+tags () {
+    printf '[%s] ' $(hc tag_status)
+    echo
+}
+
+set -f
+IFS=$'\t'
+tags
+hc -i tag_changed |
+while read hook tag mon; do
+    tags
+done

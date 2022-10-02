@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<JWM>
+    <!-- Key bindings -->
+    <Key key="Up">up</Key>
+    <Key key="Down">down</Key>
+    <Key key="Right">right</Key>
+    <Key key="Left">left</Key>
+    <Key key="h">left</Key>
+    <Key key="j">down</Key>
+    <Key key="k">up</Key>
+    <Key key="l">right</Key>
+    <Key key="Return">select</Key>
+    <Key key="Escape">escape</Key>
+
+    <!-- ALT +  -->
+    <Key mask="A" key="Tab">nextstacked</Key>
+    <Key mask="A" key="F4">close</Key>
+    <Key mask="A" key="#">desktop#</Key>
+    <Key mask="A" key="F1">root:3</Key>
+    <Key mask="A" key="F2">window</Key>
+    <Key mask="A" key="F10">maximize</Key>
+    <Key mask="CA" key="Up">udesktop</Key>
+    <Key mask="CA" key="Down">ddesktop</Key>
+    <Key mask="CA" key="Right">rdesktop</Key>
+    <Key mask="CA" key="Left">ldesktop</Key>
+    <Key mask="SA" key="Right">sendr</Key>
+    <Key mask="SA" key="Left">sendl</Key>
+
+    <!-- CTRL + ALT +  -->
+    <Key mask="CA" key="t">exec:urxvt</Key>
+
+    <!-- SUPER (4) + -->
+    <Key mask="4" key="q">close</Key>
+    <Key mask="4S" key="Q">close</Key>
+    <Key mask="4S" key="r">exec:jwm -restart</Key>
+    <Key mask="4" key="x">exec:arcolinux-logout</Key>
+    <Key mask="4S" key="d">exec:dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'</Key>
+    <Key mask="4S" key="Return">exec:thunar</Key>
+
+    <!-- CTRL =+ SHIFT + -->
+    <Key mask="CS" key="Escape">exec:xfce4-taskmanager</Key>
+
+    <!-- Key resize -->
+    <Key mask="4" key="Up">maxtop</Key>
+    <Key mask="4" key="Down">maxbottom</Key>
+    <Key mask="4" key="Left">maxleft</Key>
+    <Key mask="4" key="Right">maxright</Key>
+
+</JWM>

@@ -1,0 +1,58 @@
+### use arandr to set screen preference
+### save as ~/.screenlayout/dual-head.sh
+### and uncomment next line
+### ------------------------------------
+### alt. use the xfce monitor setup from system settings control panel
+#~/.screenlayout/vnc.sh &
+
+### Required for xfce settings to work
+#sleep 0.5; xfsettingsd &
+
+### compositor
+## if you are using nvdia graphics for best result use nvidia compositor
+## don't enable if you are another compositor
+#sleep 1; manjaro-compositor --start &
+
+### launch thunar in daemon mode for faster startup
+### comment if you would rather use pcmanfm
+#thunar --daemon &
+
+### use desktop icons and pcmanfm as wallpaper manager
+### comment nitrogen below
+#pcmanfm -d --desktop &
+
+### no desktop icons use nitrogen as wallpaper manager
+### uncomment next line and comment pcmanfm above
+sleep 1; nitrogen --restore &
+
+### uncomment to have polybar with network status
+#sleep 1; polybar -c ~/.config/polybar/launch.sh &
+
+### comment/uncomment to disable/enable tint2 &
+sleep 1; tint2 -c ~/.config/tint2/repentance.tint2rc &
+
+### comment/uncomment to disable/enable conky
+#sleep 1; conky -c ~/.config/conky/KvFlatRed.conkyrc &
+
+## comment/uncomment to disable/enable skippy windowswitcher
+#skippy-xd --config ~/.config/skippy-xd/skippy-xd.rc --start-daemon &
+
+## super key for menu
+xcape -e 'Super_L=Alt_L|F1' &
+
+### PolicyKit authentication
+lxpolkit &
+
+### Localize user system folders
+xdg-user-dirs-gtk-update &
+
+### enable numlock
+### uncomment next line
+#numlockx &
+
+### --------------------------------------------
+
+picom -b &
+plank &
+volumeicon &
+nm-applet &

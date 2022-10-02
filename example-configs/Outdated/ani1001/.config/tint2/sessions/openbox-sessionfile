@@ -1,0 +1,8 @@
+# Tint2 openbox Sessionfile
+# DO NO edit this file, it will be overwritten by manjaro-tint2zen
+# Make a custom sessionfile instead and use -z or --session FILE option
+# To load session at startup use the following line
+
+# manjaro-tint2-session &
+
+$HOME/.config/tint2/KvFlatRed.tint2rc

@@ -1,0 +1,136 @@
+/**
+ * A floating box version of the paper theme.
+ *
+ * User: Qball
+ * Copyright: Dave Davenport
+ */
+
+* {
+    blue:  #0000FF;
+    white: #FFFFFF;
+    black: #000000;
+    grey:  #eeeeee;
+
+    spacing: 2;
+    background-color: #00000000;
+    border-color: #444444FF;
+    anchor: north;
+    location: center;
+}
+window {
+    transparency: "screenshot";
+    background-color: #00000000;
+    border: 0;
+    padding: 0% 0% 1em 0%;
+    x-offset: 0;
+    y-offset: -10%;
+}
+mainbox {
+    padding: 0px;
+    border: 0;
+    spacing: 1%;
+}
+message {
+    border: 2px;
+    padding: 1em;
+    background-color: @white;
+    text-color: @back;
+}
+textbox normal {
+    text-color: #002B36FF;
+    padding: 0;
+    border: 0;
+}
+listview {
+    fixed-height: 1;
+    border: 2px;
+    padding: 1em;
+    reverse: false;
+
+    columns: 1;
+    background-color: @white;
+}
+element {
+    border: 0;
+    padding: 2px;
+    highlight: bold ;
+}
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+}
+element normal.normal {
+    text-color: #002B36FF;
+    background-color: #F5F5F500;
+}
+element normal.urgent {
+    text-color: #D75F00FF;
+    background-color: #F5F5F5FF;
+}
+element normal.active {
+    text-color: #005F87FF;
+    background-color: #F5F5F5FF;
+}
+element selected.normal {
+    text-color: #F5F5F5FF;
+    background-color: #4271AEFF;
+}
+element selected.urgent {
+    text-color: #F5F5F5FF;
+    background-color: #D75F00FF;
+}
+element selected.active {
+    text-color: #F5F5F5FF;
+    background-color: #005F87FF;
+}
+element alternate.normal {
+    text-color: #002B36FF;
+    background-color: #D0D0D0FF;
+}
+element alternate.urgent {
+    text-color: #D75F00FF;
+    background-color: #D0D0D0FF;
+}
+element alternate.active {
+    text-color: #005F87FF;
+    background-color: #D0D0D0FF;
+}
+scrollbar {
+    border: 0;
+    padding: 0;
+}
+inputbar {
+    spacing: 0;
+    border: 2px;
+    padding: 0.5em 1em;
+    background-color: @grey;
+    index: 0;
+}
+inputbar normal {
+    foreground-color: #002B36FF;
+    background-color: #F5F5F500;
+}
+mode-switcher {
+    border: 2px;
+    padding: 0.5em 1em;
+    background-color: @grey;
+    index: 10;
+}
+button selected {
+    text-color: #4271AEFF;
+}
+inputbar {
+    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+}
+textbox-prompt-colon {
+    expand:     false;
+    str:        ":";
+    margin:     0px 0.3em 0em 0em ;
+    text-color: @normal-foreground;
+}
+error-message {
+    border: 2px;
+    padding: 1em;
+    background-color: #FF8888;
+    text-color: @back;
+}

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+$HOME/.config/herbstluftwm/xmobar-tags | xmobar -x 0 \
+	$HOME/.config/xmobar/xmobarrc0 &
+
+echo "Xmobar launched..."
