@@ -64,6 +64,12 @@ Site                    | Description
 [1]: https://github.com/elParaguayo/qtile-extras/ "qtile-extras"
 
 ## Contributing
+* To contribute please fork the repo on github and make a pull request. Please also include in this README a short description of your config.
+### Adding your qtile config as submodule 
 
-To contribute please fork the repo on github and make a pull request. Please
-also include in this README a short description of your config.
+``` shell
+cd qtile-examples/config-examples 
+git submodule add <repo_link>
+```
+
+
