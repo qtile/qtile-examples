@@ -66,10 +66,10 @@ Site                    | Description
 ## Contributing
 * To contribute please fork the repo on github and make a pull request. Please also include in this README a short description of your config.
 ### Adding your qtile config as submodule 
-
 ``` shell
 cd qtile-examples/config-examples 
 git submodule add <repo_link> <your_name>
 ```
+* You can find more on git submodules [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
 
 
