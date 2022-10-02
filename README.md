@@ -69,7 +69,7 @@ Site                    | Description
 
 ``` shell
 cd qtile-examples/config-examples 
-git submodule add <repo_link>
+git submodule add <repo_link> <your_name>
 ```
 
 
