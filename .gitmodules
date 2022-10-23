@@ -16,3 +16,6 @@
 [submodule "ani1001"]
 	path = ani1001
 	url = https://github.com/ani1001/dotfiles
+[submodule "SpyrosRoum"]
+	path = SpyrosRoum
+	url = https://github.com/SpyrosRoum/qtile-config.git
