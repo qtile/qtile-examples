@@ -1,5 +1,4 @@
 # qtile-examples
-
 ## Table of Contents
 
 - [Configs](#configs)
@@ -40,6 +39,7 @@ tailhook.py     | unicode-based window sorting
 tin.py          | custom window shortcuts
 tych0           | qtile development, multiple screens
 zordsdavini     | various dmenu apps, screenshots, multiscreen, gmailwidget
+SpyrosRoum      | ability to toggle groups making them visible, like DWM
 
 ## Plugins
 
