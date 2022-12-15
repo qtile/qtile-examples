@@ -29,6 +29,7 @@ ei-grad.py      | custom widgets
 emdete          | simple, beautiful, useful: lots of keyboard shortcuts
 mcol            | wayland and x11 backends, graphical notifications
 mort65          | rule matching, dynamic shortcuts, dropdown terminal
+mrtnvgr         | YandexDisk widget
 oboingo         | multiscreen, groups assigned to specific screens, key chording, time logger
 osimplex        | OOP, scratchpad, aesthetics file, defaults files
 ramnes.py       | debug layouts
