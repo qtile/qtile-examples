@@ -21,4 +21,4 @@
 	url = https://github.com/SpyrosRoum/qtile-config.git
 [submodule "piotr-marendowski"]
 	path = piotr-marendowski
-	url = https://github.com/piotr-marendowski/qtile-main-config.git
+	url = https://github.com/piotr-marendowski/arch-dotfiles/tree/main/Qtile%20main
