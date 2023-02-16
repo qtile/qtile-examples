@@ -19,3 +19,6 @@
 [submodule "SpyrosRoum"]
 	path = SpyrosRoum
 	url = https://github.com/SpyrosRoum/qtile-config.git
+[submodule "piotr-marendowski"]
+	path = piotr-marendowski
+	url = https://github.com/piotr-marendowski/qtile-main-config.git
