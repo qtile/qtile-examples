@@ -179,7 +179,7 @@ class Battery(base._Widget):
         try:
             plugged = battery.power_plugged
         except AttributeError:
-            return "No battery found."
+            logger.exception("No Battery was found.")
         percent = int(battery.percent)
         return (percent, plugged)
 
