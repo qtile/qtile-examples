@@ -13,8 +13,6 @@ requirements: psutil (used to gather info about the battery.)
 optional: dbus-next (used to send notification.)
 """
 
-
-
 from libqtile.widget import base
 from libqtile.log_utils import logger
 from libqtile.utils import send_notification
