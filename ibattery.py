@@ -57,16 +57,20 @@ class Battery(base._Widget):
             10,
             "time in seconds to display notification."
         ),
+        (
+            "size",
+            (16, 30),
+            "Size of the widget. takes a tuple: (height, width). "
+        ),
     ]
 
     def __init__(self, **config):
-        self.widget_width = 36
         base._Widget.__init__(self, bar.CALCULATED, **config)
         self.add_defaults(Battery.defaults)
 
+        self.HEIGHT, self.BAR_WIDTH = self.size  # battery bar
+        self.widget_width = self.BAR_WIDTH + 6
         self.length = self.padding * 2 + self.widget_width
-        self.HEIGHT = 16  # widgets height
-        self.BAR_WIDTH = 30  # battery bar
 
         self._has_notified = False
         self.timeout = int(self.notification_timeout * 1000)
