@@ -119,7 +119,7 @@ class Battery(base._Widget):
 
             self.drawer.set_source_rgb("8c8c8c")
             self._fill_body(
-                1,
+                1 + self.padding,
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
@@ -127,7 +127,7 @@ class Battery(base._Widget):
             )
             self.drawer.set_source_rgb(self.foreground)
             self._border(
-                1,
+                1 + self.padding,
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
@@ -138,7 +138,7 @@ class Battery(base._Widget):
             else:
                 self.drawer.set_source_rgb(self.foreground if charging else "ff8c1a")
             self._fill_body(
-                2,
+                2 + self.padding,
                 y_margin,
                 width=PERCENT,
                 height=self.HEIGHT,
@@ -146,7 +146,7 @@ class Battery(base._Widget):
             )
             self.drawer.set_source_rgb("000000")
             self._border(
-                1,
+                1 + self.padding,
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
@@ -154,7 +154,7 @@ class Battery(base._Widget):
             )
             self.drawer.set_source_rgb(self.foreground)
             self._fill_body(
-                self.BAR_WIDTH - 2,
+                self.BAR_WIDTH - 2 + self.padding,
                 y_margin + 1,
                 width=8.3,
                 height=self.HEIGHT - 2,
@@ -164,12 +164,12 @@ class Battery(base._Widget):
                 "sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD
             )
             self.drawer.ctx.set_font_size(12)
-            self.drawer.ctx.move_to(5, self.HEIGHT)
+            self.drawer.ctx.move_to(5 + self.padding, self.HEIGHT)
             self.drawer.set_source_rgb("ffffff")
             self.drawer.ctx.show_text(str(percent))
 
             self.drawer.draw(
-                offsetx=self.offset + self.padding,
+                offsetx=self.offset,
                 offsety=self.offsety,
                 width=self.length
             )
