@@ -1,3 +1,20 @@
+"""
+a widget that displays a nice battery icon using cairo
+it is similiar to the one in ios 16.
+
+Use:
+    1. import it to your qtile config.py as follows:
+    from ibattery import Battery as MyBattery
+
+    2. add it to your widget list in your bar:
+    MyBattery(),
+
+requirements: psutil (used to gather info about the battery.)
+optional: dbus-next (used to send notification.)
+"""
+
+
+
 from libqtile.widget import base
 from libqtile.log_utils import logger
 from libqtile.utils import send_notification
