@@ -62,6 +62,11 @@ class Battery(base._Widget):
             (16, 30),
             "Size of the widget. takes a tuple: (height, width). "
         ),
+        (
+            "font_size",
+            12,
+            "font size of the numbers inside the battery."
+        ),
     ]
 
     def __init__(self, **config):
@@ -144,7 +149,7 @@ class Battery(base._Widget):
             self._fill_body(
                 2 + self.padding,
                 y_margin,
-                width=PERCENT,
+                width=max(PERCENT, self.BAR_WIDTH / 100 * 10),
                 height=self.HEIGHT,
                 linewidth=1
             )
@@ -167,10 +172,16 @@ class Battery(base._Widget):
             self.drawer.ctx.select_font_face(
                 "sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD
             )
-            self.drawer.ctx.set_font_size(12)
-            self.drawer.ctx.move_to(5 + self.padding, self.HEIGHT)
+            bar_center = self.BAR_WIDTH / 2
+            text = str(percent)
+            self.drawer.ctx.set_font_size(self.font_size)
+            (x, y, width, height, dx, dy) = self.drawer.ctx.text_extents(text)
+            self.drawer.ctx.move_to(
+                bar_center - 10 + self.padding,
+                (self.bar.height + height) / 2
+            )
             self.drawer.set_source_rgb("ffffff")
-            self.drawer.ctx.show_text(str(percent))
+            self.drawer.ctx.show_text(text)
 
             self.drawer.draw(
                 offsetx=self.offset,
