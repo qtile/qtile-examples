@@ -159,10 +159,10 @@ class Battery(base._Widget):
                 linewidth=2.6,
                 aspect=0.8
             )
-            if percent <= self.warn_below:
-                self.drawer.set_source_rgb(self.low_foreground)
+            if charging or percent <= self.warn_below:
+                self.drawer.set_source_rgb(self.foreground)
             else:
-                self.drawer.set_source_rgb(self.foreground if charging else "ff8c1a")
+                self.drawer.set_source_rgb("ff8c1a")
             self._fill_body(
                 2 + self.padding,
                 y_margin,
