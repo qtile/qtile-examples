@@ -147,7 +147,8 @@ class Battery(base._Widget):
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
-                linewidth=1
+                linewidth=1,
+                aspect=0.8
             )
             self.drawer.set_source_rgb(self.foreground)
             self._border(
@@ -155,7 +156,8 @@ class Battery(base._Widget):
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
-                linewidth=2.6
+                linewidth=2.6,
+                aspect=0.8
             )
             if percent <= self.warn_below:
                 self.drawer.set_source_rgb(self.low_foreground)
@@ -166,7 +168,8 @@ class Battery(base._Widget):
                 y_margin,
                 width=max(PERCENT, self.BAR_WIDTH / 100 * 10),
                 height=self.HEIGHT,
-                linewidth=1
+                linewidth=1,
+                aspect=0.8
             )
             self.drawer.set_source_rgb("000000")
             self._border(
@@ -174,15 +177,17 @@ class Battery(base._Widget):
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
-                linewidth=0.6
+                linewidth=0.6,
+                aspect=0.8
             )
             self.drawer.set_source_rgb(self.foreground)
             self._fill_body(
                 self.BAR_WIDTH - 2 + self.padding,
-                y_margin + 1,
-                width=8.3,
-                height=self.HEIGHT - 2,
-                linewidth=5
+                y_margin + 1.5,
+                width=7.5,
+                height=self.HEIGHT - 3,
+                linewidth=5,
+                aspect=5.0
             )
             self.drawer.ctx.select_font_face(
                 "sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD
@@ -213,8 +218,8 @@ class Battery(base._Widget):
         percent = int(battery.percent)
         return (percent, plugged)
 
-    def _rounded_body(self, x, y, width, height, linewidth):
-        aspect = 0.8
+    def _rounded_body(self, x, y, width, height, linewidth, aspect):
+        aspect = aspect
         corner_radius = height / 5.0
         radius = corner_radius / aspect
         degrees = math.pi / 180.0
@@ -252,13 +257,13 @@ class Battery(base._Widget):
         )
         self.drawer.ctx.close_path()
 
-    def _border(self, x, y, width, height, linewidth):
-        self._rounded_body(x, y, width, height, linewidth)
+    def _border(self, x, y, width, height, linewidth, aspect):
+        self._rounded_body(x, y, width, height, linewidth, aspect)
         self.drawer.ctx.set_line_width(linewidth)
         self.drawer.ctx.stroke()
 
-    def _fill_body(self, x, y, width, height, linewidth):
-        self._rounded_body(x, y, width, height, linewidth)
+    def _fill_body(self, x, y, width, height, linewidth, aspect):
+        self._rounded_body(x, y, width, height, linewidth, aspect)
         self.drawer.ctx.fill()
 
     def timer_setup(self):
