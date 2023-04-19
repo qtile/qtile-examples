@@ -143,7 +143,7 @@ class Battery(base._Widget):
 
             self.drawer.set_source_rgb("8c8c8c")
             self._fill_body(
-                1 + self.padding,
+                self.padding,
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
@@ -152,7 +152,7 @@ class Battery(base._Widget):
             )
             self.drawer.set_source_rgb(self.foreground)
             self._border(
-                1 + self.padding,
+                self.padding,
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
@@ -164,7 +164,7 @@ class Battery(base._Widget):
             else:
                 self.drawer.set_source_rgb("ff8c1a")
             self._fill_body(
-                2 + self.padding,
+                self.padding,
                 y_margin,
                 width=max(PERCENT, self.BAR_WIDTH / 100 * 10),
                 height=self.HEIGHT,
@@ -173,7 +173,7 @@ class Battery(base._Widget):
             )
             self.drawer.set_source_rgb("000000")
             self._border(
-                1 + self.padding,
+                self.padding,
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
@@ -182,7 +182,7 @@ class Battery(base._Widget):
             )
             self.drawer.set_source_rgb(self.foreground)
             self._fill_body(
-                self.BAR_WIDTH - 2 + self.padding,
+                self.BAR_WIDTH - 3 + self.padding,
                 y_margin + 1.5,
                 width=7.5,
                 height=self.HEIGHT - 3,
@@ -192,12 +192,12 @@ class Battery(base._Widget):
             self.drawer.ctx.select_font_face(
                 "sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD
             )
-            bar_center = self.BAR_WIDTH / 2
+            text_center = (self.BAR_WIDTH / 2) - (self.font_size / 2) - 4
             text = str(percent)
             self.drawer.ctx.set_font_size(self.font_size)
             (x, y, width, height, dx, dy) = self.drawer.ctx.text_extents(text)
             self.drawer.ctx.move_to(
-                bar_center - 10 + self.padding,
+                text_center + self.padding,
                 (self.bar.height + height) / 2
             )
             self.drawer.set_source_rgb("ffffff")
