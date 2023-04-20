@@ -35,52 +35,67 @@ class Battery(base._Widget):
         (
             "padding",
             4,
-            "padding on either side of of the widget."
+            "int. padding on either side of of the widget."
         ),
         (
             "foreground",
-            "ffffff",
-            "Battery color in normal mode."
+            "d5d5d5",
+            "string. Battery color in normal mode."
         ),
         (
             "charging_fg",
             "02a724",
-            "foreground color when battery is charging."
+            "string. foreground color when battery is charging."
         ),
         (
             "update_interval",
-            30,
-            "time to wait until the widgets refreshes."
+            20,
+            "int. time to wait until the widgets refreshes."
         ),
         (
             "low_foreground",
             "ff0000",
-            "change color when battery is low."
+            "string. change color when battery is low."
         ),
         (
             "warn_below",
             10,
-            "battery level to indicate battery is low."
+            "int. battery level to indicate battery is low."
         ),
         (
             "notify",
             False,
-            "send a notification when battery is low."
+            "bool. send a notification when battery is low."
         ),
         (
             "notification_timeout",
             10,
-            "time in seconds to display notification."
+            "int. time in seconds to display notification."
         ),
         (
             "size",
-            (16, 30),
-            "Size of the widget. takes a tuple: (height, width). "
+            (18, 35),
+            "Size of the widget. takes a tuple: (height:int, width:int). "
+        ),
+        (
+            "font_family",
+            "sans",
+            "string. font family for the numbers inside the battery icon."
         ),
         (
             "font_size",
-            12,
-            "font size of the numbers inside the battery."
+            15,
+            "int. font size of the numbers inside the battery."
+        ),
+        (
+            "font_color",
+            None,
+            "string. font color"
+        ),
+        (
+            "battery_border",
+            False,
+            "bool. add a border to the battery icon."
         ),
     ]
 
@@ -95,13 +110,13 @@ class Battery(base._Widget):
         self._has_notified = False
         self.timeout = int(self.notification_timeout * 1000)
 
-        self._foreground = self.foreground
+        self._foreground = self.foreground if self.foreground else "d5d5d5"
 
     def _notify(self, percent):
         if not self._has_notified:
             send_notification(
-                "Warning",
-                f"Battery at {percent}%\ncharge me baby!",
+                "LOW BATTERY",
+                f"Battery at {percent}%",
                 urgent=True,
                 timeout=self.timeout
             )
@@ -111,15 +126,15 @@ class Battery(base._Widget):
 
     def update(self):
         percent, charging = self.get_bat()
-        if self.notify and percent < self.warn_below:
+        if self.notify and percent < self.warn_below and not charging:
             self._notify(percent)
         self.configure_(percent, charging)
         self.draw_battery(percent, charging)
 
     def configure_(self, percent, plugged):
         if plugged:
-            self.foreground = self.charging_fg
-        elif percent <= self.warn_below:
+            self.foreground = self.charging_fg or self._foreground
+        elif percent <= self.warn_below and self.low_foreground:
             self.foreground = self.low_foreground
         else:
             self.foreground = self._foreground
@@ -138,10 +153,11 @@ class Battery(base._Widget):
     def draw_battery(self, percent, charging):
         self.drawer.clear(self.background or self.bar.background)
         if self.bar.horizontal:
+            percent = 30
             PERCENT = self.BAR_WIDTH / 100 * percent
             y_margin = (self.bar.height - self.HEIGHT) / 2
 
-            self.drawer.set_source_rgb("8c8c8c")
+            self.rgb("808080")
             self._fill_body(
                 self.padding,
                 y_margin,
@@ -150,19 +166,17 @@ class Battery(base._Widget):
                 linewidth=1,
                 aspect=0.8
             )
-            self.drawer.set_source_rgb(self.foreground)
-            self._border(
-                self.padding,
-                y_margin,
-                width=self.BAR_WIDTH,
-                height=self.HEIGHT,
-                linewidth=2.6,
-                aspect=0.8
-            )
-            if charging or percent <= self.warn_below:
-                self.drawer.set_source_rgb(self.foreground)
-            else:
-                self.drawer.set_source_rgb("ff8c1a")
+            if self.battery_border:
+                self.rgb(self.foreground)
+                self._border(
+                    self.padding,
+                    y_margin,
+                    width=self.BAR_WIDTH,
+                    height=self.HEIGHT,
+                    linewidth=2.6,
+                    aspect=0.8
+                )
+            self.rgb(self.foreground)
             self._fill_body(
                 self.padding,
                 y_margin,
@@ -171,7 +185,7 @@ class Battery(base._Widget):
                 linewidth=1,
                 aspect=0.8
             )
-            self.drawer.set_source_rgb("000000")
+            self.rgb("000000")
             self._border(
                 self.padding,
                 y_margin,
@@ -180,7 +194,10 @@ class Battery(base._Widget):
                 linewidth=0.6,
                 aspect=0.8
             )
-            self.drawer.set_source_rgb(self.foreground)
+            if self.battery_border:
+                self.rgb(self.foreground)
+            else:
+                self.rgb("808080")
             self._fill_body(
                 self.BAR_WIDTH - 3 + self.padding,
                 y_margin + 1.5,
@@ -190,7 +207,7 @@ class Battery(base._Widget):
                 aspect=5.0
             )
             self.drawer.ctx.select_font_face(
-                "sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD
+                self.font_family, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD
             )
             text_center = (self.BAR_WIDTH / 2) - (self.font_size / 2) - 4
             text = str(percent)
@@ -200,7 +217,7 @@ class Battery(base._Widget):
                 text_center + self.padding,
                 (self.bar.height + height) / 2
             )
-            self.drawer.set_source_rgb("ffffff")
+            self.rgb(self.font_color or self.bar.background)
             self.drawer.ctx.show_text(text)
 
             self.drawer.draw(
@@ -208,6 +225,9 @@ class Battery(base._Widget):
                 offsety=self.offsety,
                 width=self.length
             )
+
+    def rgb(self, hex):
+        self.drawer.set_source_rgb(hex)
 
     def get_bat(self):
         battery = psutil.sensors_battery()
