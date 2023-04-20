@@ -153,7 +153,6 @@ class Battery(base._Widget):
     def draw_battery(self, percent, charging):
         self.drawer.clear(self.background or self.bar.background)
         if self.bar.horizontal:
-            percent = 30
             PERCENT = self.BAR_WIDTH / 100 * percent
             y_margin = (self.bar.height - self.HEIGHT) / 2
 
