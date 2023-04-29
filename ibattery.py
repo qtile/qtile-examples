@@ -34,7 +34,7 @@ class Battery(base._Widget):
     defaults = [
         (
             "padding",
-            4,
+            2,
             "int. padding on either side of of the widget."
         ),
         (
@@ -104,8 +104,8 @@ class Battery(base._Widget):
         self.add_defaults(Battery.defaults)
 
         self.HEIGHT, self.BAR_WIDTH = self.size  # battery bar
-        self.widget_width = self.BAR_WIDTH + 6
-        self.length = self.padding * 2 + self.widget_width
+        self.margin = 2
+        self.length = self.padding * 2 + self.BAR_WIDTH + 7.5 + self.margin * 2
 
         self._has_notified = False
         self.timeout = int(self.notification_timeout * 1000)
@@ -141,7 +141,7 @@ class Battery(base._Widget):
 
     def calculate_length(self):
         if self.bar.horizontal:
-            return (self.padding * 2) + self.widget_width
+            return self.padding * 2 + self.BAR_WIDTH + 7.5 + self.margin * 2
         else:
             return 0
 
@@ -155,10 +155,11 @@ class Battery(base._Widget):
         if self.bar.horizontal:
             PERCENT = self.BAR_WIDTH / 100 * percent
             y_margin = (self.bar.height - self.HEIGHT) / 2
+            mp = self.padding + self.margin
 
             self.rgb("808080")
             self._fill_body(
-                self.padding,
+                mp,
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
@@ -168,7 +169,7 @@ class Battery(base._Widget):
             if self.battery_border:
                 self.rgb(self.foreground)
                 self._border(
-                    self.padding,
+                    mp,
                     y_margin,
                     width=self.BAR_WIDTH,
                     height=self.HEIGHT,
@@ -177,7 +178,7 @@ class Battery(base._Widget):
                 )
             self.rgb(self.foreground)
             self._fill_body(
-                self.padding,
+                mp,
                 y_margin,
                 width=max(PERCENT, self.BAR_WIDTH / 100 * 10),
                 height=self.HEIGHT,
@@ -186,7 +187,7 @@ class Battery(base._Widget):
             )
             self.rgb("000000")
             self._border(
-                self.padding,
+                mp,
                 y_margin,
                 width=self.BAR_WIDTH,
                 height=self.HEIGHT,
@@ -198,7 +199,7 @@ class Battery(base._Widget):
             else:
                 self.rgb("808080")
             self._fill_body(
-                self.BAR_WIDTH - 3 + self.padding,
+                self.BAR_WIDTH - 3 + mp,
                 y_margin + 1.5,
                 width=7.5,
                 height=self.HEIGHT - 3,
@@ -208,12 +209,12 @@ class Battery(base._Widget):
             self.drawer.ctx.select_font_face(
                 self.font_family, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD
             )
-            text_center = (self.BAR_WIDTH / 2) - (self.font_size / 2) - 4
             text = str(percent)
             self.drawer.ctx.set_font_size(self.font_size)
             (x, y, width, height, dx, dy) = self.drawer.ctx.text_extents(text)
+            text_x = (self.length - 7.5 - width) / 2 - x
             self.drawer.ctx.move_to(
-                text_center + self.padding,
+                text_x,
                 (self.bar.height + height) / 2
             )
             self.rgb(self.font_color or self.bar.background)
