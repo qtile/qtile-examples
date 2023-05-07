@@ -99,11 +99,12 @@ class Battery(base._Widget):
         ),
     ]
 
-    def __init__(self, **config):
+    def __init__(self, padding=None, **config):
         base._Widget.__init__(self, bar.CALCULATED, **config)
         self.add_defaults(Battery.defaults)
 
         self.HEIGHT, self.BAR_WIDTH = self.size  # battery bar
+        self.padding = padding if padding else 2
         self.margin = 2
         self.length = self.padding * 2 + self.BAR_WIDTH + 7.5 + self.margin * 2
 
