@@ -55,6 +55,7 @@ floating_window_snapping| Floating window borders snap to other window/screen bo
 [qtile-plasma](https://github.com/numirias/qtile-plasma) | An tree-based layout, very similar to i3
 toggle_debug            | A command to toggle debug logging with notification
 tidygroups              | Function for moving windows to the leftmost groups (like dwm's `reorganizetags`)
+resize_move_floating_windows| Functions for moving & resizing floating windows, Changes BSP resizing behaviour to be more like columns
 
 ## Other links
 
