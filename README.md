@@ -55,6 +55,7 @@ floating_window_snapping| Floating window borders snap to other window/screen bo
 [qtile-plasma](https://github.com/numirias/qtile-plasma) | An tree-based layout, very similar to i3
 toggle_debug            | A command to toggle debug logging with notification
 tidygroups              | Function for moving windows to the leftmost groups (like dwm's `reorganizetags`)
+ibattery                | A nice battery widget similar to the one in ios 16
 
 ## Other links
 
