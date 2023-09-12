@@ -70,7 +70,7 @@ def _focus_window(qtile, dir, axis):
         windows.remove(cur)
 
     for w in windows:
-        if isinstance(w, Screen) or not w.minimized:
+        if isinstance(w, Screen) or not w.minimized and w.cmd_is_visible():
             pos = getattr(w, axis) + getattr(w, dim) / 2
             gap = dir * (pos - cur_pos)
             if gap > 5:
