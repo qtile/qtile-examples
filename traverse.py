@@ -22,19 +22,19 @@ from libqtile.config import Screen
 
 
 def up(qtile):
-    _focus_window(qtile, -1, 'y')
+    _focus_window(qtile, -1, "y")
 
 
 def down(qtile):
-    _focus_window(qtile, 1, 'y')
+    _focus_window(qtile, 1, "y")
 
 
 def left(qtile):
-    _focus_window(qtile, -1, 'x')
+    _focus_window(qtile, -1, "x")
 
 
 def right(qtile):
-    _focus_window(qtile, 1, 'x')
+    _focus_window(qtile, 1, "x")
 
 
 def _focus_window(qtile, dir, axis):
@@ -46,17 +46,17 @@ def _focus_window(qtile, dir, axis):
     if not cur:
         cur = qtile.current_screen
 
-    if axis == 'x':
-        dim = 'width'
-        band_axis = 'y'
-        band_dim = 'height'
+    if axis == "x":
+        dim = "width"
+        band_axis = "y"
+        band_dim = "height"
         cur_pos = cur.x
         band_min = cur.y
         band_max = cur.y + cur.height
     else:
-        dim = 'height'
-        band_axis = 'x'
-        band_dim = 'width'
+        dim = "height"
+        band_axis = "x"
+        band_dim = "width"
         band_min = cur.x
         cur_pos = cur.y
         band_max = cur.x + cur.width
@@ -70,7 +70,7 @@ def _focus_window(qtile, dir, axis):
         windows.remove(cur)
 
     for w in windows:
-        if isinstance(w, Screen) or not w.minimized:
+        if isinstance(w, Screen) or not w.minimized and w.is_visible():
             pos = getattr(w, axis) + getattr(w, dim) / 2
             gap = dir * (pos - cur_pos)
             if gap > 5:
