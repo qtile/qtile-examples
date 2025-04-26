@@ -46,19 +46,26 @@ def right(qtile):
 
 
 def focusable(qtile):
-    """Get all windows and screens that should be considered for navigation"""
-    yield from (
-        window
-        for screen in qtile.screens
-        for window in screen.group.windows
-        if window is not qtile.current_window
-    )
-    yield from (
-        screen
-        for screen in qtile.screens
-        if not screen.group.windows # only consider empty screens
-        and screen is not qtile.current_screen
-    )
+    """Generates potential navigation targets (Screens or Windows).
+
+    Yields Screen objects for empty, non-focused screens. Yields Window
+    objects for non-focused windows.
+
+    Crucially, if a screen contains a fullscreen window, only that specific
+    fullscreen window (if not already focused) will be yielded for that screen,
+    preventing focus shifts to background windows on the same screen. If no
+    window is fullscreen on a screen, all its non-focused windows are eligible.
+    """
+
+    for screen in qtile.screens:
+        if not screen.group.windows and screen is not qtile.current_screen:
+            yield screen
+        has_fullscreen_window = any(w.fullscreen for w in screen.group.windows)
+        for window in screen.group.windows:
+            if window is qtile.current_window:
+                continue
+            if not has_fullscreen_window or window.fullscreen:
+                yield window
 
 
 @dataclass
