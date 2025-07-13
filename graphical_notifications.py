@@ -101,7 +101,7 @@ class Notifier(configurable.Configurable):
         ('border_width', 4, 'Line width of drawn borders.'),
         ('corner_radius', None, 'Corner radius for round corners, or None.'),
         ('font', 'sans', 'Font used in notifications.'),
-        ('font_size', 14, 'Size of font.'),
+        ('fontsize', 14, 'Size of font.'),
         ('fontshadow', None, 'Color for text shadows, or None for no shadows.'),
         ('text_alignment', 'left', 'Text alignment: left, center or right.'),
         ('horizontal_padding', None, 'Padding at sides of text.'),
@@ -160,9 +160,9 @@ class Notifier(configurable.Configurable):
         create the required popup windows.
         """
         if self.horizontal_padding is None:
-            self.horizontal_padding = self.font_size // 2
+            self.horizontal_padding = self.fontsize // 2
         if self.vertical_padding is None:
-            self.vertical_padding = self.font_size // 2
+            self.vertical_padding = self.fontsize // 2
 
         popup_config = {
             "x": self.x,
@@ -286,7 +286,7 @@ class Notifier(configurable.Configurable):
         popup.unhide()
 
         popup.background = self.background[urgency]
-        popup.foreground = self.foreground[urgency]
+        popup.layout.colour = self.foreground[urgency]
         popup.clear()
 
         if icon:
@@ -298,7 +298,7 @@ class Notifier(configurable.Configurable):
             popup.horizontal_padding += self.icon_size + self.horizontal_padding / 2
 
         for num, line in enumerate(text.split('\n')):
-            popup.text = line
+            popup.layout.text = line
             y = self.vertical_padding + num * (popup.layout.height + self.line_spacing)
             popup.draw_text(y=y)
         if self.border_width:
