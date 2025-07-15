@@ -489,7 +489,7 @@ class BatteryIcon(base._TextBox):
             self.drawer.clear(self.background or self.bar.background)
             self.drawer.ctx.set_source(self.surfaces[self.current_icon])
             self.drawer.ctx.paint()
-            self.drawer.draw(offsetx=self.offset, width=self.length)
+            self.draw_at_default_position()
         else:
             self.text = self.current_icon[8:]
             base._TextBox.draw(self)
