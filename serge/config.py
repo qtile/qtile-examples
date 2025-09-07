@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
 from libqtile.config import Key, Screen, Group, Match
-from libqtile.command import lazy
+from libqtile.lazy import lazy
 from libqtile import layout, bar, widget
 from libqtile.dgroups import simple_key_binder
 
-
-#def warp(x, y):
-    #qtile.root.warp_pointer(x, y)
-#
-#Key(..., lazy.function(warp))
 
 from libqtile.log_utils import logger
 
@@ -16,6 +11,7 @@ import platform
 import os
 
 from libqtile.widget import base
+import re
 
 def winstash(qtile):
     w = qtile.current_window
@@ -40,15 +36,6 @@ DARK_BLUE = "#005083"
 ORANGE = "#dd6600"
 DARK_ORANGE = "#582c00"
 
-class MyCheckinState(base.InLoopPollText):
-    def __init__(self):
-        base.InLoopPollText.__init__(self, update_interval=10)
-
-    def poll(self):
-        with open("/home/serge/checkinstate") as f:
-            cur = f.read().strip()
-        return "GTD: " + cur
-
 class MyBright(base.InLoopPollText):
     def __init__(self):
         base.InLoopPollText.__init__(self, update_interval=10)
@@ -69,29 +56,27 @@ class MyBright(base.InLoopPollText):
         return "{0} | ".format(txtb)
 
 
-# global font options
 if os.path.exists("/home/serge/bright"):
-    widget_defaults = dict(
-        font = 'Consolas',
-        fontsize = 14,
-        padding = 3,
-        foreground = "#000000",
-        background = "#ffffff",
-    )
-    active = "#00226f"
     inactive = "#bbbbbb"
+    active = "#00226f"
+    foreground = "#000000"
+    background = "#ffffff"
     hilight_color = "#4488ff"
 else:
-    widget_defaults = dict(
-        font = 'Consolas',
-        fontsize = 14,
-        padding = 3,
-        foreground = ORANGE,
-        background = DARK_GREY,
-    )
-    active = "#666666"
-    inactive = DARK_ORANGE
-    hilight_color = "#4488ff"
+    inactive = DARK_BLUE
+    active = ORANGE
+    foreground = ORANGE
+    background = DARK_GREY
+    hilight_color = BLUE
+
+# global font options
+widget_defaults = dict(
+    font = 'Consolas',
+    fontsize = 14,
+    padding = 3,
+    foreground = foreground,
+    background = background
+)
 
 bat0 = widget.Battery(energy_now_file='energy_now',
                     battery_name='BAT0',
@@ -113,16 +98,10 @@ screens = [Screen(top = bar.Bar([
         hilight_method="block",
         **widget_defaults),
     widget.Prompt(**widget_defaults),
-    #widget.Clipboard(timeout=None, width=bar.STRETCH, max_width=None),
-    #widget.TextBox("serge@hallyn.com", name="ident", width=bar.STRETCH, max_width=None),
-    #widget.WindowCount(),
-    widget.TextBox("serge@hallyn.com", name="ident", max_width=None),
-    widget.WindowCount(width=bar.STRETCH, foreground="#5b447a", text_format="|w:{num}"),
-    widget.KhalCalendar(foreground="#5b447a", max_width=25),
+    widget.TextBox("serge@hallyn.com", name="ident", width=bar.STRETCH, max_width=None),
     widget.TextBox("B0:"),
     bat0,
     MyBright(),
-    MyCheckinState(),
     widget.Systray(**widget_defaults),
     widget.Clock(format='%Y-%m-%d %a %I:%M %p', **widget_defaults),
 ],30,),),
@@ -136,9 +115,9 @@ def app_or_group(group, app):
     running. """
     def f(qtile):
         try:
-            qtile.groups_map[group].cmd_toscreen(toggle=False)
+            qtile.groups_map[group].toscreen()
         except KeyError:
-            qtile.cmd_spawn(app)
+            qtile.spawn(app)
     return f
 
 keys = [
@@ -159,41 +138,37 @@ keys = [
     Key([mod], "j",              lazy.layout.down()),
     Key([mod, "shift"], "space", lazy.layout.rotate()),
     Key([mod, "shift"], "Return",lazy.layout.toggle_split()),
-    Key(["mod1"], "Tab",         lazy.next_layout()),
+    #Key(["mod1"], "Tab",         lazy.group.prev_window()),
+    #Key(["mod1"], "Tab",         lazy.group.focus_back()),
+    Key([mod, "shift"], "Tab",         lazy.next_layout()),
     Key([mod, "mod1"], "h",      lazy.to_screen(0)),
     Key([mod, "mod1"], "l",      lazy.to_screen(1)),
-    Key([mod, "shift"], "l",     lazy.layout.swap_left()),
     # serge
     Key([mod], "h",              lazy.layout.left()),
     Key([mod], "l",              lazy.layout.right()),
     Key([mod], "s",              lazy.layout.toggle_split()),
     Key([mod, "shift", "control"], "l", lazy.layout.grow_right()),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right()),
+    Key([mod, "shift", "control"], "k", lazy.layout.grow_up()),
     Key([mod, "shift", "control"], "h", lazy.layout.grow_left()),
+    Key([mod, "shift", "control"], "j", lazy.layout.grow_down()),
+    Key([mod, "shift"], "l", lazy.layout.shuffle_right()),
+    Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
     Key([mod, "shift"], "h", lazy.layout.shuffle_left()),
-    Key([mod], "s", lazy.layout.toggle_split()),
-    #Key(["shift", "control"], "l", warp(100, 0)),
-    #Key(["shift", "control"], "h", warp(-100, 0)),
-    #Key(["shift", "control"], "j", warp(0, 100)),
-    #Key(["shift", "control"], "k", warp(0, -100)),
+    Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
 
     # interact with prompts
     Key([mod], "r",              lazy.spawncmd()),
     Key([mod], "g",              lazy.togroup()),
-
-    Key([mod, "control"], "v",   lazy.spawn("/home/serge/bin/urlimg.xclip")),
 
     # start specific apps
     Key([mod], "n",              lazy.function(app_or_group("www", "firefox"))),
     Key([mod, "shift"], "n",     lazy.window.togroup("www")),
     Key([mod], "m",              lazy.function(app_or_group("music", "clementine"))),
     Key([mod, "shift"], "x",     lazy.window.kill()),
-    Key([mod, "control"], "Return", lazy.spawn("tabbed vimprobable -e")),
-    Key([mod], "Return",         lazy.spawn("st")),
-    Key([mod, "shift"], "Return",         lazy.spawn("alacritty")),
-    #Key([mod], "Return",         lazy.spawn("urxvt")),
-    Key([mod], "F10",            lazy.spawn("/home/serge/bin/touchpad")),
-    Key([mod], "F12",            lazy.spawn("/home/serge/bin/screengrab")),
+    Key([mod], "Return",         lazy.spawn("alacritty")),
+    Key([mod, "control"], "b",    lazy.spawn("/home/serge/bin/urlimg.xclip")),
+    Key(["mod1"], "Tab",          lazy.screen.toggle_group()),
+    Key(["mod1", "shift"], "Tab",          lazy.spawn("rofi -show window")),
 
     # Change the volume if our keyboard has keys
     Key(
@@ -214,9 +189,11 @@ keys = [
     Key([mod], "minus", lazy.spawn("amixer -c %d -q set Master 2dB-" % sound_card)),
 
     # poor man's middle click
-    Key([mod], "v",     lazy.spawn("xdotool click 2")),
+    Key([mod], "v",     lazy.spawn("xclip -o -selection primary")),
 
     # backlight controls
+    Key([], "XF86KbdBrightnessUp", lazy.spawn("maclight keyboard up")),
+    Key([], "XF86KbdBrightnessDown", lazy.spawn("maclight keyboard down")),
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightness up")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightness down")),
 ]
@@ -229,7 +206,7 @@ groups = []
 for i in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
     groups.append(Group(i))
     keys.append(
-        Key([mod], i, lazy.group[i].toscreen(toggle=False))
+        Key([mod], i, lazy.group[i].toscreen())
     )
     keys.append(
         Key([mod, "shift"], i, lazy.window.togroup(i))
@@ -240,10 +217,10 @@ groups.append(Group("X"))
 # groups with special jobs. I usually navigate to these via my app_or_group
 # function.
 groups.extend([
-    Group('music', spawn='clementine', layout='columns', persist=False,
-          matches=[Match(wm_class=['Clementine', 'Viridian'])]),
-    Group('www', spawn='firefox', layout='columns', persist=False,
-          matches=[Match(wm_class=['Firefox', 'google-chrome', 'Google-chrome'])]),
+    Group('music', spawn='clementine', layout='columns', persist=True,
+          matches=[Match(wm_class=re.compile(r"^(Clementine|Viridian)$"))]),
+    Group('www', spawn='firefox', layout='columns', persist=True,
+          matches=[Match(wm_class=re.compile(r"^(Firefox|google-chrome|Google-chrome)$"))]),
 ])
 
 border_args = dict(
@@ -253,10 +230,7 @@ border_args = dict(
 layout_style = {
     'font': 'ubuntu',
     'border_normal_stack': '#000022',
-    'border_focus_stack': '#0000ff',
-    'wrap_focus_columns': False,
-    'wrap_focus_rows': False,
-    'focus_window_move': True
+    'border_focus_stack': '#0000ff'
 }
 
 layouts = [
@@ -277,19 +251,21 @@ layouts = [
 
 cursor_warp = True
 follow_mouse_focus = True
-mouse = []
 
 focus_on_window_activation = "never"
 os.system("xmodmap ~/.xmodmaprc")
+
+os.system("xsetroot -solid black")
 os.system("xrdb -merge ~/.Xresources")
 os.system("synclient VertEdgeScroll=0")
-#os.system("feh --bg-max ~/catherines_landing.jpg")
-os.system("pidof xplanet || xplanet -longitude -95.358 -latitude 29.749 -fork")
 os.system("synclient TouchpadOff=1")
 os.system("pidof syndaemon || syndaemon  -R -k -K -d")
 os.system("killall autocutsel")
 os.system("autocutsel -selection PRIMARY -fork")
 os.system("autocutsel -selection CLIPBOARD -fork")
 os.system('xinput --set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Speed" 1')
+
+os.system("xset +dpms s 300 350")
+os.system("xss-lock -- slock &")
 
 # vim: tabstop=4 shiftwidth=4 expandtab
