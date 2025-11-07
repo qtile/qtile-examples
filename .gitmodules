@@ -22,3 +22,6 @@
 [submodule "piotr-marendowski"]
 	path = piotr-marendowski
 	url = https://github.com/piotr-marendowski/qtile-main-config.git
+[submodule "archive/Qminimize"]
+	path = archive/Qminimize
+	url = https://github.com/emanuelep57/Qminimize
